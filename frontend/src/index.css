@@ -1,0 +1,79 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: 'Inter', sans-serif;
+  --font-display: 'Outfit', sans-serif;
+  
+  --color-gold-light: #f5e6c8;
+  --color-gold: #d4af37;
+  --color-gold-dark: #aa7c11;
+  --color-gold-premium: #c5a059;
+  
+  --color-luxury-black: #050505;
+  --color-luxury-dark: #0f0f0f;
+  --color-glass-bg: rgba(15, 15, 15, 0.7);
+  --color-glass-border: rgba(197, 160, 89, 0.15);
+}
+
+@utility glassmorphism {
+  background: rgba(10, 10, 10, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(197, 160, 89, 0.12);
+}
+
+@utility glassmorphism-premium {
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.85) 0%, rgba(10, 10, 10, 0.95) 100%);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(197, 160, 89, 0.2);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.8);
+}
+
+@utility text-glow-gold {
+  text-shadow: 0 0 10px rgba(197, 160, 89, 0.3);
+}
+
+@utility glow-gold {
+  box-shadow: 0 0 20px rgba(197, 160, 89, 0.15);
+}
+
+@utility custom-scrollbar {
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: #050505;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: #2a2a2a;
+    border-radius: 3px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: #c5a059;
+  }
+}
+
+/* Smooth page interactions */
+body {
+  background-color: #050505;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar for HTML */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+::-webkit-scrollbar-thumb {
+  background: #1a1a1a;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #c5a059;
+}
