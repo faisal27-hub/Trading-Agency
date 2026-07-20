@@ -3,7 +3,7 @@ import { config } from './config';
 
 const server = app.listen(config.port, () => {
   console.log(`==================================================`);
-  console.log(`  AURELIUS API SERVER RUNNING IN [${config.nodeEnv}] MODE`);
+  console.log(`  AUREX API SERVER RUNNING IN [${config.nodeEnv}] MODE`);
   console.log(`  Listening on port: http://localhost:${config.port}`);
   console.log(`==================================================`);
 });

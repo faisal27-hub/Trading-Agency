@@ -18,13 +18,13 @@ export interface MetricItem {
 }
 
 export interface MetricsOverview {
-  totalReturn: number;
-  averageMonthlyRoi: number;
-  averageWinRate: number;
-  totalTrades: number;
-  profitFactor: number;
-  maxDrawdown: number;
-  sharpeRatio: number;
+  totalReturn: number | null;
+  averageMonthlyRoi: number | null;
+  averageWinRate: number | null;
+  totalTrades: number | null;
+  profitFactor: number | null;
+  maxDrawdown: number | null;
+  sharpeRatio: number | null;
   verifiedBy: string;
   lastUpdated: string;
 }

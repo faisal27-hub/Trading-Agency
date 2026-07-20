@@ -42,7 +42,7 @@ app.use('/api', apiRouter);
 // Base route
 app.get('/', (_req, res) => {
   res.status(200).json({
-    message: 'Welcome to Aurelius Capital Premium Forex & Investment API.',
+    message: 'Welcome to Aurex Capital Premium Forex & Investment API.',
     version: '1.0.0',
     documentation: 'See API details on frontend dashboard integrations.',
   });

@@ -39,7 +39,7 @@ export const Footer: React.FC = () => {
               </div>
               <div className="flex flex-col">
                 <span className="font-display font-bold text-md leading-tight tracking-wider text-white">
-                  AURELIUS
+                  AUREX
                 </span>
                 <span className="text-[8px] tracking-[0.25em] text-gold-premium uppercase font-medium">
                   CAPITAL
@@ -118,7 +118,7 @@ export const Footer: React.FC = () => {
               Risk Notice
             </h4>
             <p className="text-xs text-zinc-600 leading-relaxed font-light">
-              Forex trading and leveraged investment products carry high risk to your capital. Absolute market volatility, slippage, and execution anomalies can lead to losses exceeding initial deposits. Aurelius Capital enforces stringent risk thresholds, but past outcomes do not secure future positive yields. Trade prudently.
+              Forex trading and leveraged investment products carry high risk to your capital. Absolute market volatility, slippage, and execution anomalies can lead to losses exceeding initial deposits. Aurex Capital enforces stringent risk thresholds, but past outcomes do not secure future positive yields. Trade prudently.
             </p>
           </div>
         </div>
@@ -131,7 +131,7 @@ export const Footer: React.FC = () => {
           <div className="flex flex-col gap-1 sm:items-start text-center sm:text-left">
             <span>&copy; {currentYear} {SITE_METADATA.name} Global Markets. All rights reserved.</span>
             <span className="text-[10px] text-zinc-700">
-              Authorized and regulated under registration number GFMA-2024-AC. Aurelius Capital is a registered service mark.
+              Authorized and regulated under registration number GFMA-2024-AC. Aurex Capital is a registered service mark.
             </span>
           </div>
 

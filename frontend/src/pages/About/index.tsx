@@ -35,7 +35,7 @@ export const AboutPage: React.FC = () => {
   const faqs: FAQEntry[] = [
     {
       question: 'What is the minimum capital required to get started?',
-      answer: 'To maintain proper institutional risk controls and leverage standard currency unit sizes safely, Aurelius Capital recommends a starting investment budget of $10,000. This ensures adequate room for drawdowns without triggering forced stop-outs.',
+      answer: 'To maintain proper institutional risk controls and leverage standard currency unit sizes safely, Aurex Capital recommends a starting investment budget of $10,000. This ensures adequate room for drawdowns without triggering forced stop-outs.',
       category: 'general',
     },
     {
@@ -44,7 +44,7 @@ export const AboutPage: React.FC = () => {
       category: 'general',
     },
     {
-      question: 'How are Aurelius Capital strategies protected against market volatility?',
+      question: 'How are Aurex Capital strategies protected against market volatility?',
       answer: 'We employ multi-layer risk management including algorithmic hard stops on every position, cross-market correlation filters, and automatic hedging triggers. Our target is never to exceed a maximum historical drawdown of 5% on total capital.',
       category: 'strategy',
     },
@@ -59,13 +59,13 @@ export const AboutPage: React.FC = () => {
       category: 'safety',
     },
     {
-      question: 'Is Aurelius Capital regulated?',
+      question: 'Is Aurex Capital regulated?',
       answer: 'Yes, we are registered compliance partners under GFMA registration number GFMA-2024-AC. We follow strict regulatory practices to protect our quantitative strategies and maintain transparent client coordination.',
       category: 'safety',
     },
     {
       question: 'How do I withdraw my capital, and are there lock-in periods?',
-      answer: 'Aurelius Capital does not require lock-in terms. Since we trade through secure brokerage accounts under the client name, capital withdrawals can be executed directly from your broker dashboard at any time. Processing times depend on the broker and payment rails, typically taking 24-48 business hours.',
+      answer: 'Aurex Capital does not require lock-in terms. Since we trade through secure brokerage accounts under the client name, capital withdrawals can be executed directly from your broker dashboard at any time. Processing times depend on the broker and payment rails, typically taking 24-48 business hours.',
       category: 'funds',
     },
     {
@@ -93,11 +93,11 @@ export const AboutPage: React.FC = () => {
             Corporate Profile
           </span>
           <h1 className="font-display font-bold text-4xl sm:text-5xl text-white tracking-tight leading-tight">
-            About Aurelius Capital
+            About Aurex Capital
           </h1>
           <div className="w-16 h-1 bg-gradient-to-r from-gold to-gold-premium mx-auto mt-4 mb-6" />
           <p className="text-zinc-400 font-light max-w-3xl mx-auto leading-relaxed text-base sm:text-lg">
-            Established by institutional forex veterans, Aurelius Capital delivers quantitative advisory and algorithmic currency execution built on three core pillars: absolute transparency, rigorous risk containment, and zero-latency performance.
+            Established by institutional forex veterans, Aurex Capital delivers quantitative advisory and algorithmic currency execution built on three core pillars: absolute transparency, rigorous risk containment, and zero-latency performance.
           </p>
         </div>
       </section>
@@ -139,7 +139,7 @@ export const AboutPage: React.FC = () => {
                 <div className="relative overflow-hidden rounded-2xl border border-gold-premium/20 shadow-2xl">
                   <img
                     src="/assets/about_trading_desk.png"
-                    alt="Aurelius Corporate Boardroom"
+                    alt="Aurex Corporate Boardroom"
                     className="w-full h-[380px] object-cover transform group-hover:scale-105 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
@@ -165,10 +165,10 @@ export const AboutPage: React.FC = () => {
                 </div>
                 <h3 className="font-display font-bold text-2xl text-white mb-4">Our Origin Story</h3>
                 <p className="text-zinc-400 font-light text-sm sm:text-base leading-relaxed mb-4">
-                  Aurelius Capital was founded in 2014 by a collaborative of G10 currency desks and high-frequency model architects who observed a widening chasm. High-net-worth individuals and corporate funds lacked access to true institutional-grade currency modeling and algorithmic risk control, left instead with retail brokers that suffered from excessive slippage.
+                  Aurex Capital was founded in 2014 by a collaborative of G10 currency desks and high-frequency model architects who observed a widening chasm. High-net-worth individuals and corporate funds lacked access to true institutional-grade currency modeling and algorithmic risk control, left instead with retail brokers that suffered from excessive slippage.
                 </p>
                 <p className="text-zinc-400 font-light text-sm leading-relaxed">
-                  We engineered Aurelius Capital to dismantle that barrier. By anchoring our infrastructure in global execution hubs and aligning our goals strictly with investor results, we redefined currency advisory. Today, we manage strategic portfolio replications across the globe under a single philosophy: math and security, above all else.
+                  We engineered Aurex Capital to dismantle that barrier. By anchoring our infrastructure in global execution hubs and aligning our goals strictly with investor results, we redefined currency advisory. Today, we manage strategic portfolio replications across the globe under a single philosophy: math and security, above all else.
                 </p>
               </div>
             </div>
@@ -260,20 +260,20 @@ export const AboutPage: React.FC = () => {
             <div className="absolute top-1/2 left-1/2 w-[500px] h-[500px] bg-gold-premium/3 blur-[120px] rounded-full pointer-events-none transform -translate-x-1/2 -translate-y-1/2" />
             <div className="glassmorphism-premium p-8 sm:p-12 rounded-3xl border border-gold-premium/20 text-center max-w-5xl mx-auto relative z-10">
               <span className="text-xs uppercase font-bold text-gold-premium tracking-widest block mb-3">
-                The Aurelius Advantage
+                The Aurex Advantage
               </span>
               <h3 className="font-display font-bold text-2xl sm:text-4xl text-white mb-6">
                 Why Sophisticated Investors Choose Us
               </h3>
               <p className="text-zinc-400 font-light max-w-3xl mx-auto leading-relaxed text-sm sm:text-base mb-10">
-                Traditional asset managers demand lock-in periods, pool investor assets together, and bill excessive management fees regardless of yield. Aurelius Capital disrupts this model by keeping your money in your absolute custody, charging solely on high-water mark profits.
+                Traditional asset managers demand lock-in periods, pool investor assets together, and bill excessive management fees regardless of yield. Aurex Capital disrupts this model by keeping your money in your absolute custody, charging solely on high-water mark profits.
               </p>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
                 <div className="border-t border-zinc-800 pt-6">
                   <h4 className="font-display font-bold text-white text-md mb-2">Direct Asset Custody</h4>
                   <p className="text-zinc-500 font-light text-xs leading-relaxed">
-                    Your assets are held in your personal, tier-1 regulated broker account. Aurelius cannot access, withdraw, or modify fund allocations.
+                    Your assets are held in your personal, tier-1 regulated broker account. Aurex cannot access, withdraw, or modify fund allocations.
                   </p>
                 </div>
                 <div className="border-t border-zinc-800 pt-6">

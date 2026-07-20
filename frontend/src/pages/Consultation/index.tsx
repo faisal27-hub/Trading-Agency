@@ -345,7 +345,7 @@ export const ConsultationPage: React.FC = () => {
             <div className="w-full bg-zinc-950 border border-zinc-900 rounded-xl p-4 flex flex-col gap-1.5 text-xs text-zinc-500">
               <div className="flex justify-between">
                 <span>Verification Authority:</span>
-                <span className="text-white font-medium">Aurelius Booking Portal</span>
+                <span className="text-white font-medium">Aurex Booking Portal</span>
               </div>
               <div className="flex justify-between">
                 <span>Dispatch Status:</span>

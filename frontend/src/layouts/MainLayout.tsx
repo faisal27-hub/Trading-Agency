@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Navbar } from './Navbar';
 import { Footer } from './Footer';
+import { FloatingWhatsApp } from '../components/FloatingWhatsApp';
 
 export const MainLayout: React.FC = () => {
   const { pathname } = useLocation();
@@ -20,6 +21,9 @@ export const MainLayout: React.FC = () => {
       <main className="flex-grow flex flex-col pt-24 min-h-[calc(100vh-80px)]">
         <Outlet />
       </main>
+
+      {/* Floating WhatsApp Widget */}
+      <FloatingWhatsApp />
 
       {/* Corporate Footer */}
       <Footer />

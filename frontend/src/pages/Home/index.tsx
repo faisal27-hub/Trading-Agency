@@ -1,55 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, ArrowRight, ArrowUpRight, TrendingUp, ShieldCheck, Briefcase, Zap } from 'lucide-react';
+import { Calendar, ArrowRight, ArrowUpRight, Briefcase, Zap, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { PageTransition } from '../../components/PageTransition';
+import { TradingViewTicker } from '../../components/TradingViewTicker';
 
 export const Home: React.FC = () => {
-  const [tickerPrices, setTickerPrices] = useState({
-    eurusd: 1.0924,
-    gbpusd: 1.2742,
-    usdjpy: 156.64,
-    xauusd: 2342.15,
-  });
-
-  const [priceDirections, setPriceDirections] = useState({
-    eurusd: true,
-    gbpusd: true,
-    usdjpy: false,
-    xauusd: true,
-  });
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTickerPrices((prev) => {
-        const diffs = {
-          eurusd: (Math.random() - 0.5) * 0.0006,
-          gbpusd: (Math.random() - 0.5) * 0.0008,
-          usdjpy: (Math.random() - 0.5) * 0.12,
-          xauusd: (Math.random() - 0.5) * 1.5,
-        };
-
-        const next = {
-          eurusd: parseFloat((prev.eurusd + diffs.eurusd).toFixed(4)),
-          gbpusd: parseFloat((prev.gbpusd + diffs.gbpusd).toFixed(4)),
-          usdjpy: parseFloat((prev.usdjpy + diffs.usdjpy).toFixed(2)),
-          xauusd: parseFloat((prev.xauusd + diffs.xauusd).toFixed(2)),
-        };
-
-        setPriceDirections({
-          eurusd: next.eurusd >= prev.eurusd,
-          gbpusd: next.gbpusd >= prev.gbpusd,
-          usdjpy: next.usdjpy >= prev.usdjpy,
-          xauusd: next.xauusd >= prev.xauusd,
-        });
-
-        return next;
-      });
-    }, 2500);
-
-    return () => clearInterval(interval);
-  }, []);
-
   return (
     <PageTransition>
       {/* Hero Section */}
@@ -74,7 +30,7 @@ export const Home: React.FC = () => {
               transition={{ duration: 0.8 }}
               className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-gold-premium/20 bg-gold-premium/5 text-gold-premium text-xs font-semibold uppercase tracking-widest w-fit shadow-md shadow-gold/5"
             >
-              <TrendingUp className="w-3.5 h-3.5" />
+              <Zap className="w-3.5 h-3.5" />
               Institutional Forex Wealth Management
             </motion.div>
 
@@ -122,158 +78,74 @@ export const Home: React.FC = () => {
             </motion.div>
           </div>
 
-          {/* Right Card Grid */}
+          {/* Right Interactive Dashboard Mockup Preview */}
           <div className="lg:col-span-5 flex flex-col gap-5 relative">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.5 }}
-              className="glassmorphism-premium p-6 rounded-2xl relative overflow-hidden"
+              className="glassmorphism-premium p-6 rounded-3xl border border-gold-premium/15 flex flex-col gap-6 shadow-2xl relative overflow-hidden"
             >
               <div className="absolute top-0 right-0 w-24 h-24 bg-gold-premium/5 blur-xl rounded-full" />
-              <span className="text-[10px] uppercase font-bold text-gold-premium tracking-widest">
-                Performance Snapshot
-              </span>
-              <div className="mt-4 grid grid-cols-2 gap-6">
-                <div>
-                  <span className="text-xs text-zinc-500 font-light block">Avg. Monthly ROI</span>
-                  <span className="font-display font-bold text-2xl text-white mt-1 block tracking-tight">
-                    +4.30%
-                  </span>
+              
+              <div className="flex items-center justify-between border-b border-zinc-900 pb-4">
+                <div className="flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-green-500 animate-ping" />
+                  <span className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider">Trading System Active</span>
                 </div>
-                <div>
-                  <span className="text-xs text-zinc-500 font-light block">Audited Win Rate</span>
-                  <span className="font-display font-bold text-2xl text-white mt-1 block tracking-tight">
-                    68.4%
-                  </span>
+                <span className="text-[9px] text-zinc-600 font-mono">NODE_US_EAST_EXEC</span>
+              </div>
+
+              <div className="flex flex-col gap-1">
+                <span className="text-[9px] uppercase font-semibold text-zinc-500 tracking-wider">Compounded Return (12M)</span>
+                <div className="flex items-baseline gap-2">
+                  <span className="font-display font-bold text-3xl sm:text-4xl text-white tracking-tight">Pending</span>
+                  <span className="text-xs text-gold-premium font-semibold">API Connection</span>
                 </div>
-                <div>
-                  <span className="text-xs text-zinc-500 font-light block">Asset Advisory</span>
-                  <span className="font-display font-bold text-2xl text-white mt-1 block tracking-tight">
-                    $45M+
-                  </span>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div className="bg-black/45 border border-zinc-900 rounded-xl p-3.5 flex flex-col gap-1">
+                  <span className="text-[8px] text-zinc-500 uppercase font-bold">Drawdown Limit</span>
+                  <span className="text-sm font-semibold text-zinc-300">5.0% Capped</span>
                 </div>
-                <div>
-                  <span className="text-xs text-zinc-500 font-light block">Profit Factor</span>
-                  <span className="font-display font-bold text-2xl text-gold-premium mt-1 block tracking-tight">
-                    2.10
-                  </span>
+                <div className="bg-black/45 border border-zinc-900 rounded-xl p-3.5 flex flex-col gap-1">
+                  <span className="text-[8px] text-zinc-500 uppercase font-bold">Sharpe Ratio</span>
+                  <span className="text-sm font-semibold text-zinc-300">Pending</span>
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <span className="text-[8px] text-zinc-500 uppercase font-bold">Latency Verification</span>
+                <div className="h-2 w-full bg-zinc-950 rounded-full overflow-hidden border border-zinc-900/60">
+                  <div className="h-full w-full bg-gradient-to-r from-gold-premium to-gold rounded-full" />
+                </div>
+                <div className="flex justify-between text-[9px] text-zinc-500 font-light">
+                  <span>Broker Node: NY4</span>
+                  <span>Execution Speed: &lt;8ms</span>
                 </div>
               </div>
             </motion.div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="glassmorphism p-5 rounded-2xl flex items-center justify-between border-l-4 border-l-gold"
-            >
-              <div className="flex items-center gap-3">
-                <div className="w-2.5 h-2.5 bg-green-500 rounded-full animate-ping shrink-0" />
-                <div className="flex flex-col">
-                  <span className="text-[11px] text-zinc-500 uppercase tracking-widest font-semibold">
-                    Active Execution
-                  </span>
-                  <span className="text-sm font-medium text-white mt-0.5">
-                    GBP/USD Hedged Short Position
-                  </span>
-                </div>
-              </div>
-              <div className="text-right">
-                <span className="text-[10px] text-zinc-500 block">Spread Risk</span>
-                <span className="text-xs font-semibold text-gold-premium">Tight &lt; 0.4 Pips</span>
-              </div>
-            </motion.div>
-
+            {/* Auxiliary Float Widget */}
             <motion.div
               animate={{ y: [0, -8, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute -top-12 -right-6 hidden sm:flex items-center gap-2 bg-zinc-950/90 border border-gold-premium/30 backdrop-blur-md px-4 py-2.5 rounded-xl shadow-2xl"
+              className="absolute -top-12 -right-6 hidden sm:flex items-center gap-2 bg-zinc-950/90 border border-gold-premium/30 backdrop-blur-md px-4 py-2.5 rounded-xl shadow-2xl z-20"
             >
               <div className="w-5 h-5 rounded-full bg-gold/20 flex items-center justify-center">
                 <ArrowUpRight className="w-3.5 h-3.5 text-gold" />
               </div>
               <div className="flex flex-col">
-                <span className="text-[8px] text-zinc-500 uppercase font-bold">Sharpe Ratio</span>
-                <span className="text-xs font-bold text-white">2.35 (Risk Adjusted)</span>
+                <span className="text-[8px] text-zinc-500 uppercase font-bold">System Status</span>
+                <span className="text-xs font-bold text-white">Connection Awaiting</span>
               </div>
             </motion.div>
           </div>
         </div>
 
         {/* Live Ticker */}
-        <div className="w-full bg-zinc-950/80 border-t border-zinc-900/60 backdrop-blur-lg py-3.5">
-          <div className="max-w-7xl mx-auto px-6 flex flex-wrap gap-8 md:gap-16 items-center justify-between overflow-x-auto scrollbar-none">
-            <div className="flex items-center gap-2 shrink-0 border-r border-zinc-800 pr-6">
-              <span className="w-2 h-2 rounded-full bg-green-500" />
-              <span className="text-[11px] font-bold uppercase tracking-wider text-zinc-400">
-                Live Feeds
-              </span>
-            </div>
-
-            <div className="flex items-center justify-between flex-grow gap-8 md:gap-16">
-              {/* EUR/USD */}
-              <div className="flex items-center gap-2.5">
-                <span className="text-xs font-bold text-white">EUR/USD</span>
-                <span className="text-xs font-display font-medium text-zinc-300">
-                  {tickerPrices.eurusd.toFixed(4)}
-                </span>
-                <span
-                  className={`text-[10px] font-semibold flex items-center ${
-                    priceDirections.eurusd ? 'text-green-500' : 'text-red-500'
-                  }`}
-                >
-                  {priceDirections.eurusd ? '▲' : '▼'}
-                </span>
-              </div>
-
-              {/* GBP/USD */}
-              <div className="flex items-center gap-2.5">
-                <span className="text-xs font-bold text-white">GBP/USD</span>
-                <span className="text-xs font-display font-medium text-zinc-300">
-                  {tickerPrices.gbpusd.toFixed(4)}
-                </span>
-                <span
-                  className={`text-[10px] font-semibold flex items-center ${
-                    priceDirections.gbpusd ? 'text-green-500' : 'text-red-500'
-                  }`}
-                >
-                  {priceDirections.gbpusd ? '▲' : '▼'}
-                </span>
-              </div>
-
-              {/* USD/JPY */}
-              <div className="flex items-center gap-2.5">
-                <span className="text-xs font-bold text-white">USD/JPY</span>
-                <span className="text-xs font-display font-medium text-zinc-300">
-                  {tickerPrices.usdjpy.toFixed(2)}
-                </span>
-                <span
-                  className={`text-[10px] font-semibold flex items-center ${
-                    priceDirections.usdjpy ? 'text-green-500' : 'text-red-500'
-                  }`}
-                >
-                  {priceDirections.usdjpy ? '▲' : '▼'}
-                </span>
-              </div>
-
-              {/* Gold XAU/USD */}
-              <div className="flex items-center gap-2.5">
-                <span className="text-xs font-bold text-white">XAU/USD (Gold)</span>
-                <span className="text-xs font-display font-medium text-zinc-300">
-                  ${tickerPrices.xauusd.toFixed(2)}
-                </span>
-                <span
-                  className={`text-[10px] font-semibold flex items-center ${
-                    priceDirections.xauusd ? 'text-green-500' : 'text-red-500'
-                  }`}
-                >
-                  {priceDirections.xauusd ? '▲' : '▼'}
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <TradingViewTicker />
       </section>
 
       {/* Core Pillars Section */}

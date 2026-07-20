@@ -116,7 +116,7 @@ export const ContactPage: React.FC = () => {
                   <CheckCircle className="w-16 h-16 text-green-500" />
                   <h3 className="font-display font-bold text-2xl text-white">Message Dispatched</h3>
                   <p className="text-sm text-zinc-400 font-light leading-relaxed max-w-md">
-                    Thank you. Your message has been logged securely under Aurelius secure protocols. A support or strategy manager will connect with you via email shortly.
+                    Thank you. Your message has been logged securely under Aurex secure protocols. A support or strategy manager will connect with you via email shortly.
                   </p>
                   <button
                     onClick={() => setSuccess(false)}

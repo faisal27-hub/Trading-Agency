@@ -26,28 +26,21 @@ export const PerformancePage: React.FC = () => {
     try {
       const data = await apiService.getPerformanceMetrics();
       setOverview(data.overview);
-      setHistory(data.history);
+      setHistory(data.history || []);
     } catch (err) {
-      console.warn('API metrics unreachable. Falling back to local structured dashboard metrics.', err);
+      console.warn('API metrics unreachable. Falling back to local placeholder parameters.', err);
       setOverview({
-        totalReturn: 28.5,
-        averageMonthlyRoi: 4.3,
-        averageWinRate: 68.4,
-        totalTrades: 649,
-        profitFactor: 2.1,
-        maxDrawdown: 4.2,
-        sharpeRatio: 2.35,
-        verifiedBy: 'Myfxbook & Audited Broker Statements',
+        totalReturn: null,
+        averageMonthlyRoi: null,
+        averageWinRate: null,
+        totalTrades: null,
+        profitFactor: null,
+        maxDrawdown: null,
+        sharpeRatio: null,
+        verifiedBy: 'Awaiting Connection',
         lastUpdated: new Date().toISOString(),
       });
-      setHistory([
-        { month: 'Jan', roi: 4.8, winRate: 68.2, tradesCount: 112, profitFactor: 2.1, growth: 4.8 },
-        { month: 'Feb', roi: 6.2, winRate: 72.1, tradesCount: 98, profitFactor: 2.4, growth: 11.3 },
-        { month: 'Mar', roi: -1.5, winRate: 58.5, tradesCount: 124, profitFactor: 1.4, growth: 9.6 },
-        { month: 'Apr', roi: 5.1, winRate: 69.4, tradesCount: 105, profitFactor: 2.0, growth: 15.2 },
-        { month: 'May', roi: 7.4, winRate: 74.3, tradesCount: 118, profitFactor: 2.6, growth: 23.7 },
-        { month: 'Jun', roi: 3.9, winRate: 67.8, tradesCount: 92, profitFactor: 1.9, growth: 28.5 },
-      ]);
+      setHistory([]);
     } finally {
       setLoading(false);
     }
@@ -73,9 +66,9 @@ export const PerformancePage: React.FC = () => {
             <div className="w-16 h-1 bg-gradient-to-r from-gold to-gold-premium mt-4" />
           </div>
           <div className="flex flex-wrap items-center gap-4 text-xs">
-            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-green-500/20 bg-green-500/5 text-green-400 font-semibold uppercase tracking-wider">
+            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gold-premium/20 bg-gold-premium/5 text-gold-premium font-semibold uppercase tracking-wider">
               <ShieldCheck className="w-3.5 h-3.5" />
-              Verified by Myfxbook
+              Verified Accounts
             </span>
             <button
               onClick={fetchMetrics}
@@ -127,9 +120,13 @@ export const PerformancePage: React.FC = () => {
                       Cumulative Return (ROI)
                     </span>
                     <span className="font-display font-bold text-3xl text-white mt-2 block tracking-tight">
-                      {formatRoi(overview?.totalReturn || 0)}
+                      {overview?.totalReturn !== null && overview?.totalReturn !== undefined 
+                        ? formatRoi(overview.totalReturn) 
+                        : '—'}
                     </span>
-                    <span className="text-[9px] text-green-500 mt-1 block">✔ Audited Track Record</span>
+                    <span className="text-[9px] text-zinc-500 mt-1 block">
+                      {overview?.totalReturn !== null ? '✔ Audited Track Record' : 'Awaiting API Connection'}
+                    </span>
                   </div>
 
                   <div className="glassmorphism p-5 rounded-2xl hover:border-gold-premium/40 transition-all duration-300 relative group overflow-hidden">
@@ -137,9 +134,15 @@ export const PerformancePage: React.FC = () => {
                       Audited Win Rate
                     </span>
                     <span className="font-display font-bold text-3xl text-white mt-2 block tracking-tight">
-                      {overview?.averageWinRate}%
+                      {overview?.averageWinRate !== null && overview?.averageWinRate !== undefined
+                        ? `${overview.averageWinRate}%`
+                        : '—'}
                     </span>
-                    <span className="text-[9px] text-zinc-500 mt-1 block">Based on {overview?.totalTrades} total trades</span>
+                    <span className="text-[9px] text-zinc-500 mt-1 block">
+                      {overview?.totalTrades !== null && overview?.totalTrades !== undefined
+                        ? `Based on ${overview.totalTrades} total trades` 
+                        : 'Awaiting API Connection'}
+                    </span>
                   </div>
 
                   <div className="glassmorphism p-5 rounded-2xl hover:border-gold-premium/40 transition-all duration-300 relative group overflow-hidden">
@@ -147,7 +150,9 @@ export const PerformancePage: React.FC = () => {
                       Profit Factor Ratio
                     </span>
                     <span className="font-display font-bold text-3xl text-gold-premium mt-2 block tracking-tight">
-                      {overview?.profitFactor}
+                      {overview?.profitFactor !== null && overview?.profitFactor !== undefined
+                        ? overview.profitFactor
+                        : '—'}
                     </span>
                     <span className="text-[9px] text-zinc-500 mt-1 block">Total gross profit / gross loss</span>
                   </div>
@@ -157,7 +162,9 @@ export const PerformancePage: React.FC = () => {
                       Maximum Drawdown
                     </span>
                     <span className="font-display font-bold text-3xl text-white mt-2 block tracking-tight">
-                      {overview?.maxDrawdown}%
+                      {overview?.maxDrawdown !== null && overview?.maxDrawdown !== undefined
+                        ? `${overview.maxDrawdown}%`
+                        : '—'}
                     </span>
                     <span className="text-[9px] text-gold-premium mt-1 block">Low volatility risk threshold</span>
                   </div>
@@ -174,61 +181,71 @@ export const PerformancePage: React.FC = () => {
                     </span>
                   </div>
 
-                  <div className="w-full h-[320px] mt-6">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <AreaChart
-                        data={history}
-                        margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
-                      >
-                        <defs>
-                          <linearGradient id="colorGrowth" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#C5A059" stopOpacity={0.25} />
-                            <stop offset="95%" stopColor="#C5A059" stopOpacity={0} />
-                          </linearGradient>
-                        </defs>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#111" />
-                        <XAxis
-                          dataKey="month"
-                          stroke="#444"
-                          fontSize={11}
-                          tickLine={false}
-                        />
-                        <YAxis
-                          stroke="#444"
-                          fontSize={11}
-                          tickLine={false}
-                          tickFormatter={(v) => `${v}%`}
-                        />
-                        <Tooltip
-                          contentStyle={{
-                            backgroundColor: '#050505',
-                            borderColor: 'rgba(197, 160, 89, 0.3)',
-                            borderRadius: '12px',
-                            color: '#fff',
-                            fontSize: '12px',
-                            boxShadow: '0 8px 24px rgba(0,0,0,0.9)',
-                          }}
-                          itemStyle={{ color: '#c5a059' }}
-                          formatter={(value: any) => [`${value}%`, 'Cumulative Return']}
-                        />
-                        <Area
-                          type="monotone"
-                          dataKey="growth"
-                          stroke="#c5a059"
-                          strokeWidth={2}
-                          fillOpacity={1}
-                          fill="url(#colorGrowth)"
-                        />
-                      </AreaChart>
-                    </ResponsiveContainer>
-                  </div>
+                  {history && history.length > 0 ? (
+                    <div className="w-full h-[320px] mt-6">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <AreaChart
+                          data={history}
+                          margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                        >
+                          <defs>
+                            <linearGradient id="colorGrowth" x1="0" y1="0" x2="0" y2="1">
+                              <stop offset="5%" stopColor="#C5A059" stopOpacity={0.25} />
+                              <stop offset="95%" stopColor="#C5A059" stopOpacity={0} />
+                            </linearGradient>
+                          </defs>
+                          <CartesianGrid strokeDasharray="3 3" stroke="#111" />
+                          <XAxis
+                            dataKey="month"
+                            stroke="#444"
+                            fontSize={11}
+                            tickLine={false}
+                          />
+                          <YAxis
+                            stroke="#444"
+                            fontSize={11}
+                            tickLine={false}
+                            tickFormatter={(v) => `${v}%`}
+                          />
+                          <Tooltip
+                            contentStyle={{
+                              backgroundColor: '#050505',
+                              borderColor: 'rgba(197, 160, 89, 0.3)',
+                              borderRadius: '12px',
+                              color: '#fff',
+                              fontSize: '12px',
+                              boxShadow: '0 8px 24px rgba(0,0,0,0.9)',
+                            }}
+                            itemStyle={{ color: '#c5a059' }}
+                            formatter={(value: any) => [`${value}%`, 'Cumulative Return']}
+                          />
+                          <Area
+                            type="monotone"
+                            dataKey="growth"
+                            stroke="#c5a059"
+                            strokeWidth={2}
+                            fillOpacity={1}
+                            fill="url(#colorGrowth)"
+                          />
+                        </AreaChart>
+                      </ResponsiveContainer>
+                    </div>
+                  ) : (
+                    <div className="w-full h-[320px] mt-6 rounded-xl bg-black/40 border border-zinc-900/50 flex flex-col items-center justify-center p-6 text-center gap-3">
+                      <Info className="w-8 h-8 text-gold-premium" />
+                      <h4 className="font-display font-semibold text-sm text-white">Live Performance Feeds Inactive</h4>
+                      <p className="text-zinc-500 text-xs font-light max-w-sm leading-relaxed">
+                        To view real-time compounding growth, integrate your MetaTrader broker account credentials or a verified Myfxbook read-only API link.
+                      </p>
+                    </div>
+                  )}
 
                   <div className="flex flex-wrap items-center justify-between border-t border-zinc-900/60 pt-4 mt-4 text-[10px] text-zinc-500 font-light">
                     <span className="flex items-center gap-1">
                       <Calendar className="w-3.5 h-3.5 text-gold-premium" />
-                      Last Updated: {overview ? new Date(overview.lastUpdated).toLocaleDateString() : ''}
+                      Last Updated: {overview?.lastUpdated ? new Date(overview.lastUpdated).toLocaleDateString() : 'Awaiting Connection'}
                     </span>
-                    <span>Sharpe Ratio (Risk Adjusted): <b className="text-white font-bold">{overview?.sharpeRatio}</b></span>
+                    <span>Sharpe Ratio (Risk Adjusted): <b className="text-white font-bold">{overview?.sharpeRatio ?? '—'}</b></span>
                   </div>
                 </div>
               </div>
@@ -256,18 +273,26 @@ export const PerformancePage: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-zinc-900/40 text-zinc-300">
-                      {history.map((row) => (
-                        <tr key={row.month} className="hover:bg-zinc-900/10 transition-colors">
-                          <td className="py-4 px-3 font-semibold text-white">{row.month} 2026</td>
-                          <td className={`py-4 px-3 font-semibold ${row.roi >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                            {row.roi >= 0 ? `+${row.roi}%` : `${row.roi}%`}
+                      {history && history.length > 0 ? (
+                        history.map((row) => (
+                          <tr key={row.month} className="hover:bg-zinc-900/10 transition-colors">
+                            <td className="py-4 px-3 font-semibold text-white">{row.month} 2026</td>
+                            <td className={`py-4 px-3 font-semibold ${row.roi >= 0 ? 'text-green-400' : 'text-red-400'}`}>
+                              {row.roi >= 0 ? `+${row.roi}%` : `${row.roi}%`}
+                            </td>
+                            <td className="py-4 px-3">{row.winRate}%</td>
+                            <td className="py-4 px-3">{row.tradesCount}</td>
+                            <td className="py-4 px-3 font-medium text-gold-premium">{row.profitFactor}</td>
+                            <td className="py-4 px-3 font-mono text-[10px] text-zinc-500">AC-{row.month.toUpperCase()}-LEDGER</td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td colSpan={6} className="py-12 text-center text-zinc-500 font-light">
+                            Awaiting broker ledger synchronization to populate transaction history.
                           </td>
-                          <td className="py-4 px-3">{row.winRate}%</td>
-                          <td className="py-4 px-3">{row.tradesCount}</td>
-                          <td className="py-4 px-3 font-medium text-gold-premium">{row.profitFactor}</td>
-                          <td className="py-4 px-3 font-mono text-[10px] text-zinc-500">AC-{row.month.toUpperCase()}-LEDGER</td>
                         </tr>
-                      ))}
+                      )}
                     </tbody>
                   </table>
                 </div>

@@ -1,9 +1,9 @@
 import type { ServiceCard, TimelineStep, CertificateItem, FAQItem } from '../types';
 
 export const SITE_METADATA = {
-  name: 'Aurelius Capital',
+  name: 'Aurex Capital',
   tagline: 'Elite Forex Trading & Wealth Solutions',
-  email: 'invest@aurelius.capital',
+  email: 'invest@aurex.capital',
   phone: '+1 (800) 555-0199',
   whatsapp: '+447911123456', // WhatsApp link formatting: https://wa.me/447911123456
   officeAddress: '15 Broad Street, 24th Floor, Financial District, New York, NY 10005',
@@ -54,7 +54,7 @@ export const TIMELINE_DATA: TimelineStep[] = [
   {
     number: '01',
     title: 'Schedule Consultation',
-    description: 'Book a complimentary session with an Aurelius Capital specialist to discuss trading goals, risk tolerance, and asset targets.',
+    description: 'Book a complimentary session with an Aurex Capital specialist to discuss trading goals, risk tolerance, and asset targets.',
   },
   {
     number: '02',
@@ -118,10 +118,10 @@ export const CERTIFICATIONS_DATA: CertificateItem[] = [
 export const FAQ_DATA: FAQItem[] = [
   {
     question: 'What is the minimum capital required to get started?',
-    answer: 'To maintain proper institutional risk controls and leverage standard currency unit sizes safely, Aurelius Capital recommends a starting investment budget of $10,000. This ensures adequate room for drawdowns without triggering forced stop-outs.',
+    answer: 'To maintain proper institutional risk controls and leverage standard currency unit sizes safely, Aurex Capital recommends a starting investment budget of $10,000. This ensures adequate room for drawdowns without triggering forced stop-outs.',
   },
   {
-    question: 'How are Aurelius Capital strategies protected against market volatility?',
+    question: 'How are Aurex Capital strategies protected against market volatility?',
     answer: 'We employ multi-layer risk management including algorithmic hard stops on every position, cross-market correlation filters, and automatic hedging triggers. Our target is never to exceed a maximum historical drawdown of 5% on total capital.',
   },
   {
@@ -130,10 +130,10 @@ export const FAQ_DATA: FAQItem[] = [
   },
   {
     question: 'How do I withdraw my capital, and are there lock-in periods?',
-    answer: 'Aurelius Capital does not require lock-in terms. Since we trade through secure brokerage accounts under the client name, capital withdrawals can be executed directly from your broker dashboard at any time. Processing times depend on the broker and payment rails, typically taking 24-48 business hours.',
+    answer: 'Aurex Capital does not require lock-in terms. Since we trade through secure brokerage accounts under the client name, capital withdrawals can be executed directly from your broker dashboard at any time. Processing times depend on the broker and payment rails, typically taking 24-48 business hours.',
   },
   {
     question: 'Does past trading performance guarantee future returns?',
-    answer: 'No. While our quant models and historical records demonstrate high win-rates, currency trading is subject to substantial market volatility. Aurelius Capital maintains a strict risk disclaimer policy: past performance does not guarantee future outcomes. We trade with capital-preserving risk rules to mitigate exposure.',
+    answer: 'No. While our quant models and historical records demonstrate high win-rates, currency trading is subject to substantial market volatility. Aurex Capital maintains a strict risk disclaimer policy: past performance does not guarantee future outcomes. We trade with capital-preserving risk rules to mitigate exposure.',
   },
 ];

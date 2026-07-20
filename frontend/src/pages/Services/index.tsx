@@ -28,39 +28,42 @@ const iconMap: Record<string, React.ComponentType<any>> = {
 export const ServicesPage: React.FC = () => {
   const serviceTiers = [
     {
-      name: 'Private Client Account',
+      name: 'STARTER PLAN',
+      minDeposit: '$1,000',
+      description: 'Ideal for individual market participants seeking basic consultation, strategy alignment, and key risk indicators.',
+      features: [
+        'Initial Consultation',
+        'Personalized Strategy Discussion',
+        'Market Analysis',
+        'Risk Management Guidance',
+        'Monthly Review',
+        'Email Support',
+      ],
+    },
+    {
+      name: 'PROFESSIONAL PLAN',
+      minDeposit: '$5,000',
+      description: 'Designed for active allocators requiring advanced volatility modeling, portfolio reviews, and direct communication lines.',
+      features: [
+        'Advanced Consultation',
+        'Personalized Trading Strategy',
+        'Portfolio Review',
+        'Priority WhatsApp Support',
+        'Market Updates',
+        'Performance Review Sessions',
+      ],
+    },
+    {
+      name: 'PREMIUM PLAN',
       minDeposit: '$10,000',
-      description: 'Designed for individual qualified investors requiring automated quant replication and risk containment.',
+      description: 'Bespoke continuous strategy auditing, tailored market approaches, and long-term private wealth advisory.',
       features: [
-        'Read-only API key strategy replication',
-        'Standard 5% historical drawdown ceiling',
-        'Direct broker custody (tier-1 banks)',
-        'Weekly performance accounting statements',
-        'Access to daily macro market review reports',
-      ],
-    },
-    {
-      name: 'Professional Fund',
-      minDeposit: '$100,000',
-      description: 'Engineered for asset managers, syndicates, and high net worth individuals seeking custom hedge portfolios.',
-      features: [
-        'Bespoke multi-currency pair correlation profiles',
-        'Drawdown threshold adjustment (2% - 8%)',
-        'Dedicated portfolio manager console access',
-        'Daily audited Myfxbook data synchronization',
-        '24/5 phone & WhatsApp priority support desk',
-      ],
-    },
-    {
-      name: 'Corporate / Institutional',
-      minDeposit: '$500,000+',
-      description: 'Corporate capital shielding strategies with custom liquidity routing and algorithmic tail hedging.',
-      features: [
-        'Multi-broker custom execution scripts',
-        'Institutional tier-1 prime broker spreads',
-        'Hard stop-out contract protection protocols',
-        'Dedicated compliance officer audit statements',
-        'Custom integration via REST/Fix API channels',
+        'Dedicated Consultation',
+        'Tailored Market Strategy',
+        'Advanced Portfolio Discussions',
+        'Priority Support',
+        'Long-Term Advisory',
+        'Premium Client Experience',
       ],
     },
   ];
@@ -102,7 +105,7 @@ export const ServicesPage: React.FC = () => {
           </h1>
           <div className="w-16 h-1 bg-gradient-to-r from-gold to-gold-premium mx-auto mt-4 mb-6" />
           <p className="text-zinc-400 font-light max-w-3xl mx-auto leading-relaxed text-base sm:text-lg">
-            Aurelius Capital provides institutional forex trading infrastructure, bespoke macro analysis, and active wealth preservation services under secure capital custody conditions.
+            Aurex Capital provides institutional forex trading infrastructure, bespoke macro analysis, and active wealth preservation services under secure capital custody conditions.
           </p>
         </div>
       </section>
@@ -186,7 +189,7 @@ export const ServicesPage: React.FC = () => {
                       to="/consultation"
                       className="w-full py-3.5 rounded-full bg-gradient-to-r from-gold-premium to-gold-dark hover:from-gold hover:to-gold-premium text-black text-xs font-bold uppercase tracking-widest block text-center shadow-lg hover:shadow-gold/15 transition-all duration-300"
                     >
-                      Initialize Setup Protocol
+                      Schedule Consultation
                     </Link>
                   </div>
                 </div>

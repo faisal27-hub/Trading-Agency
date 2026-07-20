@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
-import { Menu, X, Phone, Calendar } from 'lucide-react';
-import { SITE_METADATA } from '../constants';
+import { Menu, X, Calendar } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,7 +46,7 @@ export const Navbar: React.FC = () => {
           </div>
           <div className="flex flex-col">
             <span className="font-display font-bold text-lg leading-tight tracking-wider text-white group-hover:text-gold transition-colors duration-300">
-              AURELIUS
+              AUREX
             </span>
             <span className="text-[9px] tracking-[0.25em] text-gold-premium uppercase font-medium">
               CAPITAL
@@ -77,15 +76,6 @@ export const Navbar: React.FC = () => {
 
         {/* Action Buttons */}
         <div className="hidden lg:flex items-center gap-4">
-          <a
-            href={`https://wa.me/${SITE_METADATA.whatsapp.replace('+', '')}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center gap-2 px-4 py-2 rounded-full border border-green-500/30 bg-green-500/5 hover:bg-green-500/10 text-green-400 text-xs font-semibold uppercase tracking-wider transition-all duration-300"
-          >
-            <Phone className="w-3.5 h-3.5 fill-current" />
-            WhatsApp
-          </a>
           <Link
             to="/consultation"
             className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-gold-premium via-gold to-gold-dark hover:from-gold hover:to-gold-premium text-black text-xs font-bold uppercase tracking-wider shadow-lg shadow-gold/10 hover:shadow-gold/25 transform hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
@@ -129,15 +119,6 @@ export const Navbar: React.FC = () => {
           </div>
 
           <div className="flex flex-col gap-4 mb-12">
-            <a
-              href={`https://wa.me/${SITE_METADATA.whatsapp.replace('+', '')}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-3 py-3.5 rounded-xl border border-green-500/30 bg-green-500/5 text-green-400 text-sm font-semibold uppercase tracking-wider transition-all duration-300"
-            >
-              <Phone className="w-4 h-4 fill-current" />
-              WhatsApp Quick Connect
-            </a>
             <Link
               to="/consultation"
               className="flex items-center justify-center gap-3 py-3.5 rounded-xl bg-gradient-to-r from-gold-premium to-gold-dark text-black text-sm font-bold uppercase tracking-wider shadow-lg shadow-gold/15 transition-all duration-300 cursor-pointer text-center"

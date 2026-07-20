@@ -27,7 +27,7 @@ export const CertificationsPage: React.FC = () => {
           </h1>
           <div className="w-16 h-1 bg-gradient-to-r from-gold to-gold-premium mx-auto mt-4 mb-6" />
           <p className="text-zinc-400 font-light max-w-3xl mx-auto leading-relaxed text-base sm:text-lg">
-            Aurelius Capital maintains corporate credentials and operational compliance according to Swiss, UK and global financial standards.
+            Aurex Capital maintains corporate credentials and operational compliance according to Swiss, UK and global financial standards.
           </p>
         </div>
       </section>
@@ -141,7 +141,7 @@ export const CertificationsPage: React.FC = () => {
                   Licensed Advisory Entity
                 </span>
                 <span className="font-display font-bold text-white text-md tracking-wide">
-                  Aurelius Capital Global Markets Ltd.
+                  Aurex Capital Global Markets Ltd.
                 </span>
               </div>
 
@@ -164,7 +164,7 @@ export const CertificationsPage: React.FC = () => {
 
             <div className="text-xs text-zinc-400 leading-relaxed font-light mt-1">
               <span className="block font-bold text-white mb-1">Compliance Check Details:</span>
-              This certificate registers Aurelius Capital as a certified quantitative forex advisor. Operations are audited on a quarterly basis. Database identification token: <b>AC-{selectedCert.id.toUpperCase()}-2026-VAL</b>.
+              This certificate registers Aurex Capital as a certified quantitative forex advisor. Operations are audited on a quarterly basis. Database identification token: <b>AC-{selectedCert.id.toUpperCase()}-2026-VAL</b>.
             </div>
 
             <button
