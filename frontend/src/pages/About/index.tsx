@@ -1,25 +1,87 @@
-import React from 'react';
-import { ShieldCheck, Heart, Eye, Users, Award, TrendingUp } from 'lucide-react';
+import React, { useState } from 'react';
+import { 
+  ShieldCheck, 
+  Heart, 
+  Eye, 
+  BookOpen, 
+  Scale, 
+  HelpCircle, 
+  ChevronDown, 
+  ChevronUp, 
+  Cpu, 
+  CreditCard, 
+  UserCheck 
+} from 'lucide-react';
 import { PageTransition } from '../../components/PageTransition';
 
+interface FAQEntry {
+  question: string;
+  answer: string;
+  category: 'general' | 'strategy' | 'safety' | 'funds';
+}
+
 export const AboutPage: React.FC = () => {
-  const leadershipTeam = [
+  const [activeCategory, setActiveCategory] = useState<'all' | 'general' | 'strategy' | 'safety' | 'funds'>('all');
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const categories = [
+    { id: 'all', label: 'All Questions', icon: HelpCircle },
+    { id: 'general', label: 'General Info', icon: UserCheck },
+    { id: 'strategy', label: 'Strategies', icon: Cpu },
+    { id: 'safety', label: 'Safety & Custody', icon: ShieldCheck },
+    { id: 'funds', label: 'Funds & Withdrawals', icon: CreditCard },
+  ];
+
+  const faqs: FAQEntry[] = [
     {
-      name: 'Alexander Sterling',
-      role: 'Chief Executive Officer & Founder',
-      bio: 'Former VP of G10 Currency Trading at a Tier-1 investment bank. Over 18 years of quantitative strategy modeling and macro hedging design.',
+      question: 'What is the minimum capital required to get started?',
+      answer: 'To maintain proper institutional risk controls and leverage standard currency unit sizes safely, Aurelius Capital recommends a starting investment budget of $10,000. This ensures adequate room for drawdowns without triggering forced stop-outs.',
+      category: 'general',
     },
     {
-      name: 'Dr. Marcus Vance',
-      role: 'Head of Quantitative Research',
-      bio: 'PhD in Mathematical Finance from MIT. Architect of our proprietary volatility forecasting models and latency execution scripts.',
+      question: 'How does strategy replication work?',
+      answer: 'Our quantitative servers replicate trades directly to your broker account using secure read-only/trade API keys. We do not hold power of attorney over your account, and we have absolute zero authorization to withdraw or transfer your funds.',
+      category: 'general',
     },
     {
-      name: 'Helena Rostov',
-      role: 'Chief Compliance & Risk Officer',
-      bio: 'Accredited international financial attorney. Ex-regulatory compliance advisor ensuring absolute compliance across GFMA standards.',
+      question: 'How are Aurelius Capital strategies protected against market volatility?',
+      answer: 'We employ multi-layer risk management including algorithmic hard stops on every position, cross-market correlation filters, and automatic hedging triggers. Our target is never to exceed a maximum historical drawdown of 5% on total capital.',
+      category: 'strategy',
+    },
+    {
+      question: 'What models drive the trading execution?',
+      answer: 'We utilize quantitative trend-following models, volatility expansion systems, and mean-reversion algorithms that monitor order-flow liquidity imbalances in G10 currencies and highly liquid metals.',
+      category: 'strategy',
+    },
+    {
+      question: 'Are my trading records and performance metrics verified by third parties?',
+      answer: 'Yes. Our performance dashboard pulls verified metrics directly via read-only APIs from third-party audit sites like Myfxbook. We also supply monthly broker statements audited by reputable global financial accounting firms.',
+      category: 'safety',
+    },
+    {
+      question: 'Is Aurelius Capital regulated?',
+      answer: 'Yes, we are registered compliance partners under GFMA registration number GFMA-2024-AC. We follow strict regulatory practices to protect our quantitative strategies and maintain transparent client coordination.',
+      category: 'safety',
+    },
+    {
+      question: 'How do I withdraw my capital, and are there lock-in periods?',
+      answer: 'Aurelius Capital does not require lock-in terms. Since we trade through secure brokerage accounts under the client name, capital withdrawals can be executed directly from your broker dashboard at any time. Processing times depend on the broker and payment rails, typically taking 24-48 business hours.',
+      category: 'funds',
+    },
+    {
+      question: 'Are there any performance fees?',
+      answer: 'Yes, we operate on a high-water mark profit share model (typically 20% of net profits generated, billed monthly). If no profits are generated or if the account is in a drawdown, no performance fees are charged.',
+      category: 'funds',
     },
   ];
+
+  const filteredFaqs = activeCategory === 'all' 
+    ? faqs 
+    : faqs.filter(faq => faq.category === activeCategory);
+
+  const toggleOpen = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
 
   return (
     <PageTransition>
@@ -94,8 +156,42 @@ export const AboutPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Alternating Block: Core Beliefs */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
+          {/* Company Story & Philosophy */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-24 items-stretch">
+            <div className="glassmorphism p-8 sm:p-10 rounded-3xl border border-gold-premium/10 flex flex-col justify-between hover:border-gold-premium/30 transition-all duration-300">
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-gold-premium/5 border border-gold-premium/15 flex items-center justify-center mb-6">
+                  <BookOpen className="w-6 h-6 text-gold" />
+                </div>
+                <h3 className="font-display font-bold text-2xl text-white mb-4">Our Origin Story</h3>
+                <p className="text-zinc-400 font-light text-sm sm:text-base leading-relaxed mb-4">
+                  Aurelius Capital was founded in 2014 by a collaborative of G10 currency desks and high-frequency model architects who observed a widening chasm. High-net-worth individuals and corporate funds lacked access to true institutional-grade currency modeling and algorithmic risk control, left instead with retail brokers that suffered from excessive slippage.
+                </p>
+                <p className="text-zinc-400 font-light text-sm leading-relaxed">
+                  We engineered Aurelius Capital to dismantle that barrier. By anchoring our infrastructure in global execution hubs and aligning our goals strictly with investor results, we redefined currency advisory. Today, we manage strategic portfolio replications across the globe under a single philosophy: math and security, above all else.
+                </p>
+              </div>
+            </div>
+
+            <div className="glassmorphism p-8 sm:p-10 rounded-3xl border border-gold-premium/10 flex flex-col justify-between hover:border-gold-premium/30 transition-all duration-300 relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gold-premium/5 blur-2xl rounded-full" />
+              <div>
+                <div className="w-12 h-12 rounded-xl bg-gold-premium/5 border border-gold-premium/15 flex items-center justify-center mb-6">
+                  <Scale className="w-6 h-6 text-gold" />
+                </div>
+                <h3 className="font-display font-bold text-2xl text-white mb-4">Company Philosophy</h3>
+                <p className="font-display font-semibold text-gold-premium/90 italic text-base sm:text-lg mb-6 leading-relaxed">
+                  "Capital preservation precedes capital expansion. In the currency markets, true performance is measured by the containment of drawdowns, not the height of leverage."
+                </p>
+                <p className="text-zinc-400 font-light text-sm leading-relaxed">
+                  We reject the speculative gamble of retail forex brokers. Every model we develop, from momentum indicators to correlation matrix adjustments, is built around strict capital shielding guidelines. Volatility is not an adversary to be avoided; it is a parameter to be mathematically contained.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Mission & Vision banner */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
             <div className="glassmorphism p-8 rounded-2xl hover:border-gold-premium/40 transition-all duration-300 relative group">
               <div className="w-12 h-12 rounded-xl bg-gold-premium/5 border border-gold-premium/15 flex items-center justify-center mb-6 group-hover:bg-gold-premium/10 transition-colors duration-300">
                 <Heart className="w-6 h-6 text-gold" />
@@ -115,62 +211,163 @@ export const AboutPage: React.FC = () => {
                 To become the global standard for transparent wealth management, setting benchmark risk protocols that prove capital safety is the absolute key to compounding growth.
               </p>
             </div>
-
-            <div className="glassmorphism p-8 rounded-2xl hover:border-gold-premium/40 transition-all duration-300 relative group">
-              <div className="w-12 h-12 rounded-xl bg-gold-premium/5 border border-gold-premium/15 flex items-center justify-center mb-6 group-hover:bg-gold-premium/10 transition-colors duration-300">
-                <ShieldCheck className="w-6 h-6 text-gold" />
-              </div>
-              <h4 className="font-display font-bold text-xl text-white mb-4">Why Trust Us</h4>
-              <p className="text-zinc-400 font-light text-sm leading-relaxed">
-                No locked accounts, zero asset manipulation. Your capital stays in your custody at top-tier banks. Our advisory handles strategy replication via secure trade-execution API access only (withdrawal features locked).
-              </p>
-            </div>
           </div>
 
-          {/* Team / Leadership Section */}
-          <div>
+          {/* Core Values Section */}
+          <div className="mb-24">
             <div className="text-center max-w-3xl mx-auto mb-16">
               <span className="text-xs uppercase font-bold text-gold-premium tracking-widest block mb-3">
-                Expertise & Command
+                Corporate Tenets
               </span>
               <h2 className="font-display font-bold text-2xl sm:text-3xl text-white tracking-tight">
-                Our Executive Directors
+                Our Core Values
               </h2>
               <div className="w-12 h-0.5 bg-gold mx-auto mt-3" />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {leadershipTeam.map((member) => (
-                <div
-                  key={member.name}
-                  className="glassmorphism p-6 rounded-2xl border border-gold-premium/10 hover:border-gold-premium/30 transition-all duration-300 flex flex-col justify-between"
-                >
-                  <div>
-                    {/* Placeholder image representation with stylized vectors */}
-                    <div className="w-full h-48 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center relative overflow-hidden mb-6">
-                      <div className="absolute inset-0 bg-radial-gradient from-gold-premium/10 to-transparent pointer-events-none" />
-                      <Users className="w-12 h-12 text-zinc-600" />
-                    </div>
-                    <h3 className="font-display font-bold text-lg text-white">{member.name}</h3>
-                    <span className="text-xs font-semibold text-gold-premium uppercase tracking-wider block mt-1">
-                      {member.role}
-                    </span>
-                    <p className="text-xs text-zinc-400 font-light leading-relaxed mt-4">
-                      {member.bio}
-                    </p>
-                  </div>
-                  <div className="border-t border-zinc-900/60 pt-4 mt-6 flex items-center justify-between text-[10px] text-zinc-500 font-medium">
-                    <span className="flex items-center gap-1">
-                      <Award className="w-3.5 h-3.5 text-gold-premium" /> Verified License
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <TrendingUp className="w-3.5 h-3.5 text-gold-premium" /> Active Status
-                    </span>
-                  </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {[
+                {
+                  title: 'Absolute Transparency',
+                  description: 'All strategic performance metrics are fed directly to third-party verification repositories with zero data alteration.',
+                },
+                {
+                  title: 'Rigorous Security',
+                  description: 'Capital remains securely inside your tier-1 brokerage account. Our connections operate strictly via trade-only API access.',
+                },
+                {
+                  title: 'Quantitative Precision',
+                  description: 'Eliminating behavioral bias by using mathematics, order-flow dynamics, and interest differentials to direct strategy.',
+                },
+                {
+                  title: 'Client-Centric Guardrails',
+                  description: 'Hard algorithmic stops on every active position ensure maximum historical drawdowns remain firmly under 5%.',
+                },
+              ].map((val, idx) => (
+                <div key={idx} className="glassmorphism p-6 rounded-2xl border border-zinc-900 hover:border-gold-premium/30 transition-all duration-300">
+                  <div className="text-gold font-display font-bold text-lg mb-3">0{idx + 1}</div>
+                  <h4 className="font-display font-bold text-md text-white mb-2">{val.title}</h4>
+                  <p className="text-zinc-400 font-light text-xs sm:text-sm leading-relaxed">
+                    {val.description}
+                  </p>
                 </div>
               ))}
             </div>
           </div>
+
+          {/* Why Choose Us Section */}
+          <div className="mb-24 relative">
+            <div className="absolute top-1/2 left-1/2 w-[500px] h-[500px] bg-gold-premium/3 blur-[120px] rounded-full pointer-events-none transform -translate-x-1/2 -translate-y-1/2" />
+            <div className="glassmorphism-premium p-8 sm:p-12 rounded-3xl border border-gold-premium/20 text-center max-w-5xl mx-auto relative z-10">
+              <span className="text-xs uppercase font-bold text-gold-premium tracking-widest block mb-3">
+                The Aurelius Advantage
+              </span>
+              <h3 className="font-display font-bold text-2xl sm:text-4xl text-white mb-6">
+                Why Sophisticated Investors Choose Us
+              </h3>
+              <p className="text-zinc-400 font-light max-w-3xl mx-auto leading-relaxed text-sm sm:text-base mb-10">
+                Traditional asset managers demand lock-in periods, pool investor assets together, and bill excessive management fees regardless of yield. Aurelius Capital disrupts this model by keeping your money in your absolute custody, charging solely on high-water mark profits.
+              </p>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
+                <div className="border-t border-zinc-800 pt-6">
+                  <h4 className="font-display font-bold text-white text-md mb-2">Direct Asset Custody</h4>
+                  <p className="text-zinc-500 font-light text-xs leading-relaxed">
+                    Your assets are held in your personal, tier-1 regulated broker account. Aurelius cannot access, withdraw, or modify fund allocations.
+                  </p>
+                </div>
+                <div className="border-t border-zinc-800 pt-6">
+                  <h4 className="font-display font-bold text-white text-md mb-2">No Lock-in Requirements</h4>
+                  <p className="text-zinc-500 font-light text-xs leading-relaxed">
+                    Withdraw capital or suspend replication keys at any point. You maintain 100% control over liquidity, anytime.
+                  </p>
+                </div>
+                <div className="border-t border-zinc-800 pt-6">
+                  <h4 className="font-display font-bold text-white text-md mb-2">High-Water Mark Pricing</h4>
+                  <p className="text-zinc-500 font-light text-xs leading-relaxed">
+                    We charge a performance fee strictly on net positive profits. If we don’t perform or your account undergoes drawdowns, we earn zero.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* FAQ Section */}
+          <div className="mt-24 border-t border-zinc-900 pt-24" id="faq">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <span className="text-xs uppercase font-bold text-gold-premium tracking-widest block mb-3">
+                Inquiry Center
+              </span>
+              <h2 className="font-display font-bold text-2xl sm:text-3xl text-white tracking-tight">
+                Frequently Asked Questions
+              </h2>
+              <div className="w-12 h-0.5 bg-gold mx-auto mt-3" />
+              <p className="text-zinc-400 font-light mt-4 leading-relaxed text-sm">
+                Immediate answers regarding strategy safety, custody settings, performance registries, and onboarding steps.
+              </p>
+            </div>
+
+            <div className="max-w-4xl mx-auto">
+              {/* Category Tabs */}
+              <div className="flex flex-wrap justify-center gap-3 mb-12">
+                {categories.map((cat) => {
+                  const IconComp = cat.icon;
+                  const isActive = activeCategory === cat.id;
+                  return (
+                    <button
+                      key={cat.id}
+                      onClick={() => {
+                        setActiveCategory(cat.id as any);
+                        setOpenIndex(null);
+                      }}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-full border text-[10px] sm:text-xs font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+                        isActive 
+                          ? 'border-gold-premium bg-gold-premium text-black shadow-lg shadow-gold/15'
+                          : 'border-zinc-800 bg-zinc-950 hover:bg-zinc-900 text-zinc-400 hover:text-white'
+                      }`}
+                    >
+                      <IconComp className="w-3.5 h-3.5" />
+                      {cat.label}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Accordion List */}
+              <div className="flex flex-col gap-4">
+                {filteredFaqs.map((faq, index) => {
+                  const isOpen = openIndex === index;
+                  return (
+                    <div
+                      key={index}
+                      className="glassmorphism rounded-2xl border border-zinc-900 overflow-hidden transition-all duration-300"
+                    >
+                      <button
+                        onClick={() => toggleOpen(index)}
+                        className="w-full p-5 sm:p-6 text-left flex items-center justify-between gap-4 text-white hover:text-gold transition-colors focus:outline-none cursor-pointer"
+                      >
+                        <span className="font-display font-bold text-sm sm:text-base leading-relaxed">
+                          {faq.question}
+                        </span>
+                        {isOpen ? (
+                          <ChevronUp className="w-5 h-5 text-gold-premium shrink-0" />
+                        ) : (
+                          <ChevronDown className="w-5 h-5 text-zinc-500 shrink-0" />
+                        )}
+                      </button>
+
+                      {isOpen && (
+                        <div className="px-6 pb-6 text-zinc-400 font-light text-xs sm:text-sm leading-relaxed border-t border-zinc-900/50 pt-4 animate-slide-down">
+                          {faq.answer}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
     </PageTransition>

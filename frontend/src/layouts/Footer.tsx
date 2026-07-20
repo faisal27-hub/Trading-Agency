@@ -17,10 +17,9 @@ export const Footer: React.FC = () => {
     { label: 'Home', path: '/' },
     { label: 'About Us', path: '/about' },
     { label: 'Our Services', path: '/services' },
-    { label: 'Trading Approach', path: '/trading-approach' },
-    { label: 'Performance', path: '/performance' },
+    { label: 'Performance Dashboard', path: '/performance' },
     { label: 'Certifications', path: '/certifications' },
-    { label: 'FAQ', path: '/faq' },
+    { label: 'Schedule Consultation', path: '/consultation' },
     { label: 'Contact Us', path: '/contact' },
   ];
 

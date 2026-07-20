@@ -12,10 +12,9 @@ export const Navbar: React.FC = () => {
     { label: 'Home', path: '/' },
     { label: 'About Us', path: '/about' },
     { label: 'Services', path: '/services' },
-    { label: 'Our Approach', path: '/trading-approach' },
-    { label: 'Dashboard', path: '/performance' },
+    { label: 'Performance Dashboard', path: '/performance' },
     { label: 'Certifications', path: '/certifications' },
-    { label: 'FAQ', path: '/faq' },
+    { label: 'Schedule Consultation', path: '/consultation' },
     { label: 'Contact', path: '/contact' },
   ];
 

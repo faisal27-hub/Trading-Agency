@@ -317,7 +317,7 @@ export const Home: React.FC = () => {
               <p className="text-zinc-400 font-light text-sm leading-relaxed mb-4">
                 Zero-latency algorithmic strategy execution with tier-1 prime brokers, shielding client capital from slippage.
               </p>
-              <Link to="/trading-approach" className="text-xs font-semibold text-gold hover:text-gold-light flex items-center gap-1">
+              <Link to="/services" className="text-xs font-semibold text-gold hover:text-gold-light flex items-center gap-1">
                 Our Blueprint <ArrowRight className="w-3 h-3" />
               </Link>
             </div>
