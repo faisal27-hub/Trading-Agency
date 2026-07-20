@@ -66,7 +66,7 @@ export const Home: React.FC = () => {
                 className="flex items-center gap-2.5 px-7 py-4 rounded-full bg-gradient-to-r from-gold-premium via-gold to-gold-dark hover:from-gold hover:to-gold-premium text-black font-bold uppercase tracking-wider text-xs shadow-xl shadow-gold/15 hover:shadow-gold/30 transform hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
               >
                 <Mail className="w-4 h-4" />
-                Contact Strategy Desk
+                Schedule a Consultation
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link

@@ -38,39 +38,42 @@ export const Navbar: React.FC = () => {
       }`}
     >
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-12">
-        {/* Brand Logo */}
-        <Link to="/" className="flex items-center gap-3 group h-full">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-gold-premium to-gold flex items-center justify-center shadow-lg shadow-gold/20 transform group-hover:scale-105 transition-transform duration-300">
-            <span className="font-display font-bold text-black text-xl tracking-tighter">A</span>
-          </div>
-          <div className="flex flex-col justify-center">
-            <span className="font-display font-bold text-lg leading-none tracking-wider text-white group-hover:text-gold transition-colors duration-300">
-              AUREX
-            </span>
-            <span className="text-[9px] tracking-[0.25em] text-gold-premium uppercase font-medium mt-1">
-              CAPITAL
-            </span>
-          </div>
-        </Link>
+        {/* Left Side: Brand Logo & Desktop Nav Items */}
+        <div className="flex items-center gap-16 h-full">
+          {/* Brand Logo */}
+          <Link to="/" className="flex items-center gap-3 group h-full">
+            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-gold-premium to-gold flex items-center justify-center shadow-lg shadow-gold/20 transform group-hover:scale-105 transition-transform duration-300">
+              <span className="font-display font-bold text-black text-xl tracking-tighter">A</span>
+            </div>
+            <div className="flex flex-col justify-center">
+              <span className="font-display font-bold text-lg leading-none tracking-wider text-white group-hover:text-gold transition-colors duration-300">
+                AUREX
+              </span>
+              <span className="text-[9px] tracking-[0.25em] text-gold-premium uppercase font-medium mt-1">
+                CAPITAL
+              </span>
+            </div>
+          </Link>
 
-        {/* Desktop Nav Items */}
-        <div className="hidden lg:flex items-center gap-10 h-full">
-          {navItems.map((item) => (
-            <NavLink
-              key={item.path}
-              to={item.path}
-              className={({ isActive }) =>
-                `text-xs font-semibold tracking-wider uppercase transition-all duration-300 relative py-1 hover:text-white flex items-center h-full ${
-                  isActive ? 'text-gold' : 'text-zinc-400'
-                }`
-              }
-            >
-              {item.label}
-              {((item.path === '/' && pathname === '/') || (item.path !== '/' && pathname.startsWith(item.path))) && (
-                <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-gold to-gold-premium rounded-full" />
-              )}
-            </NavLink>
-          ))}
+          {/* Desktop Nav Items */}
+          <div className="hidden lg:flex items-center gap-10 h-full">
+            {navItems.map((item) => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) =>
+                  `text-xs font-semibold tracking-wider uppercase transition-all duration-300 relative py-1 hover:text-white flex items-center h-full ${
+                    isActive ? 'text-gold' : 'text-zinc-400'
+                  }`
+                }
+              >
+                {item.label}
+                {((item.path === '/' && pathname === '/') || (item.path !== '/' && pathname.startsWith(item.path))) && (
+                  <span className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-gold to-gold-premium rounded-full" />
+                )}
+              </NavLink>
+            ))}
+          </div>
         </div>
 
         {/* Mobile Menu Button */}
