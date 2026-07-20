@@ -6,12 +6,16 @@ export const CertificationsPage: React.FC = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
   const highlights = [
-    'Verified Professional Training',
-    'Financial Market Education',
-    'Risk Management Principles',
-    'Trading Strategy Knowledge',
-    'Market Analysis Skills',
-    'Commitment to Continuous Learning',
+    '6+ Years of Forex Market Experience',
+    'Professional Trading Knowledge',
+    'Advanced Risk Management',
+    'Technical & Fundamental Analysis',
+    'Trading Strategy Development',
+    'Market Research',
+    'Capital Preservation Focus',
+    'Position Management',
+    'Trading Discipline',
+    'Continuous Learning & Professional Development',
   ];
 
   return (
@@ -87,10 +91,10 @@ export const CertificationsPage: React.FC = () => {
 
               <div className="flex flex-col gap-4">
                 <h2 className="font-display font-bold text-3xl sm:text-4xl text-white tracking-tight leading-tight">
-                  Professional Trading Certification
+                  Professional Expertise
                 </h2>
                 <p className="text-zinc-400 font-light leading-relaxed text-sm sm:text-base">
-                  This certification reflects our commitment to continuous professional development, market knowledge, disciplined trading practices, and maintaining high standards of financial education. We believe in combining structured learning with practical market experience to deliver informed market insights and professional client guidance.
+                  Backed by over <strong>6+ years of practical Forex market experience</strong>, our trading approach combines disciplined execution, structured market analysis, and continuous learning. Every trading decision is guided by a focus on market conditions, capital preservation, and effective risk management.
                 </p>
               </div>
 

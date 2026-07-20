@@ -10,7 +10,18 @@ import {
   ChevronUp, 
   Cpu, 
   CreditCard, 
-  UserCheck 
+  UserCheck,
+  Clock,
+  TrendingUp,
+  Activity,
+  ArrowUpRight,
+  Sliders,
+  Layers,
+  Compass,
+  Wallet,
+  Brain,
+  Globe,
+  Search
 } from 'lucide-react';
 import { PageTransition } from '../../components/PageTransition';
 
@@ -73,6 +84,24 @@ export const AboutPage: React.FC = () => {
       answer: 'Yes, we operate on a high-water mark profit share model (typically 20% of net profits generated, billed monthly). If no profits are generated or if the account is in a drawdown, no performance fees are charged.',
       category: 'funds',
     },
+  ];
+
+  const expertiseItems = [
+    { title: '6+ Years of Forex Experience', icon: Clock, description: 'Over half a decade of hands-on exposure to global currency flows.' },
+    { title: 'Advanced Risk Management', icon: ShieldCheck, description: 'Algorithmic stop-outs, position sizing limits, and portfolio protection.' },
+    { title: 'Technical Analysis', icon: TrendingUp, description: 'Using statistical patterns, price structures, and indicator data.' },
+    { title: 'Price Action Trading', icon: Activity, description: 'Reading raw candlesticks, momentum, and immediate market reaction.' },
+    { title: 'Market Structure Analysis', icon: Compass, description: 'Identifying key swing points, market phase shifts, and structure breaks.' },
+    { title: 'Trend Identification', icon: ArrowUpRight, description: 'Recognizing primary momentum directions across short and long horizons.' },
+    { title: 'Support & Resistance Analysis', icon: Sliders, description: 'Mapping historical supply zones, demand zones, and key pivot levels.' },
+    { title: 'Multi-Timeframe Analysis', icon: Layers, description: 'Correlating global trends from monthly charts down to execution minutes.' },
+    { title: 'Liquidity & Volatility Analysis', icon: Cpu, description: 'Tracking order block imbalances, spreads, and high-volatility news spikes.' },
+    { title: 'Trade Planning & Execution', icon: UserCheck, description: 'Drafting precise trigger criteria before launching any position.' },
+    { title: 'Position & Capital Management', icon: Wallet, description: 'Dynamic trailing stops, scale-ins, and strict capital allocation guidelines.' },
+    { title: 'Trading Psychology & Discipline', icon: Brain, description: 'Maintaining emotional control, objective execution, and patient patience.' },
+    { title: 'Fundamental Market Analysis', icon: Globe, description: 'Monitoring global interest differentials, central bank policies, and CPI data.' },
+    { title: 'Portfolio Risk Assessment', icon: CreditCard, description: 'Evaluating correlation risk and historical maximum drawdown boundaries.' },
+    { title: 'Continuous Market Research', icon: Search, description: 'Constant model review and validation against evolving market states.' },
   ];
 
   const filteredFaqs = activeCategory === 'all' 
@@ -252,6 +281,49 @@ export const AboutPage: React.FC = () => {
                   </p>
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* Professional Trading Experience Section */}
+          <div className="mb-24 relative">
+            <div className="text-center max-w-3xl mx-auto mb-16">
+              <span className="text-xs uppercase font-bold text-gold-premium tracking-widest block mb-3">
+                Lead Trader Expertise
+              </span>
+              <h2 className="font-display font-bold text-2xl sm:text-3xl text-white tracking-tight">
+                Professional Trading Experience
+              </h2>
+              <div className="w-12 h-0.5 bg-gold mx-auto mt-3 mb-6" />
+              <p className="text-zinc-400 font-light max-w-3xl mx-auto leading-relaxed text-sm sm:text-base">
+                Our lead trader brings over <b className="text-white font-bold">6+ years of hands-on experience</b> in the global Forex markets, developing a disciplined and research-driven approach to market analysis and trading strategy.
+              </p>
+              <p className="text-zinc-500 font-light max-w-3xl mx-auto leading-relaxed text-xs sm:text-sm mt-3">
+                With years of practical market exposure, the focus has been on understanding market structure, technical analysis, price action, trend identification, volatility, liquidity, and disciplined execution while maintaining a strong emphasis on risk management.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {expertiseItems.map((item, idx) => {
+                const IconComp = item.icon;
+                return (
+                  <div 
+                    key={idx} 
+                    className="glassmorphism p-6 rounded-2xl border border-zinc-900 hover:border-gold-premium/30 transform hover:-translate-y-1 transition-all duration-300 flex items-start gap-4 group"
+                  >
+                    <div className="w-11 h-11 rounded-xl bg-gold-premium/5 border border-gold-premium/15 flex items-center justify-center shrink-0 group-hover:bg-gold-premium/10 transition-colors">
+                      <IconComp className="w-5 h-5 text-gold" />
+                    </div>
+                    <div className="flex flex-col gap-1 text-left">
+                      <h4 className="font-display font-bold text-sm text-white group-hover:text-gold transition-colors duration-300">
+                        {item.title}
+                      </h4>
+                      <p className="text-zinc-500 font-light text-[11px] leading-relaxed">
+                        {item.description}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
