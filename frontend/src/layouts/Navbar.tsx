@@ -40,18 +40,12 @@ export const Navbar: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-3 lg:grid-cols-[220px_1fr_220px] items-center h-12 w-full">
         {/* Column 1: Brand Logo */}
         <div className="flex justify-start h-full items-center">
-          <Link to="/" className="flex items-center gap-3 group h-full">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-gold-premium to-gold flex items-center justify-center shadow-lg shadow-gold/20 transform group-hover:scale-105 transition-transform duration-300">
-              <span className="font-display font-bold text-black text-xl tracking-tighter">A</span>
-            </div>
-            <div className="flex flex-col justify-center text-left">
-              <span className="font-display font-bold text-lg leading-none tracking-wider text-white group-hover:text-gold transition-colors duration-300">
-                AUREX
-              </span>
-              <span className="text-[9px] tracking-[0.25em] text-gold-premium uppercase font-medium mt-1">
-                CAPITAL
-              </span>
-            </div>
+          <Link to="/" className="flex items-center group h-full py-1">
+            <img 
+              src="/assets/logo.png" 
+              alt="Aurex Capital Logo" 
+              className="h-8 w-auto object-contain transform group-hover:scale-102 transition-transform duration-300"
+            />
           </Link>
         </div>
 

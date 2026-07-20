@@ -32,18 +32,12 @@ export const Footer: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           {/* Company Identity */}
           <div className="flex flex-col gap-5">
-            <Link to="/" className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-lg bg-gradient-to-br from-gold-premium to-gold flex items-center justify-center shadow-md">
-                <span className="font-display font-bold text-black text-lg tracking-tighter">A</span>
-              </div>
-              <div className="flex flex-col">
-                <span className="font-display font-bold text-md leading-tight tracking-wider text-white">
-                  AUREX
-                </span>
-                <span className="text-[8px] tracking-[0.25em] text-gold-premium uppercase font-medium">
-                  CAPITAL
-                </span>
-              </div>
+            <Link to="/" className="flex items-center">
+              <img 
+                src="/assets/logo.png" 
+                alt="Aurex Capital Logo" 
+                className="h-8 w-auto object-contain"
+              />
             </Link>
             <p className="text-sm text-zinc-500 leading-relaxed font-light">
               Elite institutional-grade brokerage advisory and currency wealth solutions designed for sophisticated private clients and corporate funds.
