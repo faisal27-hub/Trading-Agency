@@ -42,7 +42,7 @@ export const Navbar: React.FC = () => {
         <div className="flex justify-start h-full items-center">
           <Link to="/" className="flex items-center group h-full py-1">
             <img 
-              src="/assets/logo.svg" 
+              src="/assets/logo.png" 
               alt="Aurex Capital Logo" 
               className="h-8 w-auto object-contain transform group-hover:scale-102 transition-transform duration-300"
             />
