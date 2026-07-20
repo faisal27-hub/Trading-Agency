@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Clock, Send, CheckCircle, MessageSquare } from 'lucide-react';
+import { Mail, Phone, Clock, Send, CheckCircle, MessageSquare } from 'lucide-react';
 import { SITE_METADATA } from '../../constants';
 import { PageTransition } from '../../components/PageTransition';
 
@@ -7,14 +7,17 @@ export const ContactPage: React.FC = () => {
   const [form, setForm] = useState({
     name: '',
     email: '',
-    subject: '',
+    phone: '',
+    budget: '',
     message: '',
   });
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
@@ -26,7 +29,7 @@ export const ContactPage: React.FC = () => {
     await new Promise((resolve) => setTimeout(resolve, 1500));
     setLoading(false);
     setSuccess(true);
-    setForm({ name: '', email: '', subject: '', message: '' });
+    setForm({ name: '', email: '', phone: '', budget: '', message: '' });
   };
 
   return (
@@ -35,11 +38,11 @@ export const ContactPage: React.FC = () => {
       <section className="relative py-20 bg-black overflow-hidden border-b border-zinc-900">
         <div className="absolute inset-0 bg-radial-gradient from-gold-premium/5 to-transparent pointer-events-none" />
         <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
-          <span className="text-xs uppercase font-bold text-gold-premium tracking-widest block mb-3">
+          <span className="text-xs uppercase font-bold text-gold-premium tracking-widest block mb-3 animate-pulse">
             Get In Touch
           </span>
           <h1 className="font-display font-bold text-4xl sm:text-5xl text-white tracking-tight">
-            Contact Our Offices
+            Contact Our Strategy Desk
           </h1>
           <div className="w-16 h-1 bg-gradient-to-r from-gold to-gold-premium mx-auto mt-4 mb-6" />
           <p className="text-zinc-400 font-light max-w-3xl mx-auto leading-relaxed text-base sm:text-lg">
@@ -48,11 +51,12 @@ export const ContactPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Main Grid: Form, Info, Map */}
+      {/* Main Grid: Form and Info */}
       <section className="py-24 bg-zinc-950 relative overflow-hidden">
         <div className="absolute top-1/2 left-0 w-80 h-80 bg-gold-premium/3 blur-[120px] rounded-full pointer-events-none" />
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start mb-16">
+        
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             
             {/* Left Info Panel */}
             <div className="lg:col-span-5 flex flex-col gap-6">
@@ -60,14 +64,6 @@ export const ContactPage: React.FC = () => {
                 <h3 className="font-display font-bold text-xl text-white">Contact Information</h3>
                 
                 <div className="flex flex-col gap-5 text-xs sm:text-sm font-light">
-                  <div className="flex items-start gap-4">
-                    <MapPin className="w-5 h-5 text-gold-premium shrink-0 mt-0.5" />
-                    <div>
-                      <span className="font-semibold text-white block uppercase tracking-wider text-[10px] mb-1">Corporate Address</span>
-                      <span className="text-zinc-400 leading-relaxed">{SITE_METADATA.officeAddress}</span>
-                    </div>
-                  </div>
-
                   <div className="flex items-start gap-4">
                     <Mail className="w-5 h-5 text-gold-premium shrink-0 mt-0.5" />
                     <div>
@@ -128,7 +124,7 @@ export const ContactPage: React.FC = () => {
               ) : (
                 <form
                   onSubmit={handleSubmit}
-                  className="glassmorphism-premium p-8 rounded-3xl border border-gold-premium/15 flex flex-col gap-5 shadow-2xl"
+                  className="glassmorphism-premium p-8 rounded-3xl border border-gold-premium/15 flex flex-col gap-5 shadow-2xl animate-fade-in"
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1.5">
@@ -164,20 +160,42 @@ export const ContactPage: React.FC = () => {
                     </div>
                   </div>
 
-                  <div className="flex flex-col gap-1.5">
-                    <label htmlFor="subject" className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">
-                      Message Subject *
-                    </label>
-                    <input
-                      type="text"
-                      id="subject"
-                      name="subject"
-                      required
-                      value={form.subject}
-                      onChange={handleInputChange}
-                      placeholder="e.g. API Integration, Institutional Partnership"
-                      className="w-full bg-zinc-950 border border-zinc-900 focus:border-gold-premium/45 focus:ring-1 focus:ring-gold-premium/45 text-sm text-white px-4 py-3 rounded-xl outline-none transition-all duration-300"
-                    />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="flex flex-col gap-1.5">
+                      <label htmlFor="phone" className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">
+                        Phone Number *
+                      </label>
+                      <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        required
+                        value={form.phone}
+                        onChange={handleInputChange}
+                        placeholder="+1 (555) 0199"
+                        className="w-full bg-zinc-950 border border-zinc-900 focus:border-gold-premium/45 focus:ring-1 focus:ring-gold-premium/45 text-sm text-white px-4 py-3 rounded-xl outline-none transition-all duration-300"
+                      />
+                    </div>
+
+                    <div className="flex flex-col gap-1.5">
+                      <label htmlFor="budget" className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">
+                        Investment Budget *
+                      </label>
+                      <select
+                        id="budget"
+                        name="budget"
+                        required
+                        value={form.budget}
+                        onChange={handleInputChange}
+                        className="w-full bg-zinc-950 border border-zinc-900 focus:border-gold-premium/45 focus:ring-1 focus:ring-gold-premium/45 text-sm text-zinc-400 focus:text-white px-4 py-3.5 rounded-xl outline-none transition-all duration-300 cursor-pointer"
+                      >
+                        <option value="" disabled>Select Budget...</option>
+                        <option value="$500 - $1,000">$500 - $1,000</option>
+                        <option value="$1,000 - $5,000">$1,000 - $5,000</option>
+                        <option value="$5,000 - $10,000">$5,000 - $10,000</option>
+                        <option value="$10,000+">$10,000+</option>
+                      </select>
+                    </div>
                   </div>
 
                   <div className="flex flex-col gap-1.5">
@@ -191,7 +209,7 @@ export const ContactPage: React.FC = () => {
                       required
                       value={form.message}
                       onChange={handleInputChange}
-                      placeholder="Specify your message or details..."
+                      placeholder="Specify your enquiry or details here..."
                       className="w-full bg-zinc-950 border border-zinc-900 focus:border-gold-premium/45 focus:ring-1 focus:ring-gold-premium/45 text-sm text-white px-4 py-3 rounded-xl outline-none transition-all duration-300 resize-none"
                     />
                   </div>
@@ -206,22 +224,6 @@ export const ContactPage: React.FC = () => {
                   </button>
                 </form>
               )}
-            </div>
-          </div>
-
-          {/* Interactive Google Map Mockup */}
-          <div className="glassmorphism p-4 rounded-3xl border border-zinc-900 w-full overflow-hidden shadow-2xl">
-            <div className="w-full h-[380px] rounded-2xl overflow-hidden relative border border-zinc-900">
-              <iframe
-                title="Office Location Map"
-                src={SITE_METADATA.gmapIframeUrl}
-                width="100%"
-                height="100%"
-                style={{ border: 0, opacity: 0.8 }}
-                allowFullScreen={false}
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-              />
             </div>
           </div>
         </div>
