@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
-import { Menu, X, Calendar } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,9 +11,8 @@ export const Navbar: React.FC = () => {
     { label: 'Home', path: '/' },
     { label: 'About Us', path: '/about' },
     { label: 'Services', path: '/services' },
-    { label: 'Performance Dashboard', path: '/performance' },
+    { label: 'Dashboard', path: '/dashboard' },
     { label: 'Certifications', path: '/certifications' },
-    { label: 'Schedule Consultation', path: '/consultation' },
     { label: 'Contact', path: '/contact' },
   ];
 
@@ -38,30 +37,30 @@ export const Navbar: React.FC = () => {
           : 'bg-transparent py-6'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-12">
         {/* Brand Logo */}
-        <Link to="/" className="flex items-center gap-3 group">
+        <Link to="/" className="flex items-center gap-3 group h-full">
           <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-gold-premium to-gold flex items-center justify-center shadow-lg shadow-gold/20 transform group-hover:scale-105 transition-transform duration-300">
             <span className="font-display font-bold text-black text-xl tracking-tighter">A</span>
           </div>
-          <div className="flex flex-col">
-            <span className="font-display font-bold text-lg leading-tight tracking-wider text-white group-hover:text-gold transition-colors duration-300">
+          <div className="flex flex-col justify-center">
+            <span className="font-display font-bold text-lg leading-none tracking-wider text-white group-hover:text-gold transition-colors duration-300">
               AUREX
             </span>
-            <span className="text-[9px] tracking-[0.25em] text-gold-premium uppercase font-medium">
+            <span className="text-[9px] tracking-[0.25em] text-gold-premium uppercase font-medium mt-1">
               CAPITAL
             </span>
           </div>
         </Link>
 
         {/* Desktop Nav Items */}
-        <div className="hidden lg:flex items-center gap-8">
+        <div className="hidden lg:flex items-center gap-10 h-full">
           {navItems.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                `text-sm font-medium tracking-wide uppercase transition-all duration-300 relative py-1 hover:text-white ${
+                `text-xs font-semibold tracking-wider uppercase transition-all duration-300 relative py-1 hover:text-white flex items-center h-full ${
                   isActive ? 'text-gold' : 'text-zinc-400'
                 }`
               }
@@ -74,21 +73,10 @@ export const Navbar: React.FC = () => {
           ))}
         </div>
 
-        {/* Action Buttons */}
-        <div className="hidden lg:flex items-center gap-4">
-          <Link
-            to="/consultation"
-            className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-gold-premium via-gold to-gold-dark hover:from-gold hover:to-gold-premium text-black text-xs font-bold uppercase tracking-wider shadow-lg shadow-gold/10 hover:shadow-gold/25 transform hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
-          >
-            <Calendar className="w-3.5 h-3.5" />
-            Schedule Consultation
-          </Link>
-        </div>
-
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="lg:hidden p-2 text-zinc-400 hover:text-white transition-colors duration-200"
+          className="lg:hidden p-2 text-zinc-400 hover:text-white transition-colors duration-200 flex items-center justify-center"
           aria-label="Toggle Menu"
         >
           {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -116,16 +104,6 @@ export const Navbar: React.FC = () => {
                 {item.label}
               </NavLink>
             ))}
-          </div>
-
-          <div className="flex flex-col gap-4 mb-12">
-            <Link
-              to="/consultation"
-              className="flex items-center justify-center gap-3 py-3.5 rounded-xl bg-gradient-to-r from-gold-premium to-gold-dark text-black text-sm font-bold uppercase tracking-wider shadow-lg shadow-gold/15 transition-all duration-300 cursor-pointer text-center"
-            >
-              <Calendar className="w-4 h-4" />
-              Schedule Consultation
-            </Link>
           </div>
         </div>
       </div>

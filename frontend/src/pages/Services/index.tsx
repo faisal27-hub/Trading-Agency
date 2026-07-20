@@ -186,10 +186,10 @@ export const ServicesPage: React.FC = () => {
 
                   <div className="mt-8">
                     <Link
-                      to="/consultation"
+                      to="/contact"
                       className="w-full py-3.5 rounded-full bg-gradient-to-r from-gold-premium to-gold-dark hover:from-gold hover:to-gold-premium text-black text-xs font-bold uppercase tracking-widest block text-center shadow-lg hover:shadow-gold/15 transition-all duration-300"
                     >
-                      Schedule Consultation
+                      Get in Touch
                     </Link>
                   </div>
                 </div>

@@ -53,8 +53,8 @@ export const SERVICES_DATA: ServiceCard[] = [
 export const TIMELINE_DATA: TimelineStep[] = [
   {
     number: '01',
-    title: 'Schedule Consultation',
-    description: 'Book a complimentary session with an Aurex Capital specialist to discuss trading goals, risk tolerance, and asset targets.',
+    title: 'Initial Contact',
+    description: 'Submit an inquiry via our secure contact portal to align trading goals, risk tolerance, and asset targets.',
   },
   {
     number: '02',

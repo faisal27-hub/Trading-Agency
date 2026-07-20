@@ -3,9 +3,8 @@ import { MainLayout } from './layouts/MainLayout';
 import { Home } from './pages/Home';
 import { AboutPage } from './pages/About';
 import { ServicesPage } from './pages/Services';
-import { PerformancePage } from './pages/Performance';
+import { DashboardPage } from './pages/Dashboard';
 import { CertificationsPage } from './pages/Certifications';
-import { ConsultationPage } from './pages/Consultation';
 import { ContactPage } from './pages/Contact';
 
 function App() {
@@ -16,9 +15,8 @@ function App() {
           <Route index element={<Home />} />
           <Route path="about" element={<AboutPage />} />
           <Route path="services" element={<ServicesPage />} />
-          <Route path="performance" element={<PerformancePage />} />
+          <Route path="dashboard" element={<DashboardPage />} />
           <Route path="certifications" element={<CertificationsPage />} />
-          <Route path="consultation" element={<ConsultationPage />} />
           <Route path="contact" element={<ContactPage />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>

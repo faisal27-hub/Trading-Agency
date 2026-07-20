@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, ArrowRight, ArrowUpRight, Briefcase, Zap, ShieldCheck } from 'lucide-react';
+import { Mail, ArrowRight, ArrowUpRight, Briefcase, Zap, ShieldCheck } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { PageTransition } from '../../components/PageTransition';
 import { TradingViewTicker } from '../../components/TradingViewTicker';
@@ -62,11 +62,11 @@ export const Home: React.FC = () => {
               className="flex flex-wrap gap-4 mt-4"
             >
               <Link
-                to="/consultation"
+                to="/contact"
                 className="flex items-center gap-2.5 px-7 py-4 rounded-full bg-gradient-to-r from-gold-premium via-gold to-gold-dark hover:from-gold hover:to-gold-premium text-black font-bold uppercase tracking-wider text-xs shadow-xl shadow-gold/15 hover:shadow-gold/30 transform hover:-translate-y-0.5 transition-all duration-300 cursor-pointer"
               >
-                <Calendar className="w-4 h-4" />
-                Schedule Consultation
+                <Mail className="w-4 h-4" />
+                Contact Strategy Desk
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
@@ -203,7 +203,7 @@ export const Home: React.FC = () => {
               <p className="text-zinc-400 font-light text-sm leading-relaxed mb-4">
                 Algorithmic stop-outs, automated hedging mechanisms, and a historical maximum drawdown threshold capped at 5%.
               </p>
-              <Link to="/performance" className="text-xs font-semibold text-gold hover:text-gold-light flex items-center gap-1">
+              <Link to="/dashboard" className="text-xs font-semibold text-gold hover:text-gold-light flex items-center gap-1">
                 Live Metrics <ArrowRight className="w-3 h-3" />
               </Link>
             </div>
@@ -221,19 +221,13 @@ export const Home: React.FC = () => {
           <p className="text-zinc-400 font-light mt-4 mb-8 leading-relaxed max-w-xl mx-auto text-sm sm:text-base">
             Consult with our senior strategy advisors to configure secure read-write API replication and begin scaling your wealth safely.
           </p>
-          <div className="flex justify-center gap-4">
-            <Link
-              to="/consultation"
-              className="flex items-center gap-2 px-6 py-3 rounded-full bg-gradient-to-r from-gold-premium to-gold-dark text-black font-bold uppercase tracking-wider text-xs shadow-lg hover:opacity-90 transition-all duration-300"
-            >
-              <Calendar className="w-4 h-4" />
-              Book Consultation Session
-            </Link>
+          <div className="flex justify-center">
             <Link
               to="/contact"
-              className="flex items-center gap-2 px-6 py-3 rounded-full border border-zinc-800 bg-zinc-950 text-white font-semibold uppercase tracking-wider text-xs hover:border-gold-premium/45 transition-all duration-300"
+              className="flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-gradient-to-r from-gold-premium to-gold-dark text-black font-bold uppercase tracking-wider text-xs shadow-lg hover:opacity-90 transform hover:-translate-y-0.5 transition-all duration-300"
             >
-              Contact Office
+              <Mail className="w-4 h-4" />
+              Contact Strategy Desk
             </Link>
           </div>
         </div>

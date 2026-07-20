@@ -1,5 +1,5 @@
 import { config } from '../config';
-import type { ConsultationInput, MetricsResponse } from '../types';
+import type { MetricsResponse } from '../types';
 
 export class ApiError extends Error {
   statusCode: number;
@@ -32,25 +32,6 @@ export const apiService = {
       return await handleResponse<MetricsResponse>(res);
     } catch (error) {
       console.error('Failed to load performance metrics from API:', error);
-      throw error;
-    }
-  },
-
-  /**
-   * Submit consultation request form
-   */
-  async bookConsultation(input: ConsultationInput): Promise<{ bookingId: string; preferredDate: string; preferredTime: string }> {
-    try {
-      const res = await fetch(`${config.apiUrl}/consultations`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(input),
-      });
-      return await handleResponse<{ bookingId: string; preferredDate: string; preferredTime: string }>(res);
-    } catch (error) {
-      console.error('Failed to schedule consultation via API:', error);
       throw error;
     }
   },

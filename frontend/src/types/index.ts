@@ -1,12 +1,3 @@
-export interface ConsultationInput {
-  fullName: string;
-  email: string;
-  whatsappNumber: string;
-  preferredDate: string;
-  preferredTime: string;
-  investmentBudget: string;
-  message: string;
-}
 
 export interface MetricItem {
   month: string;

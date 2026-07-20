@@ -14,7 +14,7 @@ import type { MetricsOverview, MetricItem } from '../../types';
 import { formatRoi } from '../../utilities';
 import { PageTransition } from '../../components/PageTransition';
 
-export const PerformancePage: React.FC = () => {
+export const DashboardPage: React.FC = () => {
   const [overview, setOverview] = useState<MetricsOverview | null>(null);
   const [history, setHistory] = useState<MetricItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -61,7 +61,7 @@ export const PerformancePage: React.FC = () => {
               Audited Records
             </span>
             <h1 className="font-display font-bold text-4xl sm:text-5xl text-white tracking-tight leading-tight">
-              Performance Dashboard
+              Dashboard
             </h1>
             <div className="w-16 h-1 bg-gradient-to-r from-gold to-gold-premium mt-4" />
           </div>
