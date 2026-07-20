@@ -38,14 +38,6 @@ export interface ServiceCard {
   iconName: string;
 }
 
-export interface CertificateItem {
-  id: string;
-  title: string;
-  issuer: string;
-  year: string;
-  imageUrl: string;
-  description: string;
-}
 
 export interface FAQItem {
   question: string;

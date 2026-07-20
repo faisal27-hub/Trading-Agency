@@ -1,4 +1,4 @@
-import type { ServiceCard, TimelineStep, CertificateItem, FAQItem } from '../types';
+import type { ServiceCard, TimelineStep, FAQItem } from '../types';
 
 export const SITE_METADATA = {
   name: 'Aurex Capital',
@@ -88,32 +88,6 @@ export const TIMELINE_DATA: TimelineStep[] = [
   },
 ];
 
-export const CERTIFICATIONS_DATA: CertificateItem[] = [
-  {
-    id: 'cert-1',
-    title: 'Global Financial Markets Authority License',
-    issuer: 'GFMA Registry',
-    year: '2024',
-    imageUrl: '/assets/certs/cert_gfma.jpg',
-    description: 'Compliance license for international currency advisory services and quantitative strategy operations.',
-  },
-  {
-    id: 'cert-2',
-    title: 'Certified Forex Wealth Manager Accreditation',
-    issuer: 'International Financial Association',
-    year: '2025',
-    imageUrl: '/assets/certs/cert_cwm.jpg',
-    description: 'Professional standard credential validating risk modeling, hedging principles, and asset allocation capabilities.',
-  },
-  {
-    id: 'cert-3',
-    title: 'Elite Capital Risk Officer Credential',
-    issuer: 'Swiss Finance Academy',
-    year: '2026',
-    imageUrl: '/assets/certs/cert_sfa.jpg',
-    description: 'Rigorous accreditation confirming expertise in capital preservation structures, drawdown controls, and macro hedge scaling.',
-  },
-];
 
 export const FAQ_DATA: FAQItem[] = [
   {

@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { Award, Shield, CheckCircle, X, Globe } from 'lucide-react';
-import { CERTIFICATIONS_DATA } from '../../constants';
-import type { CertificateItem } from '../../types';
+import { ShieldCheck, CheckCircle, X, ZoomIn, Award } from 'lucide-react';
 import { PageTransition } from '../../components/PageTransition';
 
 export const CertificationsPage: React.FC = () => {
-  const [selectedCert, setSelectedCert] = useState<CertificateItem | null>(null);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
-  const globalRegulators = [
-    { name: 'GFMA Registry', country: 'Global / USA', license: 'GFMA-2024-AC', status: 'Active Compliant' },
-    { name: 'International Financial Association (IFA)', country: 'United Kingdom', license: 'IFA-8849-AC', status: 'Active Compliant' },
-    { name: 'Swiss Finance Academy Registry', country: 'Switzerland', license: 'SFA-SW-2026', status: 'Accredited member' },
+  const highlights = [
+    'Verified Professional Training',
+    'Financial Market Education',
+    'Risk Management Principles',
+    'Trading Strategy Knowledge',
+    'Market Analysis Skills',
+    'Commitment to Continuous Learning',
   ];
 
   return (
@@ -19,160 +20,139 @@ export const CertificationsPage: React.FC = () => {
       <section className="relative py-20 bg-black overflow-hidden border-b border-zinc-900">
         <div className="absolute inset-0 bg-radial-gradient from-gold-premium/5 to-transparent pointer-events-none" />
         <div className="max-w-7xl mx-auto px-6 text-center relative z-10">
-          <span className="text-xs uppercase font-bold text-gold-premium tracking-widest block mb-3">
-            Licensing & Registries
+          <span className="text-xs uppercase font-bold text-gold-premium tracking-widest block mb-3 animate-pulse">
+            Professional Credentials
           </span>
           <h1 className="font-display font-bold text-4xl sm:text-5xl text-white tracking-tight">
-            Accreditations & Compliance
+            Accreditations & Verifications
           </h1>
           <div className="w-16 h-1 bg-gradient-to-r from-gold to-gold-premium mx-auto mt-4 mb-6" />
           <p className="text-zinc-400 font-light max-w-3xl mx-auto leading-relaxed text-base sm:text-lg">
-            Aurex Capital maintains corporate credentials and operational compliance according to Swiss, UK and global financial standards.
+            Aurex Capital believes in absolute transparency. We showcase real, verifiable trading credentials earned by our strategy leaders, reflecting our strict focus on risk limits and capital growth.
           </p>
         </div>
       </section>
 
-      {/* Main Grid & License Modals */}
+      {/* Showcase Section */}
       <section className="py-24 bg-zinc-950 relative overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gold-premium/3 blur-[140px] rounded-full pointer-events-none" />
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
-            {CERTIFICATIONS_DATA.map((cert) => (
-              <div
-                key={cert.id}
-                onClick={() => setSelectedCert(cert)}
-                className="glassmorphism p-6 rounded-2xl border border-gold-premium/10 hover:border-gold-premium/45 transition-all duration-350 cursor-pointer group flex flex-col justify-between"
+        
+        <div className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
+            {/* Left Column: Certificate Showcase Card */}
+            <div className="lg:col-span-6 flex justify-center">
+              <div 
+                onClick={() => setLightboxOpen(true)}
+                className="glassmorphism p-4 rounded-3xl border border-gold-premium/20 shadow-[0_0_30px_rgba(197,160,89,0.08)] hover:shadow-[0_0_40px_rgba(197,160,89,0.25)] hover:border-gold-premium/45 transition-all duration-500 cursor-pointer group relative overflow-hidden max-w-lg w-full"
               >
-                <div>
-                  <div className="w-full h-44 rounded-xl bg-zinc-950/60 border border-zinc-900 flex items-center justify-center relative overflow-hidden group-hover:border-gold-premium/20 transition-all duration-300">
-                    <div className="absolute inset-0 bg-radial-gradient from-gold-premium/5 to-transparent pointer-events-none" />
-                    <div className="flex flex-col items-center gap-2.5 z-10 text-center px-4">
-                      <Award className="w-10 h-10 text-gold-premium group-hover:scale-110 transition-transform duration-300" />
-                      <span className="font-display font-bold text-xs uppercase tracking-widest text-zinc-300">
-                        {cert.issuer}
-                      </span>
-                      <span className="text-[10px] text-zinc-500 font-medium">
-                        Accreditation {cert.year}
-                      </span>
-                    </div>
+                {/* Gold ambient gradient under overlay */}
+                <div className="absolute inset-0 bg-radial-gradient from-gold-premium/5 to-transparent pointer-events-none" />
+
+                {/* Hover overlay with zoom icon */}
+                <div className="absolute inset-0 bg-black/75 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col items-center justify-center gap-3 z-20">
+                  <div className="w-12 h-12 rounded-full bg-gold-premium/15 border border-gold-premium/30 flex items-center justify-center text-gold-premium transform scale-90 group-hover:scale-100 transition-transform duration-300">
+                    <ZoomIn className="w-6 h-6" />
                   </div>
-
-                  <h3 className="font-display font-bold text-md text-white mt-5 group-hover:text-gold transition-colors duration-300">
-                    {cert.title}
-                  </h3>
-                  <p className="text-xs text-zinc-500 font-light leading-relaxed mt-2.5">
-                    {cert.description}
-                  </p>
-                </div>
-
-                <div className="flex items-center justify-between border-t border-zinc-900/60 pt-4 mt-5 text-[11px] text-gold-premium font-medium">
-                  <span>Verification Registry</span>
-                  <span className="underline group-hover:text-white transition-colors">
-                    View Full Credentials →
+                  <span className="text-xs uppercase font-bold tracking-widest text-white">
+                    View Fullscreen
                   </span>
                 </div>
-              </div>
-            ))}
-          </div>
 
-          {/* Regulator Registry List */}
-          <div className="glassmorphism p-8 rounded-2xl border border-zinc-900">
-            <div className="flex items-center gap-3 mb-6">
-              <Globe className="w-5 h-5 text-gold-premium" />
-              <div>
-                <h3 className="font-display font-bold text-lg text-white">Regulatory Ledger Directory</h3>
-                <p className="text-xs text-zinc-500 font-light font-sans">Active registration directory entries across corporate jurisdictions.</p>
+                {/* Image Container */}
+                <div className="relative overflow-hidden rounded-2xl border border-zinc-900 bg-black aspect-[4/3] flex items-center justify-center">
+                  <img
+                    src="/assets/certs/atlas_funded_certificate.jpg"
+                    alt="AtlasFunded Certificate of Achievement"
+                    className="w-full h-full object-cover transform group-hover:scale-102 transition-transform duration-700"
+                  />
+                </div>
+
+                {/* Footer description on card */}
+                <div className="mt-4 flex items-center justify-between text-xs px-2">
+                  <div className="flex items-center gap-2">
+                    <Award className="w-4 h-4 text-gold-premium" />
+                    <span className="text-zinc-300 font-semibold uppercase tracking-wider text-[10px]">AtlasFunded Verification</span>
+                  </div>
+                  <span className="text-gold-premium font-bold font-mono text-[10px]">VERIFIED OK</span>
+                </div>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {globalRegulators.map((reg) => (
-                <div key={reg.name} className="p-5 rounded-xl bg-zinc-950 border border-zinc-900 flex flex-col justify-between">
-                  <div>
-                    <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold block">{reg.country}</span>
-                    <h4 className="font-display font-bold text-sm text-white mt-1.5">{reg.name}</h4>
-                    <span className="text-[11px] font-mono text-gold-premium block mt-2">Ref: {reg.license}</span>
-                  </div>
-                  <div className="flex items-center gap-2 mt-4 text-[10px] text-green-400 font-semibold">
-                    <CheckCircle className="w-3.5 h-3.5" />
-                    {reg.status}
-                  </div>
+            {/* Right Column: Descriptions & Details */}
+            <div className="lg:col-span-6 flex flex-col gap-8">
+              <div className="flex items-center gap-2 text-gold-premium">
+                <ShieldCheck className="w-6 h-6 shrink-0" />
+                <span className="text-xs uppercase font-bold tracking-widest mt-0.5">Verified Accreditation</span>
+              </div>
+
+              <div className="flex flex-col gap-4">
+                <h2 className="font-display font-bold text-3xl sm:text-4xl text-white tracking-tight leading-tight">
+                  Professional Trading Certification
+                </h2>
+                <p className="text-zinc-400 font-light leading-relaxed text-sm sm:text-base">
+                  This certification reflects our commitment to continuous professional development, market knowledge, disciplined trading practices, and maintaining high standards of financial education. We believe in combining structured learning with practical market experience to deliver informed market insights and professional client guidance.
+                </p>
+              </div>
+
+              <div className="h-[1px] w-full bg-zinc-900" />
+
+              {/* Key Highlights Grid */}
+              <div className="flex flex-col gap-4">
+                <h3 className="font-display font-bold text-lg text-white uppercase tracking-wider text-xs">
+                  Key Highlights:
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {highlights.map((highlight, index) => (
+                    <div 
+                      key={index}
+                      className="flex items-center gap-3 p-4 rounded-xl bg-black/40 border border-zinc-900/60 hover:border-gold-premium/20 transition-all duration-300 group"
+                    >
+                      <CheckCircle className="w-5 h-5 text-gold-premium shrink-0 group-hover:scale-110 transition-transform" />
+                      <span className="text-xs text-zinc-300 font-medium">
+                        {highlight}
+                      </span>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Verification Lightbox Modal */}
-      {selectedCert && (
-        <div className="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-6 animate-fade-in">
-          <div className="glassmorphism-premium p-8 rounded-3xl max-w-xl w-full border border-gold-premium/30 relative flex flex-col gap-6 shadow-2xl">
+      {/* Fullscreen Lightbox Modal */}
+      {lightboxOpen && (
+        <div className="fixed inset-0 bg-black/95 backdrop-blur-md z-50 flex flex-col items-center justify-center p-4 animate-fade-in">
+          {/* Close trigger on click background */}
+          <div className="absolute inset-0 cursor-zoom-out" onClick={() => setLightboxOpen(false)} />
+          
+          {/* Modal Header */}
+          <div className="absolute top-4 right-4 sm:top-6 sm:right-8 flex items-center gap-4 z-55">
             <button
-              onClick={() => setSelectedCert(null)}
-              className="absolute top-4 right-4 p-2 rounded-full bg-zinc-950 border border-zinc-900 text-zinc-400 hover:text-white transition-colors cursor-pointer"
-              aria-label="Close credentials"
+              onClick={() => setLightboxOpen(false)}
+              className="p-3 rounded-full bg-zinc-950 border border-zinc-900 text-zinc-400 hover:text-white transition-colors cursor-pointer shadow-lg hover:border-gold-premium/40"
+              aria-label="Close verification portal"
             >
-              <X className="w-4 h-4" />
+              <X className="w-5 h-5" />
             </button>
+          </div>
 
-            <div className="flex items-center gap-4 border-b border-zinc-900 pb-5">
-              <div className="w-12 h-12 rounded-xl bg-gold-premium/5 border border-gold-premium/20 flex items-center justify-center shrink-0">
-                <Shield className="w-6 h-6 text-gold" />
-              </div>
-              <div>
-                <h4 className="font-display font-bold text-lg text-white">
-                  {selectedCert.title}
-                </h4>
-                <span className="text-xs text-gold-premium font-medium">
-                  Official Registry License Status
-                </span>
-              </div>
-            </div>
+          {/* Fullscreen Certificate Image */}
+          <div className="relative max-w-4xl w-full max-h-[85vh] z-55 flex items-center justify-center p-2">
+            <img
+              src="/assets/certs/atlas_funded_certificate.jpg"
+              alt="AtlasFunded Certificate of Achievement Full View"
+              className="max-w-full max-h-[80vh] object-contain rounded-xl border border-gold-premium/20 shadow-2xl shadow-black/80 animate-scale-up"
+            />
+          </div>
 
-            <div className="w-full bg-zinc-950/80 border-2 border-dashed border-gold-premium/20 rounded-2xl p-6 text-center flex flex-col items-center gap-4 relative">
-              <div className="absolute top-3 right-3 text-[10px] text-zinc-700 font-bold uppercase tracking-wider">
-                ORIGINAL LEDGER COPY
-              </div>
-
-              <Award className="w-16 h-16 text-gold/80 mb-2" />
-              <div className="flex flex-col gap-1">
-                <span className="text-[10px] uppercase font-bold text-zinc-500 tracking-widest">
-                  Licensed Advisory Entity
-                </span>
-                <span className="font-display font-bold text-white text-md tracking-wide">
-                  Aurex Capital Global Markets Ltd.
-                </span>
-              </div>
-
-              <div className="h-[1px] w-24 bg-gold-premium/25 my-1" />
-
-              <div className="flex flex-col gap-1">
-                <span className="text-[9px] uppercase font-bold text-zinc-500 tracking-wider">
-                  Registration Authority
-                </span>
-                <span className="text-xs font-semibold text-gold-premium">
-                  {selectedCert.issuer} — Accredited Year {selectedCert.year}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-1.5 px-3 py-1 rounded-full border border-green-500/20 bg-green-500/5 text-green-400 text-[10px] font-semibold mt-2">
-                <CheckCircle className="w-3.5 h-3.5" />
-                Active Registration Status: Verified compliant
-              </div>
-            </div>
-
-            <div className="text-xs text-zinc-400 leading-relaxed font-light mt-1">
-              <span className="block font-bold text-white mb-1">Compliance Check Details:</span>
-              This certificate registers Aurex Capital as a certified quantitative forex advisor. Operations are audited on a quarterly basis. Database identification token: <b>AC-{selectedCert.id.toUpperCase()}-2026-VAL</b>.
-            </div>
-
-            <button
-              onClick={() => setSelectedCert(null)}
-              className="w-full py-3 rounded-full bg-gradient-to-r from-gold-premium to-gold-dark text-black text-xs font-bold uppercase tracking-widest mt-2 hover:opacity-90 cursor-pointer"
-            >
-              Close Verification Portal
-            </button>
+          <div className="z-55 mt-4 text-center">
+            <span className="text-xs text-zinc-500 uppercase tracking-widest font-semibold font-mono block">
+              AtlasFunded Evaluation Certificate — Presented to Amir khan
+            </span>
+            <span className="text-[10px] text-gold-premium font-medium mt-1 block">
+              Accreditation Verification Date: 2026-06-02
+            </span>
           </div>
         </div>
       )}
