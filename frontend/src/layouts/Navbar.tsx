@@ -37,7 +37,7 @@ export const Navbar: React.FC = () => {
           : 'bg-transparent py-6'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-3 items-center h-12 w-full">
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-3 lg:grid-cols-[220px_1fr_220px] items-center h-12 w-full">
         {/* Column 1: Brand Logo */}
         <div className="flex justify-start h-full items-center">
           <Link to="/" className="flex items-center gap-3 group h-full">
@@ -62,7 +62,7 @@ export const Navbar: React.FC = () => {
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                `text-xs font-semibold tracking-wider uppercase transition-all duration-300 relative py-1 hover:text-white flex items-center h-full ${
+                `text-xs font-semibold tracking-wider uppercase transition-all duration-300 relative py-1 hover:text-white flex items-center h-full whitespace-nowrap ${
                   isActive ? 'text-gold' : 'text-zinc-400'
                 }`
               }
