@@ -34,7 +34,7 @@ export const Footer: React.FC = () => {
           <div className="flex flex-col gap-5">
             <Link to="/" className="flex items-center">
               <img 
-                src="/assets/logo.png" 
+                src="/assets/logo.svg" 
                 alt="Aurex Capital Logo" 
                 className="h-8 w-auto object-contain"
               />
