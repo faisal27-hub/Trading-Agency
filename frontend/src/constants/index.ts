@@ -3,7 +3,7 @@ import type { ServiceCard, TimelineStep, FAQItem } from '../types';
 export const SITE_METADATA = {
   name: 'Aurex Capital',
   tagline: 'Elite Forex Trading & Wealth Solutions',
-  email: 'invest@aurex.capital',
+  email: 'aurexcapitalone@gmail.com',
   phone: '+1 (800) 555-0199',
   whatsapp: '+447911123456', // WhatsApp link formatting: https://wa.me/447911123456
   officeAddress: '15 Broad Street, 24th Floor, Financial District, New York, NY 10005',

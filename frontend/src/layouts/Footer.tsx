@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mail, Phone, MapPin, Clock, ShieldAlert, ArrowUp } from 'lucide-react';
+import { Mail, MapPin, Clock, ShieldAlert, ArrowUp } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { SITE_METADATA } from '../constants';
 
@@ -97,12 +97,7 @@ export const Footer: React.FC = () => {
                   {SITE_METADATA.email}
                 </a>
               </div>
-              <div className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-gold-premium shrink-0" />
-                <a href={`tel:${SITE_METADATA.phone}`} className="hover:text-gold text-zinc-500 transition-colors">
-                  {SITE_METADATA.phone}
-                </a>
-              </div>
+
               <div className="flex items-center gap-3">
                 <Clock className="w-4 h-4 text-gold-premium shrink-0" />
                 <span className="text-zinc-500">{SITE_METADATA.businessHours}</span>
