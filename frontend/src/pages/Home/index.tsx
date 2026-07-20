@@ -227,7 +227,7 @@ export const Home: React.FC = () => {
               className="flex items-center gap-2.5 px-8 py-3.5 rounded-full bg-gradient-to-r from-gold-premium to-gold-dark text-black font-bold uppercase tracking-wider text-xs shadow-lg hover:opacity-90 transform hover:-translate-y-0.5 transition-all duration-300"
             >
               <Mail className="w-4 h-4" />
-              Contact Strategy Desk
+              Schedule a Consultation
             </Link>
           </div>
         </div>
