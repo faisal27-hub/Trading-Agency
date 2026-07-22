@@ -25,9 +25,9 @@ export const Home: React.FC = () => {
           {/* Left Text */}
           <div className="lg:col-span-7 flex flex-col gap-6 text-left">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
+              transition={{ duration: 0.4 }}
               className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-gold-premium/20 bg-gold-premium/5 text-gold-premium text-xs font-semibold uppercase tracking-widest w-fit shadow-md shadow-gold/5"
             >
               <Zap className="w-3.5 h-3.5" />
@@ -35,9 +35,9 @@ export const Home: React.FC = () => {
             </motion.div>
 
             <motion.h1
-              initial={{ opacity: 0, y: 25 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
+              transition={{ duration: 0.4 }}
               className="font-display font-bold text-4xl sm:text-5xl lg:text-6xl text-white leading-tight tracking-tight"
             >
               Forging Wealth Through{' '}
@@ -47,18 +47,18 @@ export const Home: React.FC = () => {
             </motion.h1>
 
             <motion.p
-              initial={{ opacity: 0, y: 25 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
+              transition={{ duration: 0.4 }}
               className="text-zinc-400 font-light text-base sm:text-lg leading-relaxed max-w-2xl"
             >
               Bespoke currency strategy models, rigorous risk management frameworks, and dynamic real-time reporting engineered to secure capital and grow wealth in global liquid markets.
             </motion.p>
 
             <motion.div
-              initial={{ opacity: 0, y: 25 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
+              transition={{ duration: 0.4 }}
               className="flex flex-wrap gap-4 mt-4"
             >
               <Link
@@ -78,12 +78,12 @@ export const Home: React.FC = () => {
             </motion.div>
           </div>
 
-          {/* Right Interactive Dashboard Mockup Preview */}
+          {/* Right Interactive Dashboard Mockup Preview - Instant Load */}
           <div className="lg:col-span-5 flex flex-col gap-5 relative">
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 1, delay: 0.5 }}
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
               className="glassmorphism-premium p-6 rounded-3xl border border-gold-premium/15 flex flex-col gap-6 shadow-2xl relative overflow-hidden"
             >
               <div className="absolute top-0 right-0 w-24 h-24 bg-gold-premium/5 blur-xl rounded-full" />
@@ -93,14 +93,14 @@ export const Home: React.FC = () => {
                   <div className="w-2.5 h-2.5 rounded-full bg-green-500 animate-ping" />
                   <span className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider">Trading System Active</span>
                 </div>
-                <span className="text-[9px] text-zinc-600 font-mono">NODE_US_EAST_EXEC</span>
+                <span className="text-[9px] text-zinc-600 font-mono">NODE_NY4_VERIFIED</span>
               </div>
 
               <div className="flex flex-col gap-1">
-                <span className="text-[9px] uppercase font-semibold text-zinc-500 tracking-wider">Compounded Return (12M)</span>
+                <span className="text-[9px] uppercase font-semibold text-zinc-500 tracking-wider">Verified Sample Net Profit</span>
                 <div className="flex items-baseline gap-2">
-                  <span className="font-display font-bold text-3xl sm:text-4xl text-white tracking-tight">Pending</span>
-                  <span className="text-xs text-gold-premium font-semibold">API Connection</span>
+                  <span className="font-display font-bold text-3xl sm:text-4xl text-gold-premium tracking-tight">+$9,576.52</span>
+                  <span className="text-xs text-green-400 font-semibold">62.7% Win Rate</span>
                 </div>
               </div>
 
@@ -110,8 +110,8 @@ export const Home: React.FC = () => {
                   <span className="text-sm font-semibold text-zinc-300">5.0% Capped</span>
                 </div>
                 <div className="bg-black/45 border border-zinc-900 rounded-xl p-3.5 flex flex-col gap-1">
-                  <span className="text-[8px] text-zinc-500 uppercase font-bold">Sharpe Ratio</span>
-                  <span className="text-sm font-semibold text-zinc-300">Pending</span>
+                  <span className="text-[8px] text-zinc-500 uppercase font-bold">Profit Factor</span>
+                  <span className="text-sm font-semibold text-gold-premium">8.93 Ratio</span>
                 </div>
               </div>
 
@@ -129,16 +129,16 @@ export const Home: React.FC = () => {
 
             {/* Auxiliary Float Widget */}
             <motion.div
-              animate={{ y: [0, -8, 0] }}
+              animate={{ y: [0, -6, 0] }}
               transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-              className="absolute -top-12 -right-6 hidden sm:flex items-center gap-2 bg-zinc-950/90 border border-gold-premium/30 backdrop-blur-md px-4 py-2.5 rounded-xl shadow-2xl z-20"
+              className="absolute -top-10 -right-4 hidden sm:flex items-center gap-2 bg-zinc-950/90 border border-gold-premium/30 backdrop-blur-md px-4 py-2.5 rounded-xl shadow-2xl z-20"
             >
               <div className="w-5 h-5 rounded-full bg-gold/20 flex items-center justify-center">
                 <ArrowUpRight className="w-3.5 h-3.5 text-gold" />
               </div>
               <div className="flex flex-col">
                 <span className="text-[8px] text-zinc-500 uppercase font-bold">System Status</span>
-                <span className="text-xs font-bold text-white">Connection Awaiting</span>
+                <span className="text-xs font-bold text-green-400">Execution Active</span>
               </div>
             </motion.div>
           </div>
