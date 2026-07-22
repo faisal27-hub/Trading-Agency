@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Clock, Send, CheckCircle, MessageSquare } from 'lucide-react';
+import { Mail, Clock, Send, CheckCircle, MessageSquare, Phone } from 'lucide-react';
 import { SITE_METADATA } from '../../constants';
 import { PageTransition } from '../../components/PageTransition';
 
@@ -74,6 +74,15 @@ export const ContactPage: React.FC = () => {
                     </div>
                   </div>
 
+                  <div className="flex items-start gap-4">
+                    <Phone className="w-5 h-5 text-gold-premium shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-semibold text-white block uppercase tracking-wider text-[10px] mb-1">Direct Desk Line</span>
+                      <a href={`tel:${SITE_METADATA.phone}`} className="text-zinc-400 hover:text-gold transition-colors">
+                        {SITE_METADATA.phone}
+                      </a>
+                    </div>
+                  </div>
 
                   <div className="flex items-start gap-4">
                     <Clock className="w-5 h-5 text-gold-premium shrink-0 mt-0.5" />

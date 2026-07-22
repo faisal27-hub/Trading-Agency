@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mail, MapPin, Clock, ShieldAlert, ArrowUp, Phone } from 'lucide-react';
+import { Mail, Clock, ShieldAlert, ArrowUp, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { SITE_METADATA } from '../constants';
 
@@ -151,16 +151,12 @@ export const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Corporate Office */}
+          {/* Corporate Desk */}
           <div className="flex flex-col gap-4">
             <h4 className="font-display font-semibold text-white uppercase tracking-wider text-xs sm:text-sm">
-              Corporate Office
+              Corporate Desk
             </h4>
             <div className="flex flex-col gap-3.5 text-xs sm:text-sm font-light">
-              <div className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-gold-premium shrink-0 mt-0.5" />
-                <span className="leading-relaxed text-zinc-500">{SITE_METADATA.officeAddress}</span>
-              </div>
               <div className="flex items-center gap-3">
                 <Mail className="w-4 h-4 text-gold-premium shrink-0" />
                 <a href={`mailto:${SITE_METADATA.email}`} className="hover:text-gold text-zinc-500 transition-colors">
