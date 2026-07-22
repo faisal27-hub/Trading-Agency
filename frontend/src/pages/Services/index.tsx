@@ -213,65 +213,63 @@ export const ServicesPage: React.FC = () => {
             <div className="w-12 h-0.5 bg-gold mx-auto mt-3" />
           </div>
 
-          <div className="relative border-l border-zinc-800 md:border-l-0 max-w-4xl mx-auto">
-            <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-[1px] bg-zinc-800 pointer-events-none transform md:-translate-x-1/2 hidden md:block" />
+          <div className="relative max-w-5xl mx-auto">
+            {/* Center vertical line for desktop, left line for mobile */}
+            <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-[2px] bg-gradient-to-b from-gold-premium/40 via-gold/20 to-transparent transform md:-translate-x-1/2" />
 
-            {TIMELINE_DATA.map((step, index) => {
-              const isEven = index % 2 === 0;
+            <div className="flex flex-col gap-10 sm:gap-12">
+              {TIMELINE_DATA.map((step, index) => {
+                const isEven = index % 2 === 0;
 
-              return (
-                <div
-                  key={step.number}
-                  className="relative mb-12 last:mb-0 pl-8 md:pl-0 flex flex-col md:flex-row md:justify-between items-start md:items-center w-full"
-                >
-                  <div className="absolute left-[-5px] md:left-1/2 w-3.5 h-3.5 rounded-full bg-black border-2 border-gold-premium z-10 transform md:-translate-x-1/2 hover:scale-125 hover:bg-gold transition-all duration-300" />
-
-                  {/* Left Panel */}
+                return (
                   <div
-                    className={`w-full md:w-[45%] ${
-                      isEven ? 'md:text-right md:order-1' : 'md:order-2 opacity-0 md:block pointer-events-none hidden'
-                    }`}
+                    key={step.number}
+                    className="relative flex flex-col md:flex-row items-start md:items-center w-full group"
                   >
-                    {isEven && (
-                      <div className="glassmorphism p-6 rounded-2xl hover:border-gold-premium/40 transition-all duration-300 group">
-                        <span className="font-display font-extrabold text-2xl text-gold-premium/25 group-hover:text-gold-premium/60 block transition-colors duration-300">
-                          {step.number}
-                        </span>
-                        <h3 className="font-display font-bold text-lg text-white mt-2 mb-3">
-                          {step.title}
-                        </h3>
-                        <p className="text-sm text-zinc-400 font-light leading-relaxed">
-                          {step.description}
-                        </p>
-                      </div>
-                    )}
-                  </div>
+                    {/* Timeline Node Dot */}
+                    <div className="absolute left-[9px] md:left-1/2 top-6 md:top-1/2 w-4 h-4 rounded-full bg-black border-2 border-gold-premium z-20 transform -translate-x-1/2 md:-translate-y-1/2 group-hover:scale-125 group-hover:bg-gold group-hover:border-white shadow-[0_0_12px_rgba(197,160,89,0.5)] transition-all duration-300" />
 
-                  <div className="w-[10%] order-2 hidden md:block" />
+                    {/* Desktop Left Column */}
+                    <div className="w-full md:w-1/2 pl-12 md:pl-0 md:pr-10">
+                      {isEven ? (
+                        <div className="glassmorphism p-6 sm:p-8 rounded-2xl hover:border-gold-premium/45 transition-all duration-300 group-hover:shadow-[0_0_30px_rgba(197,160,89,0.1)]">
+                          <span className="font-display font-extrabold text-2xl text-gold-premium/40 block mb-1">
+                            {step.number}
+                          </span>
+                          <h3 className="font-display font-bold text-lg text-white mb-2 group-hover:text-gold transition-colors duration-300">
+                            {step.title}
+                          </h3>
+                          <p className="text-sm text-zinc-400 font-light leading-relaxed">
+                            {step.description}
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="hidden md:block" />
+                      )}
+                    </div>
 
-                  {/* Right Panel */}
-                  <div
-                    className={`w-full md:w-[45%] ${
-                      isEven ? 'md:order-2 opacity-0 md:block pointer-events-none hidden' : 'md:order-1 text-left'
-                    }`}
-                  >
-                    {!isEven && (
-                      <div className="glassmorphism p-6 rounded-2xl hover:border-gold-premium/40 transition-all duration-300 group">
-                        <span className="font-display font-extrabold text-2xl text-gold-premium/25 group-hover:text-gold-premium/60 block transition-colors duration-300">
-                          {step.number}
-                        </span>
-                        <h3 className="font-display font-bold text-lg text-white mt-2 mb-3">
-                          {step.title}
-                        </h3>
-                        <p className="text-sm text-zinc-400 font-light leading-relaxed">
-                          {step.description}
-                        </p>
-                      </div>
-                    )}
+                    {/* Desktop Right Column */}
+                    <div className="w-full md:w-1/2 pl-12 md:pl-10">
+                      {!isEven ? (
+                        <div className="glassmorphism p-6 sm:p-8 rounded-2xl hover:border-gold-premium/45 transition-all duration-300 group-hover:shadow-[0_0_30px_rgba(197,160,89,0.1)]">
+                          <span className="font-display font-extrabold text-2xl text-gold-premium/40 block mb-1">
+                            {step.number}
+                          </span>
+                          <h3 className="font-display font-bold text-lg text-white mb-2 group-hover:text-gold transition-colors duration-300">
+                            {step.title}
+                          </h3>
+                          <p className="text-sm text-zinc-400 font-light leading-relaxed">
+                            {step.description}
+                          </p>
+                        </div>
+                      ) : (
+                        <div className="hidden md:block" />
+                      )}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
