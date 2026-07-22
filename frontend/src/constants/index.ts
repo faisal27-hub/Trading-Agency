@@ -4,8 +4,11 @@ export const SITE_METADATA = {
   name: 'Aurex Capital',
   tagline: 'Elite Forex Trading & Wealth Solutions',
   email: 'aurexcapitalone@gmail.com',
-  phone: '+1 (800) 555-0199',
-  whatsapp: '+447911123456', // WhatsApp link formatting: https://wa.me/447911123456
+  phone: '+91 70835 74760',
+  whatsappNumber: '917083574760',
+  whatsappMessage: 'Hello Aurex Capital,\n\nI am interested in learning more about your trading services. Please share more details.',
+  instagramUrl: 'https://www.instagram.com/aurexcapital.co/?utm_source=ig_web_button_share_sheet',
+  facebookUrl: 'https://www.facebook.com/profile.php?id=61592130240718',
   officeAddress: '15 Broad Street, 24th Floor, Financial District, New York, NY 10005',
   businessHours: 'Monday - Friday: 08:00 AM - 06:00 PM EST',
   gmapIframeUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3024.238491873836!2d-74.01168178459496!3d40.70678597933189!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c25a17277b5555%3A0xe54e3d2319c5c70c!2s15%20Broad%20St%2C%20New%20York%2C%20NY%2010005!5e0!3m2!1sen!2sus!4v1692882200000!5m2!1sen!2sus',

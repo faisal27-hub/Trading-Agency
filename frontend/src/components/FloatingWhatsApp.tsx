@@ -2,7 +2,7 @@ import React from 'react';
 import { SITE_METADATA } from '../constants';
 
 export const FloatingWhatsApp: React.FC = () => {
-  const whatsappUrl = `https://wa.me/${SITE_METADATA.whatsapp.replace('+', '')}`;
+  const whatsappUrl = `https://wa.me/${SITE_METADATA.whatsappNumber}?text=${encodeURIComponent(SITE_METADATA.whatsappMessage)}`;
 
   return (
     <a
