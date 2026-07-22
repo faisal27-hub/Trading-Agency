@@ -4,7 +4,6 @@ import {
   Heart, 
   Eye, 
   BookOpen, 
-  Scale, 
   HelpCircle, 
   ChevronDown, 
   ChevronUp, 
@@ -137,14 +136,11 @@ export const AboutPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-24">
             <div className="lg:col-span-6 flex flex-col gap-6 order-2 lg:order-1">
-              <span className="text-xs uppercase font-bold text-zinc-500 tracking-wider">
-                ESTABLISHED IN 2014
-              </span>
               <h2 className="font-display font-bold text-3xl text-white">
-                Over a Decade of Forex Market Mastery
+                Over 6+ Years of Forex Market Mastery
               </h2>
               <p className="text-zinc-400 font-light leading-relaxed">
-                For more than 12 years, our proprietary models have navigated the complex currency landscapes of G10 and liquid emerging markets. We don't guess; we deploy statistical models that leverage global interest rate differentials, order flows, and momentum shifts.
+                For 6+ years, our proprietary models have navigated the complex currency landscapes of G10 and liquid emerging markets. We don't guess; we deploy statistical models that leverage global interest rate differentials, order flows, and momentum shifts.
               </p>
               <p className="text-zinc-400 font-light leading-relaxed">
                 Our infrastructure is engineered for zero-latency execution. By establishing deep liquidity agreements with top tier-1 prime brokers, we shield our clients from excessive spreads and slippage during volatile news events.
@@ -152,11 +148,11 @@ export const AboutPage: React.FC = () => {
 
               <div className="grid grid-cols-2 gap-6 mt-4">
                 <div className="border-l-2 border-gold-premium pl-4">
-                  <span className="font-display font-bold text-2xl text-white">12+ Years</span>
+                  <span className="font-display font-bold text-2xl text-white">6+ Years</span>
                   <span className="text-xs text-zinc-500 block mt-1">Market Track Record</span>
                 </div>
                 <div className="border-l-2 border-gold-premium pl-4">
-                  <span className="font-display font-bold text-2xl text-white">99.2%</span>
+                  <span className="font-display font-bold text-2xl text-white">67.8%</span>
                   <span className="text-xs text-zinc-500 block mt-1">Client Retention Rate</span>
                 </div>
               </div>
@@ -185,8 +181,8 @@ export const AboutPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Company Story & Philosophy */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-24 items-stretch">
+          {/* Company Story Section (Philosophy Removed) */}
+          <div className="mb-24">
             <div className="glassmorphism p-8 sm:p-10 rounded-3xl border border-gold-premium/10 flex flex-col justify-between hover:border-gold-premium/30 transition-all duration-300">
               <div>
                 <div className="w-12 h-12 rounded-xl bg-gold-premium/5 border border-gold-premium/15 flex items-center justify-center mb-6">
@@ -194,26 +190,10 @@ export const AboutPage: React.FC = () => {
                 </div>
                 <h3 className="font-display font-bold text-2xl text-white mb-4">Our Origin Story</h3>
                 <p className="text-zinc-400 font-light text-sm sm:text-base leading-relaxed mb-4">
-                  Aurex Capital was founded in 2014 by a collaborative of G10 currency desks and high-frequency model architects who observed a widening chasm. High-net-worth individuals and corporate funds lacked access to true institutional-grade currency modeling and algorithmic risk control, left instead with retail brokers that suffered from excessive slippage.
+                  Aurex Capital was founded by a collaborative of G10 currency desks and high-frequency model architects who observed a widening chasm. High-net-worth individuals and corporate funds lacked access to true institutional-grade currency modeling and algorithmic risk control, left instead with retail brokers that suffered from excessive slippage.
                 </p>
                 <p className="text-zinc-400 font-light text-sm leading-relaxed">
-                  We engineered Aurex Capital to dismantle that barrier. By anchoring our infrastructure in global execution hubs and aligning our goals strictly with investor results, we redefined currency advisory. Today, we manage strategic portfolio replications across the globe under a single philosophy: math and security, above all else.
-                </p>
-              </div>
-            </div>
-
-            <div className="glassmorphism p-8 sm:p-10 rounded-3xl border border-gold-premium/10 flex flex-col justify-between hover:border-gold-premium/30 transition-all duration-300 relative overflow-hidden group">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gold-premium/5 blur-2xl rounded-full" />
-              <div>
-                <div className="w-12 h-12 rounded-xl bg-gold-premium/5 border border-gold-premium/15 flex items-center justify-center mb-6">
-                  <Scale className="w-6 h-6 text-gold" />
-                </div>
-                <h3 className="font-display font-bold text-2xl text-white mb-4">Company Philosophy</h3>
-                <p className="font-display font-semibold text-gold-premium/90 italic text-base sm:text-lg mb-6 leading-relaxed">
-                  "Capital preservation precedes capital expansion. In the currency markets, true performance is measured by the containment of drawdowns, not the height of leverage."
-                </p>
-                <p className="text-zinc-400 font-light text-sm leading-relaxed">
-                  We reject the speculative gamble of retail forex brokers. Every model we develop, from momentum indicators to correlation matrix adjustments, is built around strict capital shielding guidelines. Volatility is not an adversary to be avoided; it is a parameter to be mathematically contained.
+                  We engineered Aurex Capital to dismantle that barrier. By anchoring our infrastructure in global execution hubs and aligning our goals strictly with investor results, we redefined currency advisory. Today, we manage strategic portfolio replications across the globe under a single principle: math and security, above all else.
                 </p>
               </div>
             </div>

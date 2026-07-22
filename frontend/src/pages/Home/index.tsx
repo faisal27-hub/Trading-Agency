@@ -154,7 +154,7 @@ export const Home: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <span className="text-xs uppercase font-bold text-gold-premium tracking-widest block mb-3">
-              Corporate Philosophy
+              Corporate Pillars
             </span>
             <h2 className="font-display font-bold text-3xl sm:text-4xl text-white tracking-tight">
               Our Foundational Columns

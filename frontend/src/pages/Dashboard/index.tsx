@@ -8,7 +8,7 @@ import {
   ResponsiveContainer,
   CartesianGrid,
 } from 'recharts';
-import { ShieldCheck, Calendar, RefreshCw, AlertTriangle, Info } from 'lucide-react';
+import { ShieldCheck, Calendar, RefreshCw, AlertTriangle, Info, MapPin } from 'lucide-react';
 import { apiService } from '../../services/api';
 import type { MetricsOverview, MetricItem } from '../../types';
 import { formatRoi } from '../../utilities';
@@ -310,6 +310,43 @@ export const DashboardPage: React.FC = () => {
                       )}
                     </tbody>
                   </table>
+                </div>
+              </div>
+
+              {/* Corporate Office Location Section */}
+              <div className="glassmorphism p-6 sm:p-8 rounded-2xl border border-zinc-900">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-gold-premium/5 border border-gold-premium/20 flex items-center justify-center text-gold shrink-0">
+                      <MapPin className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <span className="text-[10px] text-gold-premium font-bold uppercase tracking-widest block">
+                        Global Hub
+                      </span>
+                      <h3 className="font-display font-bold text-lg text-white">
+                        Corporate Office Location
+                      </h3>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs text-zinc-300 font-medium bg-black/60 border border-zinc-800 px-4 py-2 rounded-full w-fit">
+                    <span className="text-gold">📍</span>
+                    <span>Dubai, United Arab Emirates</span>
+                  </div>
+                </div>
+
+                {/* Embedded Responsive Google Map for Dubai, UAE */}
+                <div className="relative w-full h-48 sm:h-56 rounded-xl overflow-hidden border border-gold-premium/15 shadow-xl">
+                  <iframe
+                    title="Aurex Capital Corporate Office - Dubai, UAE"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115494.39462277727!2d55.14324391217032!3d25.177242131971714!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f43496ad9c645%3A0xb12b4e7b1660320!2sDubai%20-%20United%20Arab%20Emirates!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s"
+                    width="100%"
+                    height="100%"
+                    style={{ border: 0, filter: 'invert(90%) hue-rotate(180deg) opacity(0.85) contrast(1.1)' }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
                 </div>
               </div>
             </div>
