@@ -181,10 +181,9 @@ export const ContactPage: React.FC = () => {
                         className="w-full bg-zinc-950 border border-zinc-900 focus:border-gold-premium/45 focus:ring-1 focus:ring-gold-premium/45 text-sm text-zinc-400 focus:text-white px-4 py-3.5 rounded-xl outline-none transition-all duration-300 cursor-pointer"
                       >
                         <option value="" disabled>Select Budget...</option>
-                        <option value="$500 - $1,000">$500 - $1,000</option>
-                        <option value="$1,000 - $5,000">$1,000 - $5,000</option>
-                        <option value="$5,000 - $10,000">$5,000 - $10,000</option>
-                        <option value="$10,000+">$10,000+</option>
+                        <option value="$500 - $1,000">$500 – $1,000</option>
+                        <option value="$1,000 - $1,500">$1,000 – $1,500</option>
+                        <option value="$1,500 - $2,000">$1,500 – $2,000</option>
                       </select>
                     </div>
                   </div>

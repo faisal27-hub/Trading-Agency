@@ -29,7 +29,7 @@ export const ServicesPage: React.FC = () => {
   const serviceTiers = [
     {
       name: 'STARTER PLAN',
-      minDeposit: '$1,000',
+      minDeposit: '$500',
       description: 'Ideal for individual market participants seeking basic consultation, strategy alignment, and key risk indicators.',
       features: [
         'Initial Consultation',
@@ -42,7 +42,7 @@ export const ServicesPage: React.FC = () => {
     },
     {
       name: 'PROFESSIONAL PLAN',
-      minDeposit: '$5,000',
+      minDeposit: '$1,000',
       description: 'Designed for active allocators requiring advanced volatility modeling, portfolio reviews, and direct communication lines.',
       features: [
         'Advanced Consultation',
@@ -55,7 +55,7 @@ export const ServicesPage: React.FC = () => {
     },
     {
       name: 'PREMIUM PLAN',
-      minDeposit: '$10,000',
+      minDeposit: '$2,000',
       description: 'Bespoke continuous strategy auditing, tailored market approaches, and long-term private wealth advisory.',
       features: [
         'Dedicated Consultation',
