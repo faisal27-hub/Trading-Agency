@@ -28,10 +28,10 @@ import {
 } from 'lucide-react';
 import { PageTransition } from '../../components/PageTransition';
 
-// Clean, non-confidential sample trade dataset extracted strictly from uploaded trade tickets
+// Clean, non-confidential trade dataset compiled strictly from uploaded trade tickets
 interface VerifiedTrade {
   id: string;
-  instrument: 'XAU/USD' | 'BTC';
+  instrument: 'XAU/USD' | 'BTC' | 'GBP/JPY';
   type: 'BUY' | 'SELL';
   profit: number;
   date: string;
@@ -40,53 +40,63 @@ interface VerifiedTrade {
 }
 
 const VERIFIED_TRADES: VerifiedTrade[] = [
-  { id: '1', instrument: 'BTC', type: 'SELL', profit: 1666.15, date: '23 Jun 2026', month: 'June 2026', result: 'WIN' },
-  { id: '2', instrument: 'BTC', type: 'SELL', profit: -1002.35, date: '21 Jun 2026', month: 'June 2026', result: 'LOSS' },
-  { id: '3', instrument: 'XAU/USD', type: 'SELL', profit: -205.47, date: '10 Jun 2026', month: 'June 2026', result: 'LOSS' },
-  { id: '4', instrument: 'XAU/USD', type: 'SELL', profit: 617.49, date: '12 May 2026', month: 'May 2026', result: 'WIN' },
-  { id: '5', instrument: 'XAU/USD', type: 'BUY', profit: 1456.59, date: '11 May 2026', month: 'May 2026', result: 'WIN' },
+  { id: '1', instrument: 'XAU/USD', type: 'SELL', profit: 1732.40, date: '30 Jun 2026', month: 'June 2026', result: 'WIN' },
+  { id: '2', instrument: 'BTC', type: 'SELL', profit: 1666.15, date: '23 Jun 2026', month: 'June 2026', result: 'WIN' },
+  { id: '3', instrument: 'BTC', type: 'SELL', profit: -1002.35, date: '21 Jun 2026', month: 'June 2026', result: 'LOSS' },
+  { id: '4', instrument: 'XAU/USD', type: 'SELL', profit: -205.47, date: '10 Jun 2026', month: 'June 2026', result: 'LOSS' },
+  { id: '5', instrument: 'XAU/USD', type: 'BUY', profit: 3766.50, date: '09 Jun 2026', month: 'June 2026', result: 'WIN' },
+  { id: '6', instrument: 'GBP/JPY', type: 'BUY', profit: 625.71, date: '18 May 2026', month: 'May 2026', result: 'WIN' },
+  { id: '7', instrument: 'BTC', type: 'SELL', profit: 919.50, date: '12 May 2026', month: 'May 2026', result: 'WIN' },
+  { id: '8', instrument: 'XAU/USD', type: 'SELL', profit: 617.49, date: '12 May 2026', month: 'May 2026', result: 'WIN' },
+  { id: '9', instrument: 'XAU/USD', type: 'BUY', profit: 1456.59, date: '11 May 2026', month: 'May 2026', result: 'WIN' },
 ];
 
 export const DashboardPage: React.FC = () => {
-  // Derived Core Metrics from verified trade data
-  const totalTrades = VERIFIED_TRADES.length; // 5
-  const winningTrades = VERIFIED_TRADES.filter((t) => t.result === 'WIN').length; // 3
-  const losingTrades = VERIFIED_TRADES.filter((t) => t.result === 'LOSS').length; // 2
-  const winRate = ((winningTrades / totalTrades) * 100).toFixed(1); // 60.0%
+  // Overall Account Statistics from verified totals dashboard summary
+  const totalAccountOrders = 147;
+  const profitableOrders = 105;
+  const unprofitableOrders = 42;
+  const accountWinRate = ((profitableOrders / totalAccountOrders) * 100).toFixed(1); // 71.4%
 
-  const grossProfit = VERIFIED_TRADES.filter((t) => t.profit > 0).reduce((acc, t) => acc + t.profit, 0); // 3740.23
-  const grossLoss = Math.abs(VERIFIED_TRADES.filter((t) => t.profit < 0).reduce((acc, t) => acc + t.profit, 0)); // 1207.82
-  const netProfit = grossProfit - grossLoss; // 2532.41
-  const profitFactor = (grossProfit / grossLoss).toFixed(2); // 3.10
+  // Sample Dataset Derived Analytics
+  const sampleTradesCount = VERIFIED_TRADES.length; // 9
+  const sampleWins = VERIFIED_TRADES.filter((t) => t.result === 'WIN').length; // 7
+  const sampleLosses = VERIFIED_TRADES.filter((t) => t.result === 'LOSS').length; // 2
 
-  const bestTrade = Math.max(...VERIFIED_TRADES.map((t) => t.profit)); // 1666.15
-  const worstTrade = Math.min(...VERIFIED_TRADES.map((t) => t.profit)); // -1002.35
-  const avgWin = grossProfit / winningTrades; // 1246.74
-  const avgLoss = grossLoss / losingTrades; // 603.91
+  const grossProfit = VERIFIED_TRADES.filter((t) => t.profit > 0).reduce((acc, t) => acc + t.profit, 0); // 10,784.34
+  const grossLoss = Math.abs(VERIFIED_TRADES.filter((t) => t.profit < 0).reduce((acc, t) => acc + t.profit, 0)); // 1,207.82
+  const netProfit = grossProfit - grossLoss; // 9,576.52
+  const profitFactor = (grossProfit / grossLoss).toFixed(2); // 8.93
 
-  // Asset allocation breakdown
+  const bestTrade = Math.max(...VERIFIED_TRADES.map((t) => t.profit)); // 3,766.50
+  const worstTrade = Math.min(...VERIFIED_TRADES.map((t) => t.profit)); // -1,002.35
+  const avgWin = grossProfit / sampleWins; // 1,540.62
+  const avgLoss = grossLoss / sampleLosses; // 603.91
+
+  // Asset Allocation breakdown
   const assetData = [
-    { name: 'XAU/USD (Gold)', value: 3, percentage: '60%', profit: 1868.61, color: '#C5A059' },
-    { name: 'BTC (Bitcoin)', value: 2, percentage: '40%', profit: 663.80, color: '#F7931A' },
+    { name: 'XAU/USD (Gold)', value: 5, percentage: '55.6%', profit: 7367.51, color: '#C5A059' },
+    { name: 'BTC (Bitcoin)', value: 3, percentage: '33.3%', profit: 1583.30, color: '#F7931A' },
+    { name: 'GBP/JPY (Forex)', value: 1, percentage: '11.1%', profit: 625.71, color: '#3B82F6' },
   ];
 
   // Monthly Cumulative Performance Chart Data
   const monthlyChartData = [
-    { month: 'May 2026', netProfit: 2074.08, cumulative: 2074.08, trades: 2, winRate: 100 },
-    { month: 'June 2026', netProfit: 458.33, cumulative: 2532.41, trades: 3, winRate: 33.3 },
+    { month: 'May 2026', netProfit: 3619.29, cumulative: 3619.29, trades: 4, winRate: 100 },
+    { month: 'June 2026', netProfit: 5957.23, cumulative: 9576.52, trades: 5, winRate: 60 },
   ];
 
   // Profit vs Loss Overview Data
   const pnlComparisonData = [
     { category: 'Gross Profit', amount: grossProfit, color: '#22c55e' },
     { category: 'Gross Loss', amount: grossLoss, color: '#ef4444' },
-    { category: 'Net Profit', amount: netProfit, color: '#C5A059' },
+    { category: 'Net Sample P/L', amount: netProfit, color: '#C5A059' },
   ];
 
   // Directional Buy vs Sell Data
   const directionData = [
-    { type: 'BUY Orders', count: 1, netProfit: 1456.59, winRate: 100 },
-    { type: 'SELL Orders', count: 4, netProfit: 1075.82, winRate: 50 },
+    { type: 'BUY Orders', count: 3, netProfit: 5848.80, winRate: 100 },
+    { type: 'SELL Orders', count: 6, netProfit: 3727.72, winRate: 66.7 },
   ];
 
   return (
@@ -106,7 +116,7 @@ export const DashboardPage: React.FC = () => {
           </div>
           <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-gold-premium/20 bg-gold-premium/5 text-gold-premium text-xs font-semibold uppercase tracking-wider w-fit">
             <ShieldCheck className="w-4 h-4" />
-            <span>Verified Sample Dataset</span>
+            <span>Verified Sample Dataset ({totalAccountOrders} Total Orders)</span>
           </div>
         </div>
       </section>
@@ -120,10 +130,10 @@ export const DashboardPage: React.FC = () => {
           
           {/* Top Metrics Grid (5 Key Performance Indicators) */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
-            {/* Net Profit Card */}
+            {/* Net Sample Profit Card */}
             <div className="glassmorphism p-5 rounded-2xl border border-gold-premium/20 hover:border-gold-premium/45 transition-all duration-300 relative group overflow-hidden">
               <div className="flex items-center justify-between text-zinc-500 mb-2">
-                <span className="text-[10px] uppercase tracking-wider font-bold">Net Profit</span>
+                <span className="text-[10px] uppercase tracking-wider font-bold">Sample Net Profit</span>
                 <TrendingUp className="w-4 h-4 text-gold-premium" />
               </div>
               <div className="font-display font-bold text-2xl sm:text-3xl text-gold-premium tracking-tight">
@@ -134,31 +144,31 @@ export const DashboardPage: React.FC = () => {
               </span>
             </div>
 
-            {/* Win Rate Card */}
+            {/* Overall Win Rate Card */}
             <div className="glassmorphism p-5 rounded-2xl border border-zinc-900 hover:border-gold-premium/40 transition-all duration-300">
               <div className="flex items-center justify-between text-zinc-500 mb-2">
-                <span className="text-[10px] uppercase tracking-wider font-bold">Win Rate</span>
+                <span className="text-[10px] uppercase tracking-wider font-bold">Account Win Rate</span>
                 <Award className="w-4 h-4 text-green-400" />
               </div>
               <div className="font-display font-bold text-2xl sm:text-3xl text-white tracking-tight">
-                {winRate}%
+                {accountWinRate}%
               </div>
               <span className="text-[10px] text-zinc-400 mt-1 block font-light">
-                {winningTrades} Wins / {losingTrades} Losses
+                {profitableOrders} Wins / {unprofitableOrders} Losses
               </span>
             </div>
 
-            {/* Total Trades Card */}
+            {/* Total Account Orders Card */}
             <div className="glassmorphism p-5 rounded-2xl border border-zinc-900 hover:border-gold-premium/40 transition-all duration-300">
               <div className="flex items-center justify-between text-zinc-500 mb-2">
-                <span className="text-[10px] uppercase tracking-wider font-bold">Total Trades</span>
+                <span className="text-[10px] uppercase tracking-wider font-bold">Total Account Orders</span>
                 <BarChart2 className="w-4 h-4 text-gold-premium" />
               </div>
               <div className="font-display font-bold text-2xl sm:text-3xl text-white tracking-tight">
-                {totalTrades}
+                {totalAccountOrders}
               </div>
               <span className="text-[10px] text-zinc-400 mt-1 block font-light">
-                XAU/USD: 3 | BTC: 2
+                105 Profitable | 42 Unprofitable
               </span>
             </div>
 
@@ -246,19 +256,19 @@ export const DashboardPage: React.FC = () => {
                   </span>
                 </div>
                 <span className="text-[10px] text-zinc-500 block font-light">
-                  Distribution of execution volume across currency & commodity assets.
+                  Distribution of execution volume across currency, metal & crypto assets.
                 </span>
               </div>
 
-              <div className="w-full h-[220px] my-4 flex items-center justify-center">
+              <div className="w-full h-[210px] my-3 flex items-center justify-center">
                 <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
                       data={assetData}
                       cx="50%"
                       cy="50%"
-                      innerRadius={55}
-                      outerRadius={85}
+                      innerRadius={50}
+                      outerRadius={80}
                       paddingAngle={5}
                       dataKey="value"
                     >
@@ -274,28 +284,36 @@ export const DashboardPage: React.FC = () => {
                         color: '#fff',
                         fontSize: '12px',
                       }}
-                      formatter={(value: any, name: any) => [`${value} Trades (${name === 'XAU/USD (Gold)' ? '60%' : '40%'})`, name]}
+                      formatter={(value: any, name: any) => [`${value} Sample Trades`, name]}
                     />
                   </PieChart>
                 </ResponsiveContainer>
               </div>
 
-              <div className="grid grid-cols-2 gap-3 pt-4 border-t border-zinc-900 text-xs">
-                <div className="flex flex-col gap-1 p-2.5 rounded-xl bg-black/40 border border-zinc-900">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#C5A059]" />
-                    <span className="font-semibold text-white">XAU/USD</span>
+              <div className="grid grid-cols-3 gap-2 pt-3 border-t border-zinc-900 text-xs">
+                <div className="flex flex-col gap-0.5 p-2 rounded-xl bg-black/40 border border-zinc-900">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-[#C5A059]" />
+                    <span className="font-semibold text-white text-[11px]">XAU/USD</span>
                   </div>
-                  <span className="text-[11px] text-green-400 font-bold">+$1,868.61 P/L</span>
-                  <span className="text-[9px] text-zinc-500">3 Trades (60%)</span>
+                  <span className="text-[10px] text-green-400 font-bold">+$7,367.51</span>
+                  <span className="text-[8px] text-zinc-500">5 Trades (55.6%)</span>
                 </div>
-                <div className="flex flex-col gap-1 p-2.5 rounded-xl bg-black/40 border border-zinc-900">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#F7931A]" />
-                    <span className="font-semibold text-white">BTC</span>
+                <div className="flex flex-col gap-0.5 p-2 rounded-xl bg-black/40 border border-zinc-900">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-[#F7931A]" />
+                    <span className="font-semibold text-white text-[11px]">BTC</span>
                   </div>
-                  <span className="text-[11px] text-green-400 font-bold">+$663.80 P/L</span>
-                  <span className="text-[9px] text-zinc-500">2 Trades (40%)</span>
+                  <span className="text-[10px] text-green-400 font-bold">+$1,583.30</span>
+                  <span className="text-[8px] text-zinc-500">3 Trades (33.3%)</span>
+                </div>
+                <div className="flex flex-col gap-0.5 p-2 rounded-xl bg-black/40 border border-zinc-900">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-[#3B82F6]" />
+                    <span className="font-semibold text-white text-[11px]">GBP/JPY</span>
+                  </div>
+                  <span className="text-[10px] text-green-400 font-bold">+$625.71</span>
+                  <span className="text-[8px] text-zinc-500">1 Trade (11.1%)</span>
                 </div>
               </div>
             </div>
@@ -371,7 +389,7 @@ export const DashboardPage: React.FC = () => {
               <div className="p-4 rounded-xl bg-black/40 border border-zinc-900 flex flex-col gap-2">
                 <span className="font-bold text-gold uppercase tracking-wider text-[10px]">Top Asset</span>
                 <p className="text-zinc-300 leading-relaxed">
-                  <b className="text-white font-bold">XAU/USD (Gold)</b> is the primary profit generator, producing <b className="text-green-400 font-bold">+$1,868.61</b> across 3 executions.
+                  <b className="text-white font-bold">XAU/USD (Gold)</b> is the primary profit driver, generating <b className="text-green-400 font-bold">+$7,367.51</b> across 5 executed positions.
                 </p>
               </div>
 
@@ -385,14 +403,14 @@ export const DashboardPage: React.FC = () => {
               <div className="p-4 rounded-xl bg-black/40 border border-zinc-900 flex flex-col gap-2">
                 <span className="font-bold text-gold uppercase tracking-wider text-[10px]">Profit Factor Efficiency</span>
                 <p className="text-zinc-300 leading-relaxed">
-                  Achieved a robust <b className="text-gold font-bold">3.10 Profit Factor</b>, generating $3,740.23 gross profit against $1,207.82 gross loss.
+                  Achieved an outstanding <b className="text-gold font-bold">8.93 Profit Factor</b>, generating $10,784.34 gross profit against $1,207.82 gross loss.
                 </p>
               </div>
 
               <div className="p-4 rounded-xl bg-black/40 border border-zinc-900 flex flex-col gap-2">
-                <span className="font-bold text-gold uppercase tracking-wider text-[10px]">Monthly Consistency</span>
+                <span className="font-bold text-gold uppercase tracking-wider text-[10px]">Overall Account Win Rate</span>
                 <p className="text-zinc-300 leading-relaxed">
-                  Maintained positive net profits in both <b className="text-white font-bold">May 2026</b> (+$2,074.08) and <b className="text-white font-bold">June 2026</b> (+$458.33).
+                  Total account metrics report <b className="text-white font-bold">71.4% Win Rate</b> across <b className="text-white font-bold">147 total executed orders</b> (105 profitable).
                 </p>
               </div>
             </div>
@@ -408,7 +426,7 @@ export const DashboardPage: React.FC = () => {
                 </p>
               </div>
               <span className="text-[10px] text-gold-premium font-mono bg-gold-premium/5 border border-gold-premium/20 px-3 py-1 rounded-full">
-                5 TRADES ANALYZED
+                {sampleTradesCount} VERIFIED TRADES ANALYZED
               </span>
             </div>
 
@@ -427,7 +445,7 @@ export const DashboardPage: React.FC = () => {
                   {VERIFIED_TRADES.map((trade) => (
                     <tr key={trade.id} className="hover:bg-zinc-900/20 transition-colors">
                       <td className="py-4 px-4 font-bold text-white flex items-center gap-2">
-                        <span className={`w-2 h-2 rounded-full ${trade.instrument === 'XAU/USD' ? 'bg-[#C5A059]' : 'bg-[#F7931A]'}`} />
+                        <span className={`w-2 h-2 rounded-full ${trade.instrument === 'XAU/USD' ? 'bg-[#C5A059]' : trade.instrument === 'BTC' ? 'bg-[#F7931A]' : 'bg-[#3B82F6]'}`} />
                         {trade.instrument}
                       </td>
                       <td className="py-4 px-4">
