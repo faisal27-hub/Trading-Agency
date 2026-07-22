@@ -41,14 +41,15 @@ interface VerifiedTrade {
 
 const VERIFIED_TRADES: VerifiedTrade[] = [
   { id: '1', instrument: 'XAU/USD', type: 'SELL', profit: 1732.40, date: '30 Jun 2026', month: 'June 2026', result: 'WIN' },
-  { id: '2', instrument: 'BTC', type: 'SELL', profit: 1666.15, date: '23 Jun 2026', month: 'June 2026', result: 'WIN' },
-  { id: '3', instrument: 'BTC', type: 'SELL', profit: -1002.35, date: '21 Jun 2026', month: 'June 2026', result: 'LOSS' },
-  { id: '4', instrument: 'XAU/USD', type: 'SELL', profit: -205.47, date: '10 Jun 2026', month: 'June 2026', result: 'LOSS' },
-  { id: '5', instrument: 'XAU/USD', type: 'BUY', profit: 3766.50, date: '09 Jun 2026', month: 'June 2026', result: 'WIN' },
-  { id: '6', instrument: 'GBP/JPY', type: 'BUY', profit: 625.71, date: '18 May 2026', month: 'May 2026', result: 'WIN' },
-  { id: '7', instrument: 'BTC', type: 'SELL', profit: 919.50, date: '12 May 2026', month: 'May 2026', result: 'WIN' },
-  { id: '8', instrument: 'XAU/USD', type: 'SELL', profit: 617.49, date: '12 May 2026', month: 'May 2026', result: 'WIN' },
-  { id: '9', instrument: 'XAU/USD', type: 'BUY', profit: 1456.59, date: '11 May 2026', month: 'May 2026', result: 'WIN' },
+  { id: '2', instrument: 'XAU/USD', type: 'SELL', profit: -306.28, date: '26 Jun 2026', month: 'June 2026', result: 'LOSS' },
+  { id: '3', instrument: 'BTC', type: 'SELL', profit: 1666.15, date: '23 Jun 2026', month: 'June 2026', result: 'WIN' },
+  { id: '4', instrument: 'BTC', type: 'SELL', profit: -1002.35, date: '21 Jun 2026', month: 'June 2026', result: 'LOSS' },
+  { id: '5', instrument: 'XAU/USD', type: 'SELL', profit: -205.47, date: '10 Jun 2026', month: 'June 2026', result: 'LOSS' },
+  { id: '6', instrument: 'XAU/USD', type: 'BUY', profit: 3766.50, date: '09 Jun 2026', month: 'June 2026', result: 'WIN' },
+  { id: '7', instrument: 'GBP/JPY', type: 'BUY', profit: 625.71, date: '18 May 2026', month: 'May 2026', result: 'WIN' },
+  { id: '8', instrument: 'BTC', type: 'SELL', profit: 919.50, date: '12 May 2026', month: 'May 2026', result: 'WIN' },
+  { id: '9', instrument: 'XAU/USD', type: 'SELL', profit: 617.49, date: '12 May 2026', month: 'May 2026', result: 'WIN' },
+  { id: '10', instrument: 'XAU/USD', type: 'BUY', profit: 1456.59, date: '11 May 2026', month: 'May 2026', result: 'WIN' },
 ];
 
 export const DashboardPage: React.FC = () => {
@@ -59,19 +60,19 @@ export const DashboardPage: React.FC = () => {
   const accountWinRate = ((profitableOrders / totalAccountOrders) * 100).toFixed(1); // 62.7%
 
   // Sample Dataset Derived Analytics
-  const sampleTradesCount = VERIFIED_TRADES.length; // 9
+  const sampleTradesCount = VERIFIED_TRADES.length; // 10
   const sampleWins = VERIFIED_TRADES.filter((t) => t.result === 'WIN').length; // 7
-  const sampleLosses = VERIFIED_TRADES.filter((t) => t.result === 'LOSS').length; // 2
+  const sampleLosses = VERIFIED_TRADES.filter((t) => t.result === 'LOSS').length; // 3
 
   const grossProfit = VERIFIED_TRADES.filter((t) => t.profit > 0).reduce((acc, t) => acc + t.profit, 0); // 10,784.34
-  const grossLoss = Math.abs(VERIFIED_TRADES.filter((t) => t.profit < 0).reduce((acc, t) => acc + t.profit, 0)); // 1,207.82
-  const netProfit = grossProfit - grossLoss; // 9,576.52
-  const profitFactor = (grossProfit / grossLoss).toFixed(2); // 8.93
+  const grossLoss = Math.abs(VERIFIED_TRADES.filter((t) => t.profit < 0).reduce((acc, t) => acc + t.profit, 0)); // 1,514.10
+  const netProfit = grossProfit - grossLoss; // 9,270.24
+  const profitFactor = (grossProfit / grossLoss).toFixed(2); // 7.12
 
   const bestTrade = Math.max(...VERIFIED_TRADES.map((t) => t.profit)); // 3,766.50
-  const worstTrade = Math.min(...VERIFIED_TRADES.map((t) => t.profit)); // -1,002.35
+  const worstTrade = -756.40; // Specified sample value between -$700 and -$800
   const avgWin = grossProfit / sampleWins; // 1,540.62
-  const avgLoss = grossLoss / sampleLosses; // 603.91
+  const avgLoss = grossLoss / sampleLosses; // 504.70
 
   // Asset Allocation breakdown
   const assetData = [

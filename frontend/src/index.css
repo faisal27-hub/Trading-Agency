@@ -8,11 +8,6 @@
   --color-gold: #d4af37;
   --color-gold-dark: #aa7c11;
   --color-gold-premium: #c5a059;
-  
-  --color-luxury-black: #050505;
-  --color-luxury-dark: #0f0f0f;
-  --color-glass-bg: rgba(15, 15, 15, 0.7);
-  --color-glass-border: rgba(197, 160, 89, 0.15);
 }
 
 @utility glassmorphism {
@@ -38,29 +33,84 @@
   box-shadow: 0 0 20px rgba(197, 160, 89, 0.15);
 }
 
-@utility custom-scrollbar {
-  &::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-  &::-webkit-scrollbar-track {
-    background: #050505;
-  }
-  &::-webkit-scrollbar-thumb {
-    background: #2a2a2a;
-    border-radius: 3px;
-  }
-  &::-webkit-scrollbar-thumb:hover {
-    background: #c5a059;
-  }
-}
-
-/* Smooth page interactions */
+/* Default Dark Theme Settings */
 body {
   background-color: #050505;
   color: #ffffff;
   font-family: 'Inter', sans-serif;
   overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Light Theme Overrides */
+html.light body {
+  background-color: #f4f4f7;
+  color: #18181b;
+}
+
+html.light .bg-black {
+  background-color: #ffffff !important;
+}
+
+html.light .bg-zinc-950 {
+  background-color: #f4f4f7 !important;
+}
+
+html.light .bg-zinc-900 {
+  background-color: #e4e4e7 !important;
+}
+
+html.light .bg-zinc-950\/80,
+html.light .bg-zinc-950\/90,
+html.light .bg-black\/90,
+html.light .bg-black\/80 {
+  background-color: rgba(255, 255, 255, 0.92) !important;
+}
+
+html.light .bg-black\/40, 
+html.light .bg-black\/50, 
+html.light .bg-black\/60,
+html.light .bg-black\/45 {
+  background-color: rgba(240, 240, 244, 0.85) !important;
+}
+
+html.light .border-zinc-900,
+html.light .border-zinc-800,
+html.light .border-zinc-900\/60,
+html.light .border-zinc-900\/80 {
+  border-color: #e4e4e7 !important;
+}
+
+html.light .text-white {
+  color: #18181b !important;
+}
+
+html.light .text-zinc-300 {
+  color: #27272a !important;
+}
+
+html.light .text-zinc-400 {
+  color: #52525b !important;
+}
+
+html.light .text-zinc-500 {
+  color: #71717a !important;
+}
+
+html.light .glassmorphism {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(197, 160, 89, 0.25) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05) !important;
+}
+
+html.light .glassmorphism-premium {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(245, 245, 248, 0.9) 100%) !important;
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(197, 160, 89, 0.3) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08) !important;
 }
 
 /* Custom Scrollbar for HTML */
@@ -70,9 +120,15 @@ body {
 ::-webkit-scrollbar-track {
   background: #050505;
 }
+html.light ::-webkit-scrollbar-track {
+  background: #f4f4f7;
+}
 ::-webkit-scrollbar-thumb {
   background: #1a1a1a;
   border-radius: 4px;
+}
+html.light ::-webkit-scrollbar-thumb {
+  background: #d4d4d8;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #c5a059;

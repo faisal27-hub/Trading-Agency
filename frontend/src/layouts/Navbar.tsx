@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
-import { Menu, X, ArrowRight } from 'lucide-react';
+import { Menu, X, ArrowRight, Sun, Moon } from 'lucide-react';
+import { useTheme } from '../context/ThemeContext';
 
 export const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { pathname } = useLocation();
+  const { theme, toggleTheme } = useTheme();
 
   const navItems = [
     { label: 'Home', path: '/' },
@@ -50,7 +52,7 @@ export const Navbar: React.FC = () => {
             : 'bg-transparent py-5 sm:py-6'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between lg:grid lg:grid-cols-[220px_1fr_220px] h-12 w-full">
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between lg:grid lg:grid-cols-[200px_1fr_160px] h-12 w-full">
           {/* Brand Logo (Left on all screens) */}
           <div className="flex justify-start items-center h-full">
             <Link to="/" className="flex items-center group h-full py-1">
@@ -63,13 +65,13 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Desktop Nav Items (Center, hidden on mobile) */}
-          <div className="hidden lg:flex justify-center items-center gap-8 h-full">
+          <div className="hidden lg:flex justify-center items-center gap-7 h-full">
             {navItems.map((item) => (
               <NavLink
                 key={item.path}
                 to={item.path}
                 className={({ isActive }) =>
-                  `text-xs font-semibold tracking-wider uppercase transition-all duration-300 relative py-1 hover:text-white flex items-center h-full whitespace-nowrap ${
+                  `text-xs font-semibold tracking-wider uppercase transition-all duration-300 relative py-1 hover:text-gold flex items-center h-full whitespace-nowrap ${
                     isActive ? 'text-gold' : 'text-zinc-400'
                   }`
                 }
@@ -82,8 +84,37 @@ export const Navbar: React.FC = () => {
             ))}
           </div>
 
-          {/* Hamburger Menu Trigger (Extreme right on mobile, equal padding) */}
-          <div className="flex justify-end items-center h-full lg:hidden">
+          {/* Right Action Area Desktop (Theme Toggle) */}
+          <div className="hidden lg:flex justify-end items-center h-full">
+            <button
+              onClick={toggleTheme}
+              className="p-2.5 rounded-xl bg-zinc-950/80 border border-gold-premium/30 text-gold-premium hover:text-gold hover:border-gold transition-all duration-300 flex items-center justify-center cursor-pointer shadow-md active:scale-95 group"
+              aria-label="Toggle Light/Dark Theme"
+              title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-4 h-4 text-amber-400 group-hover:rotate-45 transition-transform duration-300" />
+              ) : (
+                <Moon className="w-4 h-4 text-indigo-400 group-hover:-rotate-12 transition-transform duration-300" />
+              )}
+            </button>
+          </div>
+
+          {/* Mobile Right Controls (Theme Toggle + Hamburger Menu Trigger) */}
+          <div className="flex justify-end items-center gap-2.5 h-full lg:hidden">
+            <button
+              onClick={toggleTheme}
+              className="p-2.5 rounded-xl bg-zinc-950/80 border border-gold-premium/30 text-gold-premium hover:text-gold hover:border-gold transition-all duration-300 flex items-center justify-center cursor-pointer shadow-md active:scale-95"
+              aria-label="Toggle Light/Dark Theme"
+              title={`Switch to ${theme === 'dark' ? 'Light' : 'Dark'} Mode`}
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-5 h-5 text-amber-400" />
+              ) : (
+                <Moon className="w-5 h-5 text-indigo-400" />
+              )}
+            </button>
+
             <button
               onClick={() => setIsOpen(true)}
               className="p-2.5 text-gold-premium hover:text-gold bg-zinc-950/80 border border-gold-premium/20 hover:border-gold-premium/50 rounded-xl transition-all duration-300 flex items-center justify-center cursor-pointer shadow-md active:scale-95"
@@ -117,13 +148,27 @@ export const Navbar: React.FC = () => {
             />
           </Link>
 
-          <button
-            onClick={() => setIsOpen(false)}
-            className="p-2 rounded-xl bg-zinc-950 border border-gold-premium/30 text-gold hover:text-white hover:border-gold transition-all duration-300 flex items-center justify-center cursor-pointer shadow-lg active:scale-95"
-            aria-label="Close Mobile Navigation Menu"
-          >
-            <X className="w-5 h-5 sm:w-6 sm:h-6" />
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-xl bg-zinc-950 border border-gold-premium/30 text-gold-premium hover:text-gold hover:border-gold transition-all duration-300 flex items-center justify-center cursor-pointer shadow-lg active:scale-95"
+              aria-label="Toggle Light/Dark Theme"
+            >
+              {theme === 'dark' ? (
+                <Sun className="w-5 h-5 text-amber-400" />
+              ) : (
+                <Moon className="w-5 h-5 text-indigo-400" />
+              )}
+            </button>
+
+            <button
+              onClick={() => setIsOpen(false)}
+              className="p-2 rounded-xl bg-zinc-950 border border-gold-premium/30 text-gold hover:text-white hover:border-gold transition-all duration-300 flex items-center justify-center cursor-pointer shadow-lg active:scale-95"
+              aria-label="Close Mobile Navigation Menu"
+            >
+              <X className="w-5 h-5 sm:w-6 sm:h-6" />
+            </button>
+          </div>
         </div>
 
         {/* Vertical Navigation Links */}
