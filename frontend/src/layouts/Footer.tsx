@@ -34,9 +34,9 @@ export const Footer: React.FC = () => {
           <div className="flex flex-col gap-5">
             <Link to="/" className="flex items-center">
               <img 
-                src="/assets/logo.png" 
+                src="/assets/logo.svg" 
                 alt="Aurex Capital Logo" 
-                className="h-8 w-auto object-contain"
+                className="h-8 md:h-9 w-auto object-contain select-none"
               />
             </Link>
             <p className="text-sm text-zinc-500 leading-relaxed font-light">
