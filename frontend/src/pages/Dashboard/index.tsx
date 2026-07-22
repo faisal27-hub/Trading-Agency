@@ -1,69 +1,93 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import {
   AreaChart,
   Area,
+  BarChart,
+  Bar,
+  PieChart,
+  Pie,
+  Cell,
   XAxis,
   YAxis,
   Tooltip,
   ResponsiveContainer,
   CartesianGrid,
 } from 'recharts';
-import { ShieldCheck, Calendar, RefreshCw, AlertTriangle, Info, MapPin } from 'lucide-react';
-import { apiService } from '../../services/api';
-import type { MetricsOverview, MetricItem } from '../../types';
-import { formatRoi } from '../../utilities';
+import { 
+  TrendingUp, 
+  CheckCircle, 
+  XCircle, 
+  PieChart as PieIcon, 
+  BarChart2, 
+  MapPin, 
+  Award, 
+  Scale, 
+  ShieldCheck, 
+  ArrowUpRight, 
+  ArrowDownRight 
+} from 'lucide-react';
 import { PageTransition } from '../../components/PageTransition';
 
+// Clean, non-confidential sample trade dataset extracted strictly from uploaded trade tickets
+interface VerifiedTrade {
+  id: string;
+  instrument: 'XAU/USD' | 'BTC';
+  type: 'BUY' | 'SELL';
+  profit: number;
+  date: string;
+  month: 'May 2026' | 'June 2026';
+  result: 'WIN' | 'LOSS';
+}
+
+const VERIFIED_TRADES: VerifiedTrade[] = [
+  { id: '1', instrument: 'BTC', type: 'SELL', profit: 1666.15, date: '23 Jun 2026', month: 'June 2026', result: 'WIN' },
+  { id: '2', instrument: 'BTC', type: 'SELL', profit: -1002.35, date: '21 Jun 2026', month: 'June 2026', result: 'LOSS' },
+  { id: '3', instrument: 'XAU/USD', type: 'SELL', profit: -205.47, date: '10 Jun 2026', month: 'June 2026', result: 'LOSS' },
+  { id: '4', instrument: 'XAU/USD', type: 'SELL', profit: 617.49, date: '12 May 2026', month: 'May 2026', result: 'WIN' },
+  { id: '5', instrument: 'XAU/USD', type: 'BUY', profit: 1456.59, date: '11 May 2026', month: 'May 2026', result: 'WIN' },
+];
+
 export const DashboardPage: React.FC = () => {
-  const [overview, setOverview] = useState<MetricsOverview | null>(null);
-  const [history, setHistory] = useState<MetricItem[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  // Derived Core Metrics from verified trade data
+  const totalTrades = VERIFIED_TRADES.length; // 5
+  const winningTrades = VERIFIED_TRADES.filter((t) => t.result === 'WIN').length; // 3
+  const losingTrades = VERIFIED_TRADES.filter((t) => t.result === 'LOSS').length; // 2
+  const winRate = ((winningTrades / totalTrades) * 100).toFixed(1); // 60.0%
 
-  const fetchMetrics = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await apiService.getPerformanceMetrics();
-      setOverview(data.overview);
-      setHistory(data.history || []);
-    } catch (err) {
-      console.warn('API metrics unreachable. Falling back to local placeholder parameters.', err);
-      setOverview({
-        totalReturn: 142.85,
-        averageMonthlyRoi: 7.85,
-        averageWinRate: 68.4,
-        totalTrades: 427,
-        profitFactor: 2.41,
-        maxDrawdown: 8.5,
-        sharpeRatio: 2.85,
-        verifiedBy: 'Myfxbook (Audited)',
-        lastUpdated: new Date().toISOString(),
-      });
-      setHistory([
-        { month: 'Jan 2025', roi: 5.2, winRate: 62, tradesCount: 28, profitFactor: 2.1, growth: 5.2 },
-        { month: 'Feb 2025', roi: 6.8, winRate: 65, tradesCount: 24, profitFactor: 2.3, growth: 12.35 },
-        { month: 'Mar 2025', roi: -2.1, winRate: 55, tradesCount: 30, profitFactor: 1.7, growth: 9.99 },
-        { month: 'Apr 2025', roi: 8.5, winRate: 72, tradesCount: 32, profitFactor: 2.6, growth: 19.34 },
-        { month: 'May 2025', roi: 7.2, winRate: 68, tradesCount: 26, profitFactor: 2.4, growth: 27.93 },
-        { month: 'Jun 2025', roi: 9.4, winRate: 70, tradesCount: 29, profitFactor: 2.8, growth: 39.96 },
-        { month: 'Jul 2025', roi: 5.5, winRate: 64, tradesCount: 25, profitFactor: 2.2, growth: 47.66 },
-        { month: 'Aug 2025', roi: -1.5, winRate: 58, tradesCount: 22, profitFactor: 1.8, growth: 45.45 },
-        { month: 'Sep 2025', roi: 10.2, winRate: 75, tradesCount: 35, profitFactor: 3.1, growth: 60.29 },
-        { month: 'Oct 2025', roi: 8.1, winRate: 69, tradesCount: 27, profitFactor: 2.5, growth: 73.27 },
-        { month: 'Nov 2025', roi: 9.5, winRate: 73, tradesCount: 31, profitFactor: 2.9, growth: 89.73 },
-        { month: 'Dec 2025', roi: 11.2, winRate: 78, tradesCount: 34, profitFactor: 3.3, growth: 111.0 },
-        { month: 'Jan 2026', roi: 6.4, winRate: 66, tradesCount: 28, profitFactor: 2.2, growth: 124.5 },
-        { month: 'Feb 2026', roi: 8.2, winRate: 70, tradesCount: 26, profitFactor: 2.5, growth: 142.85 },
-      ]);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const grossProfit = VERIFIED_TRADES.filter((t) => t.profit > 0).reduce((acc, t) => acc + t.profit, 0); // 3740.23
+  const grossLoss = Math.abs(VERIFIED_TRADES.filter((t) => t.profit < 0).reduce((acc, t) => acc + t.profit, 0)); // 1207.82
+  const netProfit = grossProfit - grossLoss; // 2532.41
+  const profitFactor = (grossProfit / grossLoss).toFixed(2); // 3.10
 
-  useEffect(() => {
-    fetchMetrics();
-  }, []);
+  const bestTrade = Math.max(...VERIFIED_TRADES.map((t) => t.profit)); // 1666.15
+  const worstTrade = Math.min(...VERIFIED_TRADES.map((t) => t.profit)); // -1002.35
+  const avgWin = grossProfit / winningTrades; // 1246.74
+  const avgLoss = grossLoss / losingTrades; // 603.91
+
+  // Asset allocation breakdown
+  const assetData = [
+    { name: 'XAU/USD (Gold)', value: 3, percentage: '60%', profit: 1868.61, color: '#C5A059' },
+    { name: 'BTC (Bitcoin)', value: 2, percentage: '40%', profit: 663.80, color: '#F7931A' },
+  ];
+
+  // Monthly Cumulative Performance Chart Data
+  const monthlyChartData = [
+    { month: 'May 2026', netProfit: 2074.08, cumulative: 2074.08, trades: 2, winRate: 100 },
+    { month: 'June 2026', netProfit: 458.33, cumulative: 2532.41, trades: 3, winRate: 33.3 },
+  ];
+
+  // Profit vs Loss Overview Data
+  const pnlComparisonData = [
+    { category: 'Gross Profit', amount: grossProfit, color: '#22c55e' },
+    { category: 'Gross Loss', amount: grossLoss, color: '#ef4444' },
+    { category: 'Net Profit', amount: netProfit, color: '#C5A059' },
+  ];
+
+  // Directional Buy vs Sell Data
+  const directionData = [
+    { type: 'BUY Orders', count: 1, netProfit: 1456.59, winRate: 100 },
+    { type: 'SELL Orders', count: 4, netProfit: 1075.82, winRate: 50 },
+  ];
 
   return (
     <PageTransition>
@@ -73,288 +97,401 @@ export const DashboardPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row md:items-end justify-between gap-6 relative z-10">
           <div>
             <span className="text-xs uppercase font-bold text-gold-premium tracking-widest block mb-3">
-              Audited Records
+              Performance Analytics
             </span>
             <h1 className="font-display font-bold text-4xl sm:text-5xl text-white tracking-tight leading-tight">
-              Dashboard
+              Trading Execution Dashboard
             </h1>
             <div className="w-16 h-1 bg-gradient-to-r from-gold to-gold-premium mt-4" />
           </div>
-          <div className="flex flex-wrap items-center gap-4 text-xs">
-            <span className="flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-gold-premium/20 bg-gold-premium/5 text-gold-premium font-semibold uppercase tracking-wider">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              Verified Accounts
-            </span>
-            <button
-              onClick={fetchMetrics}
-              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-zinc-800 bg-zinc-950 hover:bg-zinc-900 text-zinc-400 hover:text-white transition-colors cursor-pointer"
-            >
-              <RefreshCw className={`w-3.5 h-3.5 ${loading ? 'animate-spin' : ''}`} />
-              Refresh Feed
-            </button>
+          <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-gold-premium/20 bg-gold-premium/5 text-gold-premium text-xs font-semibold uppercase tracking-wider w-fit">
+            <ShieldCheck className="w-4 h-4" />
+            <span>Verified Sample Dataset</span>
           </div>
         </div>
       </section>
 
-      {/* Main Live Dashboard */}
-      <section className="py-24 bg-zinc-950 relative overflow-hidden">
+      {/* Main Dashboard Section */}
+      <section className="py-16 sm:py-24 bg-zinc-950 relative overflow-hidden">
         <div className="absolute top-10 right-10 w-96 h-96 bg-gold-premium/5 blur-[120px] rounded-full pointer-events-none" />
         <div className="absolute bottom-10 left-10 w-96 h-96 bg-gold-dark/3 blur-[120px] rounded-full pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto px-6">
-          {loading ? (
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-              <div className="lg:col-span-4 flex flex-col gap-6">
-                {[1, 2, 3, 4].map((i) => (
-                  <div key={i} className="h-24 rounded-2xl bg-zinc-900/50 animate-pulse border border-zinc-900" />
+        <div className="max-w-7xl mx-auto px-6 flex flex-col gap-12 relative z-10">
+          
+          {/* Top Metrics Grid (5 Key Performance Indicators) */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
+            {/* Net Profit Card */}
+            <div className="glassmorphism p-5 rounded-2xl border border-gold-premium/20 hover:border-gold-premium/45 transition-all duration-300 relative group overflow-hidden">
+              <div className="flex items-center justify-between text-zinc-500 mb-2">
+                <span className="text-[10px] uppercase tracking-wider font-bold">Net Profit</span>
+                <TrendingUp className="w-4 h-4 text-gold-premium" />
+              </div>
+              <div className="font-display font-bold text-2xl sm:text-3xl text-gold-premium tracking-tight">
+                +${netProfit.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+              </div>
+              <span className="text-[10px] text-zinc-400 mt-1 block font-light">
+                Gross Profit: +${grossProfit.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+              </span>
+            </div>
+
+            {/* Win Rate Card */}
+            <div className="glassmorphism p-5 rounded-2xl border border-zinc-900 hover:border-gold-premium/40 transition-all duration-300">
+              <div className="flex items-center justify-between text-zinc-500 mb-2">
+                <span className="text-[10px] uppercase tracking-wider font-bold">Win Rate</span>
+                <Award className="w-4 h-4 text-green-400" />
+              </div>
+              <div className="font-display font-bold text-2xl sm:text-3xl text-white tracking-tight">
+                {winRate}%
+              </div>
+              <span className="text-[10px] text-zinc-400 mt-1 block font-light">
+                {winningTrades} Wins / {losingTrades} Losses
+              </span>
+            </div>
+
+            {/* Total Trades Card */}
+            <div className="glassmorphism p-5 rounded-2xl border border-zinc-900 hover:border-gold-premium/40 transition-all duration-300">
+              <div className="flex items-center justify-between text-zinc-500 mb-2">
+                <span className="text-[10px] uppercase tracking-wider font-bold">Total Trades</span>
+                <BarChart2 className="w-4 h-4 text-gold-premium" />
+              </div>
+              <div className="font-display font-bold text-2xl sm:text-3xl text-white tracking-tight">
+                {totalTrades}
+              </div>
+              <span className="text-[10px] text-zinc-400 mt-1 block font-light">
+                XAU/USD: 3 | BTC: 2
+              </span>
+            </div>
+
+            {/* Profit Factor Card */}
+            <div className="glassmorphism p-5 rounded-2xl border border-zinc-900 hover:border-gold-premium/40 transition-all duration-300">
+              <div className="flex items-center justify-between text-zinc-500 mb-2">
+                <span className="text-[10px] uppercase tracking-wider font-bold">Profit Factor</span>
+                <Scale className="w-4 h-4 text-gold" />
+              </div>
+              <div className="font-display font-bold text-2xl sm:text-3xl text-gold tracking-tight">
+                {profitFactor}
+              </div>
+              <span className="text-[10px] text-zinc-400 mt-1 block font-light">
+                Gross Win / Loss ratio
+              </span>
+            </div>
+
+            {/* Best & Worst Trade Card */}
+            <div className="glassmorphism p-5 rounded-2xl border border-zinc-900 hover:border-gold-premium/40 transition-all duration-300 sm:col-span-2 lg:col-span-1">
+              <span className="text-[10px] uppercase tracking-wider font-bold text-zinc-500 block mb-2">Best / Worst Trade</span>
+              <div className="flex flex-col gap-1 text-xs">
+                <div className="flex justify-between items-center">
+                  <span className="text-zinc-400 font-light">Best:</span>
+                  <span className="font-bold text-green-400">+${bestTrade.toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-zinc-400 font-light">Worst:</span>
+                  <span className="font-bold text-red-400">-${Math.abs(worstTrade).toLocaleString('en-US', { minimumFractionDigits: 2 })}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Analytics Charts Grid */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            {/* Chart 1: Cumulative Capital Growth Curve */}
+            <div className="lg:col-span-7 glassmorphism-premium p-6 rounded-3xl border border-gold-premium/15 flex flex-col justify-between">
+              <div>
+                <span className="text-xs text-zinc-400 font-bold uppercase tracking-wider block">
+                  Cumulative Net Growth Curve ($ USD)
+                </span>
+                <span className="text-[10px] text-zinc-500 block mt-0.5 font-light">
+                  Tracked month-over-month performance from verified sample dataset.
+                </span>
+              </div>
+
+              <div className="w-full h-[280px] sm:h-[320px] mt-6">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={monthlyChartData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="colorGrowth" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#C5A059" stopOpacity={0.35} />
+                        <stop offset="95%" stopColor="#C5A059" stopOpacity={0} />
+                      </linearGradient>
+                    </defs>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#18181b" />
+                    <XAxis dataKey="month" stroke="#71717a" fontSize={11} tickLine={false} />
+                    <YAxis stroke="#71717a" fontSize={11} tickLine={false} tickFormatter={(v) => `$${v}`} />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: '#050505',
+                        borderColor: 'rgba(197, 160, 89, 0.3)',
+                        borderRadius: '12px',
+                        color: '#fff',
+                        fontSize: '12px',
+                        boxShadow: '0 8px 24px rgba(0,0,0,0.9)',
+                      }}
+                      itemStyle={{ color: '#c5a059' }}
+                      formatter={(value: any) => [`+$${Number(value).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 'Cumulative Profit']}
+                    />
+                    <Area type="monotone" dataKey="cumulative" stroke="#c5a059" strokeWidth={2.5} fillOpacity={1} fill="url(#colorGrowth)" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* Chart 2: Asset Volume & Performance Breakdown */}
+            <div className="lg:col-span-5 glassmorphism-premium p-6 rounded-3xl border border-gold-premium/15 flex flex-col justify-between">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <PieIcon className="w-4 h-4 text-gold-premium" />
+                  <span className="text-xs text-zinc-400 font-bold uppercase tracking-wider">
+                    Traded Assets Breakdown
+                  </span>
+                </div>
+                <span className="text-[10px] text-zinc-500 block font-light">
+                  Distribution of execution volume across currency & commodity assets.
+                </span>
+              </div>
+
+              <div className="w-full h-[220px] my-4 flex items-center justify-center">
+                <ResponsiveContainer width="100%" height="100%">
+                  <PieChart>
+                    <Pie
+                      data={assetData}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={55}
+                      outerRadius={85}
+                      paddingAngle={5}
+                      dataKey="value"
+                    >
+                      {assetData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} stroke="#050505" strokeWidth={2} />
+                      ))}
+                    </Pie>
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: '#050505',
+                        borderColor: 'rgba(197, 160, 89, 0.3)',
+                        borderRadius: '12px',
+                        color: '#fff',
+                        fontSize: '12px',
+                      }}
+                      formatter={(value: any, name: any) => [`${value} Trades (${name === 'XAU/USD (Gold)' ? '60%' : '40%'})`, name]}
+                    />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 pt-4 border-t border-zinc-900 text-xs">
+                <div className="flex flex-col gap-1 p-2.5 rounded-xl bg-black/40 border border-zinc-900">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#C5A059]" />
+                    <span className="font-semibold text-white">XAU/USD</span>
+                  </div>
+                  <span className="text-[11px] text-green-400 font-bold">+$1,868.61 P/L</span>
+                  <span className="text-[9px] text-zinc-500">3 Trades (60%)</span>
+                </div>
+                <div className="flex flex-col gap-1 p-2.5 rounded-xl bg-black/40 border border-zinc-900">
+                  <div className="flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#F7931A]" />
+                    <span className="font-semibold text-white">BTC</span>
+                  </div>
+                  <span className="text-[11px] text-green-400 font-bold">+$663.80 P/L</span>
+                  <span className="text-[9px] text-zinc-500">2 Trades (40%)</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* Chart Grid Row 2: Profit vs Loss & Directional Execution */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            {/* Profit vs Loss Breakdown */}
+            <div className="glassmorphism p-6 rounded-3xl border border-zinc-900 flex flex-col justify-between">
+              <span className="text-xs text-zinc-400 font-bold uppercase tracking-wider mb-4 block">
+                Profit vs Loss Summary ($ USD)
+              </span>
+              <div className="w-full h-[220px]">
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={pnlComparisonData} margin={{ top: 10, right: 10, left: -10, bottom: 0 }}>
+                    <CartesianGrid strokeDasharray="3 3" stroke="#18181b" />
+                    <XAxis dataKey="category" stroke="#71717a" fontSize={11} tickLine={false} />
+                    <YAxis stroke="#71717a" fontSize={11} tickLine={false} tickFormatter={(v) => `$${v}`} />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: '#050505',
+                        borderColor: 'rgba(197, 160, 89, 0.3)',
+                        borderRadius: '12px',
+                        color: '#fff',
+                        fontSize: '12px',
+                      }}
+                      formatter={(value: any) => [`$${Number(value).toLocaleString('en-US', { minimumFractionDigits: 2 })}`, 'Amount']}
+                    />
+                    <Bar dataKey="amount" radius={[6, 6, 0, 0]}>
+                      {pnlComparisonData.map((entry, index) => (
+                        <Cell key={`cell-${index}`} fill={entry.color} />
+                      ))}
+                    </Bar>
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
+            </div>
+
+            {/* Directional Buy vs Sell Execution */}
+            <div className="glassmorphism p-6 rounded-3xl border border-zinc-900 flex flex-col justify-between">
+              <span className="text-xs text-zinc-400 font-bold uppercase tracking-wider mb-4 block">
+                Order Direction Performance (Buy vs Sell)
+              </span>
+              <div className="grid grid-cols-2 gap-4 h-[220px] items-center">
+                {directionData.map((d) => (
+                  <div key={d.type} className="flex flex-col justify-center gap-2 p-5 rounded-2xl bg-black/50 border border-zinc-900/80">
+                    <div className={`flex items-center gap-2 ${d.type.includes('BUY') ? 'text-green-400' : 'text-gold-premium'}`}>
+                      {d.type.includes('BUY') ? <ArrowUpRight className="w-5 h-5" /> : <ArrowDownRight className="w-5 h-5" />}
+                      <span className="font-display font-bold text-lg">{d.type}</span>
+                    </div>
+                    <span className="text-xs text-zinc-400">{d.count} Executed {d.count === 1 ? 'Position' : 'Positions'}</span>
+                    <span className={`font-display font-bold text-xl ${d.type.includes('BUY') ? 'text-green-400' : 'text-gold-premium'}`}>
+                      +${d.netProfit.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                    </span>
+                    <span className="text-[10px] text-zinc-500 font-light">{d.winRate}% Win Rate</span>
+                  </div>
                 ))}
               </div>
-              <div className="lg:col-span-8 h-[400px] rounded-2xl bg-zinc-900/50 animate-pulse border border-zinc-900" />
             </div>
-          ) : error ? (
-            <div className="glassmorphism p-12 rounded-2xl text-center flex flex-col items-center gap-4 max-w-lg mx-auto">
-              <AlertTriangle className="w-12 h-12 text-red-500" />
-              <h3 className="font-display font-semibold text-lg text-white">Metrics Connection Error</h3>
-              <p className="text-zinc-400 text-sm font-light leading-relaxed">
-                Could not retrieve audited records from our database API server.
-              </p>
-              <button
-                onClick={fetchMetrics}
-                className="mt-2 px-5 py-2 rounded-full bg-gold text-black font-semibold text-xs uppercase"
-              >
-                Try Connecting Again
-              </button>
-            </div>
-          ) : (
-            <div className="flex flex-col gap-12">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                {/* Metric Summary Cards */}
-                <div className="lg:col-span-4 grid grid-cols-2 lg:grid-cols-1 gap-6">
-                  <div className="glassmorphism p-5 rounded-2xl hover:border-gold-premium/40 transition-all duration-300 relative group overflow-hidden">
-                    <span className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold block">
-                      Cumulative Return (ROI)
-                    </span>
-                    <span className="font-display font-bold text-3xl text-white mt-2 block tracking-tight">
-                      {overview?.totalReturn !== null && overview?.totalReturn !== undefined 
-                        ? formatRoi(overview.totalReturn) 
-                        : '—'}
-                    </span>
-                    <span className="text-[9px] text-zinc-500 mt-1 block">
-                      {overview?.totalReturn !== null ? '✔ Audited Track Record' : 'Awaiting API Connection'}
-                    </span>
-                  </div>
 
-                  <div className="glassmorphism p-5 rounded-2xl hover:border-gold-premium/40 transition-all duration-300 relative group overflow-hidden">
-                    <span className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold block">
-                      Audited Win Rate
-                    </span>
-                    <span className="font-display font-bold text-3xl text-white mt-2 block tracking-tight">
-                      {overview?.averageWinRate !== null && overview?.averageWinRate !== undefined
-                        ? `${overview.averageWinRate}%`
-                        : '—'}
-                    </span>
-                    <span className="text-[9px] text-zinc-500 mt-1 block">
-                      {overview?.totalTrades !== null && overview?.totalTrades !== undefined
-                        ? `Based on ${overview.totalTrades} total trades` 
-                        : 'Awaiting API Connection'}
-                    </span>
-                  </div>
+          </div>
 
-                  <div className="glassmorphism p-5 rounded-2xl hover:border-gold-premium/40 transition-all duration-300 relative group overflow-hidden">
-                    <span className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold block">
-                      Profit Factor Ratio
-                    </span>
-                    <span className="font-display font-bold text-3xl text-gold-premium mt-2 block tracking-tight">
-                      {overview?.profitFactor !== null && overview?.profitFactor !== undefined
-                        ? overview.profitFactor
-                        : '—'}
-                    </span>
-                    <span className="text-[9px] text-zinc-500 mt-1 block">Total gross profit / gross loss</span>
-                  </div>
+          {/* Key Automated Insights Section */}
+          <div className="glassmorphism p-6 sm:p-8 rounded-3xl border border-gold-premium/15">
+            <h3 className="font-display font-bold text-lg text-white mb-6 flex items-center gap-2">
+              <Award className="w-5 h-5 text-gold-premium" />
+              Automated Analytical Insights
+            </h3>
 
-                  <div className="glassmorphism p-5 rounded-2xl hover:border-gold-premium/40 transition-all duration-300 relative group overflow-hidden">
-                    <span className="text-[10px] text-zinc-500 uppercase tracking-wider font-semibold block">
-                      Maximum Drawdown
-                    </span>
-                    <span className="font-display font-bold text-3xl text-white mt-2 block tracking-tight">
-                      {overview?.maxDrawdown !== null && overview?.maxDrawdown !== undefined
-                        ? `${overview.maxDrawdown}%`
-                        : '—'}
-                    </span>
-                    <span className="text-[9px] text-gold-premium mt-1 block">Low volatility risk threshold</span>
-                  </div>
-                </div>
-
-                {/* Performance Chart Area */}
-                <div className="lg:col-span-8 glassmorphism-premium p-6 rounded-2xl border border-gold-premium/15 flex flex-col justify-between">
-                  <div>
-                    <span className="text-[11px] text-zinc-500 font-bold uppercase tracking-wider block">
-                      Compound Capital Growth Curve
-                    </span>
-                    <span className="text-[9px] text-zinc-600 block mt-0.5">
-                      Verified by broker ledger outputs. Values compiled on month-end compounding.
-                    </span>
-                  </div>
-
-                  {history && history.length > 0 ? (
-                    <div className="w-full h-[320px] mt-6">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <AreaChart
-                          data={history}
-                          margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
-                        >
-                          <defs>
-                            <linearGradient id="colorGrowth" x1="0" y1="0" x2="0" y2="1">
-                              <stop offset="5%" stopColor="#C5A059" stopOpacity={0.25} />
-                              <stop offset="95%" stopColor="#C5A059" stopOpacity={0} />
-                            </linearGradient>
-                          </defs>
-                          <CartesianGrid strokeDasharray="3 3" stroke="#111" />
-                          <XAxis
-                            dataKey="month"
-                            stroke="#444"
-                            fontSize={11}
-                            tickLine={false}
-                          />
-                          <YAxis
-                            stroke="#444"
-                            fontSize={11}
-                            tickLine={false}
-                            tickFormatter={(v) => `${v}%`}
-                          />
-                          <Tooltip
-                            contentStyle={{
-                              backgroundColor: '#050505',
-                              borderColor: 'rgba(197, 160, 89, 0.3)',
-                              borderRadius: '12px',
-                              color: '#fff',
-                              fontSize: '12px',
-                              boxShadow: '0 8px 24px rgba(0,0,0,0.9)',
-                            }}
-                            itemStyle={{ color: '#c5a059' }}
-                            formatter={(value: any) => [`${value}%`, 'Cumulative Return']}
-                          />
-                          <Area
-                            type="monotone"
-                            dataKey="growth"
-                            stroke="#c5a059"
-                            strokeWidth={2}
-                            fillOpacity={1}
-                            fill="url(#colorGrowth)"
-                          />
-                        </AreaChart>
-                      </ResponsiveContainer>
-                    </div>
-                  ) : (
-                    <div className="w-full h-[320px] mt-6 rounded-xl bg-black/40 border border-zinc-900/50 flex flex-col items-center justify-center p-6 text-center gap-3">
-                      <Info className="w-8 h-8 text-gold-premium" />
-                      <h4 className="font-display font-semibold text-sm text-white">Live Performance Feeds Inactive</h4>
-                      <p className="text-zinc-500 text-xs font-light max-w-sm leading-relaxed">
-                        To view real-time compounding growth, integrate your MetaTrader broker account credentials or a verified Myfxbook read-only API link.
-                      </p>
-                    </div>
-                  )}
-
-                  <div className="flex flex-wrap items-center justify-between border-t border-zinc-900/60 pt-4 mt-4 text-[10px] text-zinc-500 font-light">
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-3.5 h-3.5 text-gold-premium" />
-                      Last Updated: {overview?.lastUpdated ? new Date(overview.lastUpdated).toLocaleDateString() : 'Awaiting Connection'}
-                    </span>
-                    <span>Sharpe Ratio (Risk Adjusted): <b className="text-white font-bold">{overview?.sharpeRatio ?? '—'}</b></span>
-                  </div>
-                </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-xs font-light">
+              <div className="p-4 rounded-xl bg-black/40 border border-zinc-900 flex flex-col gap-2">
+                <span className="font-bold text-gold uppercase tracking-wider text-[10px]">Top Asset</span>
+                <p className="text-zinc-300 leading-relaxed">
+                  <b className="text-white font-bold">XAU/USD (Gold)</b> is the primary profit generator, producing <b className="text-green-400 font-bold">+$1,868.61</b> across 3 executions.
+                </p>
               </div>
 
-              {/* Monthly Ledger Table */}
-              <div className="glassmorphism p-8 rounded-2xl border border-zinc-900">
-                <div className="flex items-center gap-3 mb-6">
-                  <Info className="w-5 h-5 text-gold-premium" />
-                  <div>
-                    <h3 className="font-display font-bold text-lg text-white">Monthly Execution Ledger</h3>
-                    <p className="text-xs text-zinc-500 font-light">Detailed results broken down by historical calendar month.</p>
-                  </div>
-                </div>
-
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left border-collapse text-xs">
-                    <thead>
-                      <tr className="border-b border-zinc-800 text-zinc-400 font-bold uppercase tracking-wider">
-                        <th className="py-4 px-3">Month</th>
-                        <th className="py-4 px-3">ROI Return</th>
-                        <th className="py-4 px-3">Win Rate</th>
-                        <th className="py-4 px-3">Total Trades</th>
-                        <th className="py-4 px-3">Profit Factor</th>
-                        <th className="py-4 px-3">Verification ID</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-zinc-900/40 text-zinc-300">
-                      {history && history.length > 0 ? (
-                        history.map((row) => (
-                          <tr key={row.month} className="hover:bg-zinc-900/10 transition-colors">
-                            <td className="py-4 px-3 font-semibold text-white">{row.month} 2026</td>
-                            <td className={`py-4 px-3 font-semibold ${row.roi >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                              {row.roi >= 0 ? `+${row.roi}%` : `${row.roi}%`}
-                            </td>
-                            <td className="py-4 px-3">{row.winRate}%</td>
-                            <td className="py-4 px-3">{row.tradesCount}</td>
-                            <td className="py-4 px-3 font-medium text-gold-premium">{row.profitFactor}</td>
-                            <td className="py-4 px-3 font-mono text-[10px] text-zinc-500">AC-{row.month.toUpperCase()}-LEDGER</td>
-                          </tr>
-                        ))
-                      ) : (
-                        <tr>
-                          <td colSpan={6} className="py-12 text-center text-zinc-500 font-light">
-                            Awaiting broker ledger synchronization to populate transaction history.
-                          </td>
-                        </tr>
-                      )}
-                    </tbody>
-                  </table>
-                </div>
+              <div className="p-4 rounded-xl bg-black/40 border border-zinc-900 flex flex-col gap-2">
+                <span className="font-bold text-gold uppercase tracking-wider text-[10px]">Risk / Reward Ratio</span>
+                <p className="text-zinc-300 leading-relaxed">
+                  Average winning trade (<b className="text-green-400 font-bold">+${avgWin.toLocaleString('en-US', { minimumFractionDigits: 2 })}</b>) is <b className="text-white font-bold">{(avgWin / avgLoss).toFixed(2)}x larger</b> than average loss (-${avgLoss.toLocaleString('en-US', { minimumFractionDigits: 2 })}).
+                </p>
               </div>
 
-              {/* Corporate Office Location Section */}
-              <div className="glassmorphism p-6 sm:p-8 rounded-2xl border border-zinc-900">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-gold-premium/5 border border-gold-premium/20 flex items-center justify-center text-gold shrink-0">
-                      <MapPin className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <span className="text-[10px] text-gold-premium font-bold uppercase tracking-widest block">
-                        Global Hub
-                      </span>
-                      <h3 className="font-display font-bold text-lg text-white">
-                        Corporate Office Location
-                      </h3>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 text-xs text-zinc-300 font-medium bg-black/60 border border-zinc-800 px-4 py-2 rounded-full w-fit">
-                    <span className="text-gold">📍</span>
-                    <span>Dubai, United Arab Emirates</span>
-                  </div>
-                </div>
+              <div className="p-4 rounded-xl bg-black/40 border border-zinc-900 flex flex-col gap-2">
+                <span className="font-bold text-gold uppercase tracking-wider text-[10px]">Profit Factor Efficiency</span>
+                <p className="text-zinc-300 leading-relaxed">
+                  Achieved a robust <b className="text-gold font-bold">3.10 Profit Factor</b>, generating $3,740.23 gross profit against $1,207.82 gross loss.
+                </p>
+              </div>
 
-                {/* Embedded Responsive Google Map for Dubai, UAE */}
-                <div className="relative w-full h-48 sm:h-56 rounded-xl overflow-hidden border border-gold-premium/15 shadow-xl">
-                  <iframe
-                    title="Aurex Capital Corporate Office - Dubai, UAE"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115494.39462277727!2d55.14324391217032!3d25.177242131971714!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f43496ad9c645%3A0xb12b4e7b1660320!2sDubai%20-%20United%20Arab%20Emirates!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s"
-                    width="100%"
-                    height="100%"
-                    style={{ border: 0, filter: 'invert(90%) hue-rotate(180deg) opacity(0.85) contrast(1.1)' }}
-                    allowFullScreen
-                    loading="lazy"
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
-                </div>
+              <div className="p-4 rounded-xl bg-black/40 border border-zinc-900 flex flex-col gap-2">
+                <span className="font-bold text-gold uppercase tracking-wider text-[10px]">Monthly Consistency</span>
+                <p className="text-zinc-300 leading-relaxed">
+                  Maintained positive net profits in both <b className="text-white font-bold">May 2026</b> (+$2,074.08) and <b className="text-white font-bold">June 2026</b> (+$458.33).
+                </p>
               </div>
             </div>
-          )}
+          </div>
 
-          {/* Risk Warning Disclaimer */}
-          <p className="text-[10px] text-zinc-600 text-center mt-12 leading-relaxed max-w-4xl mx-auto font-light">
-            <b>Disclaimer:</b> Trading foreign exchange on margin carries a high level of risk, and may not be suitable for all investors. The high degree of leverage can work against you as well as for you. Before deciding to trade foreign exchange you should carefully consider your investment objectives, level of experience, and risk appetite. Past performance is not indicative of future results.
+          {/* Recent Executions Summary Table (Strictly Non-Confidential) */}
+          <div className="glassmorphism p-6 sm:p-8 rounded-3xl border border-zinc-900">
+            <div className="flex items-center justify-between mb-6">
+              <div>
+                <h3 className="font-display font-bold text-lg text-white">Verified Sample Trade Ledger</h3>
+                <p className="text-xs text-zinc-500 font-light mt-0.5">
+                  Clean analytics view of executed trades extracted from verified sample tickets.
+                </p>
+              </div>
+              <span className="text-[10px] text-gold-premium font-mono bg-gold-premium/5 border border-gold-premium/20 px-3 py-1 rounded-full">
+                5 TRADES ANALYZED
+              </span>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse text-xs">
+                <thead>
+                  <tr className="border-b border-zinc-800 text-zinc-400 font-bold uppercase tracking-wider">
+                    <th className="py-3.5 px-4">Instrument</th>
+                    <th className="py-3.5 px-4">Order Type</th>
+                    <th className="py-3.5 px-4">Trade Date</th>
+                    <th className="py-3.5 px-4">Net P/L ($ USD)</th>
+                    <th className="py-3.5 px-4 text-right">Result</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-zinc-900/60 text-zinc-300">
+                  {VERIFIED_TRADES.map((trade) => (
+                    <tr key={trade.id} className="hover:bg-zinc-900/20 transition-colors">
+                      <td className="py-4 px-4 font-bold text-white flex items-center gap-2">
+                        <span className={`w-2 h-2 rounded-full ${trade.instrument === 'XAU/USD' ? 'bg-[#C5A059]' : 'bg-[#F7931A]'}`} />
+                        {trade.instrument}
+                      </td>
+                      <td className="py-4 px-4">
+                        <span className={`px-2.5 py-1 rounded-md text-[10px] font-bold uppercase ${trade.type === 'BUY' ? 'bg-green-500/10 text-green-400 border border-green-500/20' : 'bg-gold-premium/10 text-gold-premium border border-gold-premium/20'}`}>
+                          {trade.type}
+                        </span>
+                      </td>
+                      <td className="py-4 px-4 text-zinc-400 font-light">{trade.date}</td>
+                      <td className={`py-4 px-4 font-bold ${trade.profit > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        {trade.profit > 0 ? `+$${trade.profit.toLocaleString('en-US', { minimumFractionDigits: 2 })}` : `-$${Math.abs(trade.profit).toLocaleString('en-US', { minimumFractionDigits: 2 })}`}
+                      </td>
+                      <td className="py-4 px-4 text-right">
+                        <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] font-bold uppercase ${trade.result === 'WIN' ? 'bg-green-500/15 text-green-400 border border-green-500/30' : 'bg-red-500/15 text-red-400 border border-red-500/30'}`}>
+                          {trade.result === 'WIN' ? <CheckCircle className="w-3 h-3" /> : <XCircle className="w-3 h-3" />}
+                          {trade.result}
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Corporate Office Location Section (Dubai, UAE) */}
+          <div className="glassmorphism p-6 sm:p-8 rounded-3xl border border-zinc-900">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-gold-premium/5 border border-gold-premium/20 flex items-center justify-center text-gold shrink-0">
+                  <MapPin className="w-5 h-5" />
+                </div>
+                <div>
+                  <span className="text-[10px] text-gold-premium font-bold uppercase tracking-widest block">
+                    Global Hub
+                  </span>
+                  <h3 className="font-display font-bold text-lg text-white">
+                    Corporate Office Location
+                  </h3>
+                </div>
+              </div>
+              <div className="flex items-center gap-2 text-xs text-zinc-300 font-medium bg-black/60 border border-zinc-800 px-4 py-2 rounded-full w-fit">
+                <span className="text-gold">📍</span>
+                <span>Dubai, United Arab Emirates</span>
+              </div>
+            </div>
+
+            {/* Embedded Responsive Google Map for Dubai, UAE */}
+            <div className="relative w-full h-48 sm:h-56 rounded-xl overflow-hidden border border-gold-premium/15 shadow-xl">
+              <iframe
+                title="Aurex Capital Corporate Office - Dubai, UAE"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d115494.39462277727!2d55.14324391217032!3d25.177242131971714!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3e5f43496ad9c645%3A0xb12b4e7b1660320!2sDubai%20-%20United%20Arab%20Emirates!5e0!3m2!1sen!2s!4v1700000000000!5m2!1sen!2s"
+                width="100%"
+                height="100%"
+                style={{ border: 0, filter: 'invert(90%) hue-rotate(180deg) opacity(0.85) contrast(1.1)' }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
+          </div>
+
+          {/* Risk Disclaimer */}
+          <p className="text-[10px] text-zinc-600 text-center leading-relaxed max-w-4xl mx-auto font-light">
+            <b>Disclaimer:</b> Performance metrics depicted on this analytics dashboard are compiled strictly from verified sample execution datasets. Trading foreign exchange and cryptocurrency assets carries a high degree of risk and may not be suitable for all investors. Past sample outcomes do not secure future positive yields.
           </p>
         </div>
       </section>
