@@ -28,7 +28,7 @@ import {
 } from 'lucide-react';
 import { PageTransition } from '../../components/PageTransition';
 
-// Clean, non-confidential trade dataset compiled strictly from uploaded trade tickets
+// Clean, non-confidential trade dataset compiled strictly from verified trade tickets
 interface VerifiedTrade {
   id: string;
   instrument: 'XAU/USD' | 'BTC' | 'GBP/JPY';
@@ -52,11 +52,11 @@ const VERIFIED_TRADES: VerifiedTrade[] = [
 ];
 
 export const DashboardPage: React.FC = () => {
-  // Overall Account Statistics from verified totals dashboard summary
-  const totalAccountOrders = 147;
-  const profitableOrders = 105;
-  const unprofitableOrders = 42;
-  const accountWinRate = ((profitableOrders / totalAccountOrders) * 100).toFixed(1); // 71.4%
+  // Overall Account Statistics from verified total orders dashboard summary
+  const totalAccountOrders = 332;
+  const profitableOrders = 208;
+  const unprofitableOrders = 124;
+  const accountWinRate = ((profitableOrders / totalAccountOrders) * 100).toFixed(1); // 62.7%
 
   // Sample Dataset Derived Analytics
   const sampleTradesCount = VERIFIED_TRADES.length; // 9
@@ -116,7 +116,7 @@ export const DashboardPage: React.FC = () => {
           </div>
           <div className="flex items-center gap-2 px-4 py-2 rounded-full border border-gold-premium/20 bg-gold-premium/5 text-gold-premium text-xs font-semibold uppercase tracking-wider w-fit">
             <ShieldCheck className="w-4 h-4" />
-            <span>Verified Sample Dataset ({totalAccountOrders} Total Orders)</span>
+            <span>Verified Dataset ({totalAccountOrders} Total Executed Orders)</span>
           </div>
         </div>
       </section>
@@ -168,7 +168,7 @@ export const DashboardPage: React.FC = () => {
                 {totalAccountOrders}
               </div>
               <span className="text-[10px] text-zinc-400 mt-1 block font-light">
-                105 Profitable | 42 Unprofitable
+                208 Profitable | 124 Unprofitable
               </span>
             </div>
 
@@ -410,7 +410,7 @@ export const DashboardPage: React.FC = () => {
               <div className="p-4 rounded-xl bg-black/40 border border-zinc-900 flex flex-col gap-2">
                 <span className="font-bold text-gold uppercase tracking-wider text-[10px]">Overall Account Win Rate</span>
                 <p className="text-zinc-300 leading-relaxed">
-                  Total account metrics report <b className="text-white font-bold">71.4% Win Rate</b> across <b className="text-white font-bold">147 total executed orders</b> (105 profitable).
+                  Total account metrics report <b className="text-white font-bold">62.7% Win Rate</b> across <b className="text-white font-bold">332 total executed orders</b> (208 profitable positions).
                 </p>
               </div>
             </div>
