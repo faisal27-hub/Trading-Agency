@@ -97,7 +97,7 @@ export const Home: React.FC = () => {
               </div>
 
               <div className="flex flex-col gap-1">
-                <span className="text-[9px] uppercase font-semibold text-zinc-500 tracking-wider">Verified Sample Net Profit</span>
+                <span className="text-[9px] uppercase font-semibold text-zinc-500 tracking-wider">Verified Net Profit</span>
                 <div className="flex items-baseline gap-2">
                   <span className="font-display font-bold text-3xl sm:text-4xl text-gold-premium tracking-tight">+$9,576.52</span>
                   <span className="text-xs text-green-400 font-semibold">62.7% Win Rate</span>
@@ -111,7 +111,7 @@ export const Home: React.FC = () => {
                 </div>
                 <div className="bg-black/45 border border-zinc-900 rounded-xl p-3.5 flex flex-col gap-1">
                   <span className="text-[8px] text-zinc-500 uppercase font-bold">Profit Factor</span>
-                  <span className="text-sm font-semibold text-gold-premium">8.93 Ratio</span>
+                  <span className="text-sm font-semibold text-gold-premium">7.12 Ratio</span>
                 </div>
               </div>
 

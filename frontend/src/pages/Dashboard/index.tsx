@@ -134,7 +134,7 @@ export const DashboardPage: React.FC = () => {
             {/* Net Sample Profit Card */}
             <div className="glassmorphism p-5 rounded-2xl border border-gold-premium/20 hover:border-gold-premium/45 transition-all duration-300 relative group overflow-hidden">
               <div className="flex items-center justify-between text-zinc-500 mb-2">
-                <span className="text-[10px] uppercase tracking-wider font-bold">Sample Net Profit</span>
+                <span className="text-[10px] uppercase tracking-wider font-bold">Net Profit</span>
                 <TrendingUp className="w-4 h-4 text-gold-premium" />
               </div>
               <div className="font-display font-bold text-2xl sm:text-3xl text-gold-premium tracking-tight">
@@ -404,7 +404,7 @@ export const DashboardPage: React.FC = () => {
               <div className="p-4 rounded-xl bg-black/40 border border-zinc-900 flex flex-col gap-2">
                 <span className="font-bold text-gold uppercase tracking-wider text-[10px]">Profit Factor Efficiency</span>
                 <p className="text-zinc-300 leading-relaxed">
-                  Achieved an outstanding <b className="text-gold font-bold">8.93 Profit Factor</b>, generating $10,784.34 gross profit against $1,207.82 gross loss.
+                  Achieved an outstanding <b className="text-gold font-bold">{profitFactor} Profit Factor</b>, generating ${grossProfit.toLocaleString('en-US', { minimumFractionDigits: 2 })} gross profit against ${grossLoss.toLocaleString('en-US', { minimumFractionDigits: 2 })} gross loss.
                 </p>
               </div>
 
@@ -421,9 +421,9 @@ export const DashboardPage: React.FC = () => {
           <div className="glassmorphism p-6 sm:p-8 rounded-3xl border border-zinc-900">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="font-display font-bold text-lg text-white">Verified Sample Trade Ledger</h3>
+                <h3 className="font-display font-bold text-lg text-white">Verified Trade Ledger</h3>
                 <p className="text-xs text-zinc-500 font-light mt-0.5">
-                  Clean analytics view of executed trades extracted from verified sample tickets.
+                  Clean analytics view of executed trades extracted from verified tickets.
                 </p>
               </div>
               <span className="text-[10px] text-gold-premium font-mono bg-gold-premium/5 border border-gold-premium/20 px-3 py-1 rounded-full">
