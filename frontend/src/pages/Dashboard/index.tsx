@@ -432,7 +432,7 @@ export const DashboardPage: React.FC = () => {
                 </p>
               </div>
               <span className="text-[10px] text-gold-premium font-mono bg-gold-premium/5 border border-gold-premium/20 px-3 py-1 rounded-full">
-                {sampleTradesCount} VERIFIED TRADES ANALYZED
+                {sampleTradesCount} OUT OF {totalAccountOrders} VERIFIED TRADES ANALYZED
               </span>
             </div>
 
