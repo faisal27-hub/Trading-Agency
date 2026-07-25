@@ -8,6 +8,8 @@ export const ContactPage: React.FC = () => {
     name: '',
     email: '',
     phone: '',
+    company: '',
+    service: 'Account Management / Trade Replication',
     budget: '',
     message: '',
   });
@@ -31,7 +33,7 @@ export const ContactPage: React.FC = () => {
     const apiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
 
     try {
-      console.log('[Frontend] Submitting contact form to:', `${apiUrl}/contact`);
+      console.log('[Frontend] Submitting contact form to backend:', `${apiUrl}/contact`);
       const response = await fetch(`${apiUrl}/contact`, {
         method: 'POST',
         headers: {
@@ -43,12 +45,20 @@ export const ContactPage: React.FC = () => {
       const data = await response.json();
       console.log('[Frontend] Contact API Response:', response.status, data);
 
-      if (!response.ok) {
-        throw new Error(data.message || `Server returned status ${response.status}`);
+      if (!response.ok || data.status !== 'success') {
+        throw new Error(data.message || `Email delivery failed (Status ${response.status})`);
       }
 
       setSuccess(true);
-      setForm({ name: '', email: '', phone: '', budget: '', message: '' });
+      setForm({
+        name: '',
+        email: '',
+        phone: '',
+        company: '',
+        service: 'Account Management / Trade Replication',
+        budget: '',
+        message: '',
+      });
     } catch (err: any) {
       console.error('[Frontend ERROR] Contact Form Submission Failed:', err);
       setError(err.message || 'Failed to connect to email gateway server.');
@@ -137,7 +147,7 @@ export const ContactPage: React.FC = () => {
                   <CheckCircle className="w-16 h-16 text-green-500" />
                   <h3 className="font-display font-bold text-2xl text-white">Message Dispatched</h3>
                   <p className="text-sm text-zinc-400 font-light leading-relaxed max-w-md">
-                    Thank you. Your message has been logged securely under Aurex secure protocols. A support or strategy manager will connect with you via email shortly.
+                    Thank you! Your message has been sent successfully to our inbox via secure SMTP protocol. Our desk will contact you via email shortly.
                   </p>
                   <button
                     onClick={() => setSuccess(false)}
@@ -155,7 +165,7 @@ export const ContactPage: React.FC = () => {
                     <div className="p-4 rounded-xl bg-red-950/60 border border-red-800/60 text-red-200 text-xs flex items-start gap-3 animate-fade-in">
                       <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
                       <div className="flex flex-col gap-1">
-                        <span className="font-bold text-red-300">Dispatch Failed</span>
+                        <span className="font-bold text-red-300">Email Delivery Failed</span>
                         <span>{error}</span>
                       </div>
                     </div>
@@ -213,6 +223,42 @@ export const ContactPage: React.FC = () => {
                     </div>
 
                     <div className="flex flex-col gap-1.5">
+                      <label htmlFor="company" className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">
+                        Company / Organization
+                      </label>
+                      <input
+                        type="text"
+                        id="company"
+                        name="company"
+                        value={form.company}
+                        onChange={handleInputChange}
+                        placeholder="Optional (e.g. Apex Holdings)"
+                        className="w-full bg-zinc-950 border border-zinc-900 focus:border-gold-premium/45 focus:ring-1 focus:ring-gold-premium/45 text-sm text-white px-4 py-3 rounded-xl outline-none transition-all duration-300"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div className="flex flex-col gap-1.5">
+                      <label htmlFor="service" className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">
+                        Requested Service *
+                      </label>
+                      <select
+                        id="service"
+                        name="service"
+                        required
+                        value={form.service}
+                        onChange={handleInputChange}
+                        className="w-full bg-zinc-950 border border-zinc-900 focus:border-gold-premium/45 focus:ring-1 focus:ring-gold-premium/45 text-sm text-zinc-300 focus:text-white px-4 py-3.5 rounded-xl outline-none transition-all duration-300 cursor-pointer"
+                      >
+                        <option value="Account Management / Trade Replication">Account Management / Trade Replication</option>
+                        <option value="Institutional Advisory & Prop Trading">Institutional Advisory & Prop Trading</option>
+                        <option value="API Trading Integration">API Trading Integration</option>
+                        <option value="General Strategic Enquiry">General Strategic Enquiry</option>
+                      </select>
+                    </div>
+
+                    <div className="flex flex-col gap-1.5">
                       <label htmlFor="budget" className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">
                         Investment Budget *
                       </label>
@@ -228,6 +274,7 @@ export const ContactPage: React.FC = () => {
                         <option value="$500 - $1,000">$500 – $1,000</option>
                         <option value="$1,000 - $1,500">$1,000 – $1,500</option>
                         <option value="$1,500 - $2,000">$1,500 – $2,000</option>
+                        <option value="$2,000+">$2,000+</option>
                       </select>
                     </div>
                   </div>
