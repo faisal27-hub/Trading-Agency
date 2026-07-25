@@ -595,19 +595,13 @@ export const DashboardPage: React.FC = () => {
               The complete database of 332 verified trade tickets, including entry/exit timestamps, ticket hashes, lot sizes, and broker execution logs, is accessible inside the dedicated Aurex Capital Private Client Portal.
             </p>
 
-            <div className="flex items-center gap-3 pt-2">
+            <div className="pt-2">
               <button
                 onClick={() => setShowCompleteHistoryModal(false)}
-                className="flex-1 py-2.5 px-4 rounded-xl text-xs font-semibold bg-zinc-900 hover:bg-zinc-800 text-zinc-300 transition-colors border border-zinc-800 cursor-pointer"
+                className="w-full py-3 px-4 rounded-xl text-xs font-semibold bg-gradient-to-r from-gold-premium/10 via-gold-premium/20 to-gold-premium/10 hover:from-gold-premium/20 hover:via-gold-premium/30 hover:to-gold-premium/20 text-gold-premium hover:text-white transition-all border border-gold-premium/30 hover:border-gold-premium/60 cursor-pointer text-center shadow-md active:scale-[0.99]"
               >
                 Close Preview
               </button>
-              <a
-                href="/contact"
-                className="flex-1 py-2.5 px-4 rounded-xl text-xs font-semibold bg-gradient-to-r from-gold-dark via-gold to-gold-premium text-black hover:brightness-110 transition-all text-center cursor-pointer font-bold"
-              >
-                Request Access
-              </a>
             </div>
           </div>
         </div>
