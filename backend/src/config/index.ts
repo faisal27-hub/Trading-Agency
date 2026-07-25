@@ -11,5 +11,6 @@ export const config = {
   emailUser: (process.env.EMAIL_USER || process.env.GMAIL_USER || process.env.SMTP_USER || '').trim(),
   emailPass: (process.env.EMAIL_PASS || process.env.GMAIL_PASS || process.env.SMTP_PASS || '').trim().replace(/\s+/g, ''),
   emailTo: (process.env.EMAIL_TO || process.env.RECEIVER_EMAIL || process.env.EMAIL_USER || process.env.GMAIL_USER || process.env.SMTP_USER || '').trim(),
+  resendApiKey: (process.env.RESEND_API_KEY || '').trim(),
+  brevoApiKey: (process.env.BREVO_API_KEY || '').trim(),
 };
-

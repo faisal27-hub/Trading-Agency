@@ -29,175 +29,206 @@ export const handleContactSubmission = async (
   try {
     const { name, email, phone, company, service, budget, message } = req.body as Partial<ContactRequestPayload>;
 
-    // Step 2: Field Validation
-    console.log('[Contact Form] 2. Validating required form fields...');
+    // Field Validation
     if (!name || !name.trim()) {
-      console.warn('[Contact Form] Validation failed: Name is missing');
       res.status(400).json({ status: 'error', message: 'Full Name is required.' });
       return;
     }
 
     if (!email || !email.trim()) {
-      console.warn('[Contact Form] Validation failed: Email is missing');
       res.status(400).json({ status: 'error', message: 'Email address is required.' });
       return;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email.trim())) {
-      console.warn(`[Contact Form] Validation failed: Invalid email format (${email})`);
       res.status(400).json({ status: 'error', message: 'Please provide a valid email address.' });
       return;
     }
 
     if (!phone || !phone.trim()) {
-      console.warn('[Contact Form] Validation failed: Phone number is missing');
       res.status(400).json({ status: 'error', message: 'Phone number is required.' });
       return;
     }
 
     if (!budget || !budget.trim()) {
-      console.warn('[Contact Form] Validation failed: Investment Budget is missing');
       res.status(400).json({ status: 'error', message: 'Investment budget selection is required.' });
       return;
     }
 
     if (!message || !message.trim()) {
-      console.warn('[Contact Form] Validation failed: Detailed Message is missing');
       res.status(400).json({ status: 'error', message: 'Detailed Message is required.' });
       return;
     }
 
-    console.log('[Contact Form] Validation check PASSED for all required fields.');
+    const recipient = config.emailTo || config.emailUser || 'admin@aurexcapital.co';
+    const htmlTemplate = `
+      <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #222; max-width: 650px; margin: 0 auto; border: 1px solid #d4af37; border-radius: 12px; padding: 24px; background-color: #ffffff;">
+        <div style="background-color: #0b0b0b; padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 20px;">
+          <h2 style="color: #d4af37; margin: 0; font-size: 20px; text-transform: uppercase; letter-spacing: 1px;">Aurex Capital - Strategy Desk</h2>
+          <p style="color: #a1a1aa; margin: 5px 0 0 0; font-size: 12px;">New Contact Form Enquiry Received</p>
+        </div>
+        
+        <table style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px;">
+          <tr style="border-bottom: 1px solid #eeeeee;">
+            <td style="padding: 10px; font-weight: bold; color: #555; width: 35%;">Submission Time:</td>
+            <td style="padding: 10px; color: #111; font-weight: 600;">${formattedTime} (${timestamp})</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #eeeeee; background-color: #fcfcfc;">
+            <td style="padding: 10px; font-weight: bold; color: #555;">Full Name:</td>
+            <td style="padding: 10px; color: #111; font-weight: 600;">${name.trim()}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #eeeeee;">
+            <td style="padding: 10px; font-weight: bold; color: #555;">Email Address:</td>
+            <td style="padding: 10px;"><a href="mailto:${email.trim()}" style="color: #d4af37; font-weight: bold; text-decoration: none;">${email.trim()}</a></td>
+          </tr>
+          <tr style="border-bottom: 1px solid #eeeeee; background-color: #fcfcfc;">
+            <td style="padding: 10px; font-weight: bold; color: #555;">Phone Number:</td>
+            <td style="padding: 10px;"><a href="tel:${phone.trim()}" style="color: #111; font-weight: 600; text-decoration: none;">${phone.trim()}</a></td>
+          </tr>
+          <tr style="border-bottom: 1px solid #eeeeee;">
+            <td style="padding: 10px; font-weight: bold; color: #555;">Company / Organization:</td>
+            <td style="padding: 10px; color: #111; font-weight: 600;">${company && company.trim() ? company.trim() : 'N/A (Individual Investor)'}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #eeeeee; background-color: #fcfcfc;">
+            <td style="padding: 10px; font-weight: bold; color: #555;">Service Category:</td>
+            <td style="padding: 10px; color: #d4af37; font-weight: bold;">${service && service.trim() ? service.trim() : 'General Enquiry'}</td>
+          </tr>
+          <tr style="border-bottom: 1px solid #eeeeee;">
+            <td style="padding: 10px; font-weight: bold; color: #555;">Investment Budget:</td>
+            <td style="padding: 10px; color: #111; font-weight: 600;">${budget.trim()}</td>
+          </tr>
+        </table>
 
-    // Step 3: Verify Environment Variables
-    console.log('[Contact Form] 3. Checking Nodemailer SMTP environment configuration...');
-    const user = config.emailUser;
-    const pass = config.emailPass;
-    const recipient = config.emailTo || user;
+        <div style="margin-top: 25px; padding: 18px; background-color: #fafafa; border-left: 4px solid #d4af37; border-radius: 6px;">
+          <h4 style="margin: 0 0 10px 0; color: #111; font-size: 13px; text-transform: uppercase;">Detailed Message:</h4>
+          <p style="white-space: pre-wrap; margin: 0; color: #333; font-size: 14px; line-height: 1.6;">${message.trim()}</p>
+        </div>
 
-    const safeUser = user ? (user.length > 5 ? `${user.substring(0, 3)}***${user.substring(user.indexOf('@'))}` : '***') : 'NOT CONFIGURED';
-    const isPassConfigured = Boolean(pass && pass.length > 0);
+        <p style="font-size: 11px; color: #888; margin-top: 25px; text-align: center; border-top: 1px solid #eeeeee; padding-top: 15px;">
+          Sent automatically via Aurex Capital Production Web Gateway.
+        </p>
+      </div>
+    `;
 
-    console.log(`[Contact Form] EMAIL_USER (Sender Account): ${safeUser}`);
-    console.log(`[Contact Form] EMAIL_PASS (App Password): ${isPassConfigured ? `CONFIGURED (${pass.length} chars)` : 'MISSING'}`);
-    console.log(`[Contact Form] EMAIL_TO (Destination Inbox): ${recipient || 'SAME AS SENDER'}`);
+    const subject = `[New Contact Query] ${service || 'Strategy Desk Query'} - ${name.trim()}`;
 
-    if (!user || !pass) {
-      const missing = [];
-      if (!user) missing.push('EMAIL_USER');
-      if (!pass) missing.push('EMAIL_PASS');
+    // STRATEGY 1: Resend HTTP REST API (Port 443 - 100% Unblocked on Render)
+    if (config.resendApiKey) {
+      console.log('[Contact Form] Attempting delivery via Resend HTTP REST API (Port 443)...');
+      const response = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${config.resendApiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: 'Aurex Capital Contact <onboarding@resend.dev>',
+          to: [recipient.trim()],
+          replyTo: email.trim(),
+          subject,
+          html: htmlTemplate,
+        }),
+      });
 
-      const serverErr = `SMTP Server Configuration Incomplete. Missing Render Environment Variables: ${missing.join(', ')}. Please set EMAIL_USER and EMAIL_PASS in Render environment settings.`;
-      console.error(`[Contact Form ERROR] ${serverErr}`);
-      res.status(500).json({
-        status: 'error',
-        message: serverErr,
+      const resData: any = await response.json();
+      if (!response.ok) {
+        throw new Error(resData.message || resData.error || 'Resend HTTP API returned error status ' + response.status);
+      }
+
+      console.log('[Contact Form SUCCESS] Email sent via Resend API! ID:', resData.id);
+      res.status(200).json({
+        status: 'success',
+        message: 'Your message has been sent successfully to our inbox!',
+        data: { messageId: resData.id, provider: 'Resend HTTP API' },
       });
       return;
     }
 
-    // Step 4: Create Cloud-Optimized Nodemailer Transporter with IPv4 forced
-    console.log('[Contact Form] 4. Initializing cloud-optimized Gmail SMTP transporter (IPv4 forced, Port 587 STARTTLS)...');
+    // STRATEGY 2: Brevo HTTP REST API (Port 443 - 100% Unblocked on Render)
+    if (config.brevoApiKey) {
+      console.log('[Contact Form] Attempting delivery via Brevo HTTP REST API (Port 443)...');
+      const response = await fetch('https://api.brevo.com/v3/smtp/email', {
+        method: 'POST',
+        headers: {
+          'api-key': config.brevoApiKey,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          sender: { name: 'Aurex Capital Contact Desk', email: config.emailUser || 'noreply@aurexcapital.co' },
+          to: [{ email: recipient.trim() }],
+          replyTo: { email: email.trim() },
+          subject,
+          htmlContent: htmlTemplate,
+        }),
+      });
+
+      const resData: any = await response.json();
+      if (!response.ok) {
+        throw new Error(resData.message || 'Brevo HTTP API returned error status ' + response.status);
+      }
+
+      console.log('[Contact Form SUCCESS] Email sent via Brevo API! ID:', resData.messageId);
+      res.status(200).json({
+        status: 'success',
+        message: 'Your message has been sent successfully to our inbox!',
+        data: { messageId: resData.messageId, provider: 'Brevo HTTP API' },
+      });
+      return;
+    }
+
+    // STRATEGY 3: Nodemailer SMTP
+    const user = config.emailUser;
+    const pass = config.emailPass;
+
+    if (!user || !pass) {
+      const serverErr = 'Email service missing configuration. Please set RESEND_API_KEY or (EMAIL_USER & EMAIL_PASS) in Render environment variables.';
+      console.error(`[Contact Form ERROR] ${serverErr}`);
+      res.status(500).json({ status: 'error', message: serverErr });
+      return;
+    }
+
+    console.log('[Contact Form] Initializing Nodemailer SMTP transport...');
     const transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,
-      secure: false, // STARTTLS
+      secure: false,
       requireTLS: true,
       auth: {
         user: user.trim(),
         pass: pass.trim(),
       },
-      family: 4, // Force IPv4 to prevent 30-second IPv6 socket stalls on Render containers
-      connectionTimeout: 15000,
-      greetingTimeout: 15000,
-      socketTimeout: 20000,
+      family: 4,
+      connectionTimeout: 10000,
+      socketTimeout: 15000,
       tls: {
         rejectUnauthorized: false,
       },
     } as any);
 
-    // Step 5: Build Email Payload
-    console.log('[Contact Form] 5. Constructing HTML email template with form data...');
     const mailOptions = {
       from: `"Aurex Capital Contact Desk" <${user.trim()}>`,
       to: recipient.trim(),
       replyTo: email.trim(),
-      subject: `[New Contact Query] ${service || 'Strategy Desk Query'} - ${name.trim()}`,
-      html: `
-        <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #222; max-width: 650px; margin: 0 auto; border: 1px solid #d4af37; border-radius: 12px; padding: 24px; background-color: #ffffff;">
-          <div style="background-color: #0b0b0b; padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 20px;">
-            <h2 style="color: #d4af37; margin: 0; font-size: 20px; text-transform: uppercase; letter-spacing: 1px;">Aurex Capital - Strategy Desk</h2>
-            <p style="color: #a1a1aa; margin: 5px 0 0 0; font-size: 12px;">New Contact Form Enquiry Received</p>
-          </div>
-          
-          <table style="width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 14px;">
-            <tr style="border-bottom: 1px solid #eeeeee;">
-              <td style="padding: 10px; font-weight: bold; color: #555; width: 35%;">Submission Time:</td>
-              <td style="padding: 10px; color: #111; font-weight: 600;">${formattedTime} (${timestamp})</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #eeeeee; background-color: #fcfcfc;">
-              <td style="padding: 10px; font-weight: bold; color: #555;">Full Name:</td>
-              <td style="padding: 10px; color: #111; font-weight: 600;">${name.trim()}</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #eeeeee;">
-              <td style="padding: 10px; font-weight: bold; color: #555;">Email Address:</td>
-              <td style="padding: 10px;"><a href="mailto:${email.trim()}" style="color: #d4af37; font-weight: bold; text-decoration: none;">${email.trim()}</a></td>
-            </tr>
-            <tr style="border-bottom: 1px solid #eeeeee; background-color: #fcfcfc;">
-              <td style="padding: 10px; font-weight: bold; color: #555;">Phone Number:</td>
-              <td style="padding: 10px;"><a href="tel:${phone.trim()}" style="color: #111; font-weight: 600; text-decoration: none;">${phone.trim()}</a></td>
-            </tr>
-            <tr style="border-bottom: 1px solid #eeeeee;">
-              <td style="padding: 10px; font-weight: bold; color: #555;">Company / Organization:</td>
-              <td style="padding: 10px; color: #111; font-weight: 600;">${company && company.trim() ? company.trim() : 'N/A (Individual Investor)'}</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #eeeeee; background-color: #fcfcfc;">
-              <td style="padding: 10px; font-weight: bold; color: #555;">Service Category:</td>
-              <td style="padding: 10px; color: #d4af37; font-weight: bold;">${service && service.trim() ? service.trim() : 'General Enquiry'}</td>
-            </tr>
-            <tr style="border-bottom: 1px solid #eeeeee;">
-              <td style="padding: 10px; font-weight: bold; color: #555;">Investment Budget:</td>
-              <td style="padding: 10px; color: #111; font-weight: 600;">${budget.trim()}</td>
-            </tr>
-          </table>
-
-          <div style="margin-top: 25px; padding: 18px; background-color: #fafafa; border-left: 4px solid #d4af37; border-radius: 6px;">
-            <h4 style="margin: 0 0 10px 0; color: #111; font-size: 13px; text-transform: uppercase;">Detailed Message:</h4>
-            <p style="white-space: pre-wrap; margin: 0; color: #333; font-size: 14px; line-height: 1.6;">${message.trim()}</p>
-          </div>
-
-          <p style="font-size: 11px; color: #888; margin-top: 25px; text-align: center; border-top: 1px solid #eeeeee; padding-top: 15px;">
-            Sent automatically via Aurex Capital Production Web Gateway.
-          </p>
-        </div>
-      `,
+      subject,
+      html: htmlTemplate,
     };
 
-    // Step 6: Send Email Directly
-    console.log(`[Contact Form] 6. Transmitting email to Gmail inbox [${recipient.trim()}]...`);
+    console.log(`[Contact Form] Transmitting email via Nodemailer to [${recipient.trim()}]...`);
     const info = await transporter.sendMail(mailOptions);
 
     if (!info || !info.messageId) {
-      throw new Error('Nodemailer sendMail executed but returned no messageId.');
+      throw new Error('Nodemailer sendMail returned no messageId.');
     }
 
-    console.log('[Contact Form SUCCESS] Email sent successfully to Gmail!');
-    console.log(`[Contact Form] Message ID: ${info.messageId}`);
-    console.log(`[Contact Form] Server Response: ${info.response}`);
-    console.log('====================================================');
-
+    console.log('[Contact Form SUCCESS] Email sent via Nodemailer! ID:', info.messageId);
     res.status(200).json({
       status: 'success',
       message: 'Your message has been sent successfully to our inbox!',
-      data: {
-        messageId: info.messageId,
-        timestamp,
-      },
+      data: { messageId: info.messageId, provider: 'Nodemailer' },
     });
   } catch (err: any) {
-    console.error('[Contact Form ERROR] Critical failure during sendMail execution:', err);
-    console.log('====================================================');
+    console.error('[Contact Form ERROR] Critical failure during email execution:', err);
     res.status(500).json({
       status: 'error',
       message: `Failed to deliver email: ${err.message || err}`,
