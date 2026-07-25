@@ -33,7 +33,7 @@ export const ContactPage: React.FC = () => {
     const apiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 25000);
+    const timeoutId = setTimeout(() => controller.abort(), 60000);
 
     try {
       console.log('[Frontend] Submitting contact form to backend:', `${apiUrl}/contact`);

@@ -97,18 +97,25 @@ export const handleContactSubmission = async (
       return;
     }
 
-    // Step 4: Create Cloud-Compatible Nodemailer Transporter for Gmail
-    console.log('[Contact Form] 4. Initializing cloud-compatible Gmail SMTP transporter...');
+    // Step 4: Create Cloud-Optimized Nodemailer Transporter with IPv4 forced
+    console.log('[Contact Form] 4. Initializing cloud-optimized Gmail SMTP transporter (IPv4 forced, Port 587 STARTTLS)...');
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false, // STARTTLS
+      requireTLS: true,
       auth: {
         user: user.trim(),
         pass: pass.trim(),
       },
+      family: 4, // Force IPv4 to prevent 30-second IPv6 socket stalls on Render containers
+      connectionTimeout: 15000,
+      greetingTimeout: 15000,
+      socketTimeout: 20000,
       tls: {
         rejectUnauthorized: false,
       },
-    });
+    } as any);
 
     // Step 5: Build Email Payload
     console.log('[Contact Form] 5. Constructing HTML email template with form data...');
