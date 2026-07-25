@@ -97,32 +97,23 @@ export const handleContactSubmission = async (
       return;
     }
 
-    // Step 4: Create Nodemailer Gmail Transporter
-    console.log('[Contact Form] 4. Initializing Nodemailer transporter for Gmail SMTP...');
+    // Step 4: Create Fast & Reliable Direct Gmail SMTP Transporter
+    console.log('[Contact Form] 4. Initializing direct Gmail SMTP transporter (smtp.gmail.com:465 SSL)...');
     const transporter = nodemailer.createTransport({
-      service: 'gmail',
+      host: 'smtp.gmail.com',
+      port: 465,
+      secure: true, // SSL
       auth: {
         user: user.trim(),
         pass: pass.trim(),
       },
+      connectionTimeout: 10000, // 10s max connection timeout
+      greetingTimeout: 10000,   // 10s max greeting timeout
+      socketTimeout: 15000,     // 15s max socket inactivity timeout
     });
 
-    // Step 5: Verify SMTP Transporter Connection
-    console.log('[Contact Form] 5. Verifying connection to Gmail SMTP servers...');
-    try {
-      await transporter.verify();
-      console.log('[Contact Form] Transporter verification SUCCESSFUL. Gmail SMTP is ready.');
-    } catch (verifyErr: any) {
-      console.error('[Contact Form ERROR] Transporter connection verification FAILED:', verifyErr);
-      res.status(500).json({
-        status: 'error',
-        message: `Gmail SMTP authentication/connection failed: ${verifyErr.message || verifyErr}. Please verify EMAIL_USER and Gmail App Password (EMAIL_PASS).`,
-      });
-      return;
-    }
-
-    // Step 6: Build Email Payload
-    console.log('[Contact Form] 6. Constructing HTML email template with form data...');
+    // Step 5: Build Email Payload
+    console.log('[Contact Form] 5. Constructing HTML email template with form data...');
     const mailOptions = {
       from: `"Aurex Capital Contact Desk" <${user.trim()}>`,
       to: recipient.trim(),
@@ -178,8 +169,8 @@ export const handleContactSubmission = async (
       `,
     };
 
-    // Step 7: Send Email
-    console.log(`[Contact Form] 7. Transmitting email to Gmail inbox [${recipient.trim()}]...`);
+    // Step 6: Send Email Directly
+    console.log(`[Contact Form] 6. Transmitting email directly to Gmail inbox [${recipient.trim()}]...`);
     const info = await transporter.sendMail(mailOptions);
 
     if (!info || !info.messageId) {

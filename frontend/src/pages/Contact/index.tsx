@@ -32,6 +32,9 @@ export const ContactPage: React.FC = () => {
 
     const apiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
 
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 25000);
+
     try {
       console.log('[Frontend] Submitting contact form to backend:', `${apiUrl}/contact`);
       const response = await fetch(`${apiUrl}/contact`, {
@@ -40,7 +43,10 @@ export const ContactPage: React.FC = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(form),
+        signal: controller.signal,
       });
+
+      clearTimeout(timeoutId);
 
       const data = await response.json();
       console.log('[Frontend] Contact API Response:', response.status, data);
@@ -60,8 +66,13 @@ export const ContactPage: React.FC = () => {
         message: '',
       });
     } catch (err: any) {
+      clearTimeout(timeoutId);
       console.error('[Frontend ERROR] Contact Form Submission Failed:', err);
-      setError(err.message || 'Failed to connect to email gateway server.');
+      if (err.name === 'AbortError') {
+        setError('Server request timed out. Render backend was waking up — please click Transmit Message again now!');
+      } else {
+        setError(err.message || 'Failed to connect to email gateway server.');
+      }
     } finally {
       setLoading(false);
     }
