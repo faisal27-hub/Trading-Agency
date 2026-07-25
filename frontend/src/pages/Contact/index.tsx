@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Clock, Send, CheckCircle, MessageSquare, Phone } from 'lucide-react';
+import { Mail, Clock, Send, CheckCircle, MessageSquare, Phone, AlertCircle } from 'lucide-react';
 import { SITE_METADATA } from '../../constants';
 import { PageTransition } from '../../components/PageTransition';
 
@@ -14,6 +14,7 @@ export const ContactPage: React.FC = () => {
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
@@ -25,11 +26,35 @@ export const ContactPage: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate API connection
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setLoading(false);
-    setSuccess(true);
-    setForm({ name: '', email: '', phone: '', budget: '', message: '' });
+    setError(null);
+
+    const apiUrl = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(/\/$/, '');
+
+    try {
+      console.log('[Frontend] Submitting contact form to:', `${apiUrl}/contact`);
+      const response = await fetch(`${apiUrl}/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(form),
+      });
+
+      const data = await response.json();
+      console.log('[Frontend] Contact API Response:', response.status, data);
+
+      if (!response.ok) {
+        throw new Error(data.message || `Server returned status ${response.status}`);
+      }
+
+      setSuccess(true);
+      setForm({ name: '', email: '', phone: '', budget: '', message: '' });
+    } catch (err: any) {
+      console.error('[Frontend ERROR] Contact Form Submission Failed:', err);
+      setError(err.message || 'Failed to connect to email gateway server.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -126,6 +151,16 @@ export const ContactPage: React.FC = () => {
                   onSubmit={handleSubmit}
                   className="glassmorphism-premium p-8 rounded-3xl border border-gold-premium/15 flex flex-col gap-5 shadow-2xl animate-fade-in"
                 >
+                  {error && (
+                    <div className="p-4 rounded-xl bg-red-950/60 border border-red-800/60 text-red-200 text-xs flex items-start gap-3 animate-fade-in">
+                      <AlertCircle className="w-5 h-5 text-red-400 shrink-0 mt-0.5" />
+                      <div className="flex flex-col gap-1">
+                        <span className="font-bold text-red-300">Dispatch Failed</span>
+                        <span>{error}</span>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div className="flex flex-col gap-1.5">
                       <label htmlFor="name" className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">

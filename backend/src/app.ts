@@ -13,18 +13,30 @@ const app = express();
 app.use(helmet());
 
 // CORS config
-const corsOptions = {
+const allowedOrigins = (config.allowedOrigin || '')
+  .split(',')
+  .map((o) => o.trim().replace(/\/$/, ''))
+  .filter(Boolean);
+
+const corsOptions: cors.CorsOptions = {
   origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-    // Allow requests with no origin (like mobile apps or curl) or matching our configuration
-    if (!origin || origin === config.allowedOrigin || config.nodeEnv === 'development') {
+    // Allow requests with no origin (like mobile apps, Postman or curl) or dev mode or matching origin list
+    if (
+      !origin ||
+      config.nodeEnv === 'development' ||
+      config.allowedOrigin === '*' ||
+      allowedOrigins.includes(origin.replace(/\/$/, ''))
+    ) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS settings. Access Denied.'));
+      console.warn(`[CORS Blocked] Origin: ${origin}. Configured allowed origin: ${config.allowedOrigin}`);
+      callback(new Error(`Not allowed by CORS settings. Access Denied for origin: ${origin}`));
     }
   },
   credentials: true,
 };
 app.use(cors(corsOptions));
+
 
 // Morgan Logger
 app.use(morgan(config.nodeEnv === 'production' ? 'combined' : 'dev'));

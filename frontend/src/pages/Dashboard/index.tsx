@@ -24,7 +24,11 @@ import {
   Scale, 
   ShieldCheck, 
   ArrowUpRight, 
-  ArrowDownRight 
+  ArrowDownRight,
+  Info,
+  Lock,
+  ChevronRight,
+  X
 } from 'lucide-react';
 import { PageTransition } from '../../components/PageTransition';
 
@@ -53,6 +57,7 @@ const VERIFIED_TRADES: VerifiedTrade[] = [
 ];
 
 export const DashboardPage: React.FC = () => {
+  const [showCompleteHistoryModal, setShowCompleteHistoryModal] = React.useState(false);
   // Overall Account Statistics from verified total orders dashboard summary
   const totalAccountOrders = 332;
   const profitableOrders = 208;
@@ -469,6 +474,34 @@ export const DashboardPage: React.FC = () => {
                 </tbody>
               </table>
             </div>
+
+            {/* Trade History Preview Disclaimer & Interactive Action */}
+            <div className="mt-6 pt-6 border-t border-zinc-900 flex flex-col items-center gap-5">
+              {/* Informative Disclaimer Note Box */}
+              <div className="w-full p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-zinc-950 via-gold-premium/[0.04] to-zinc-950 border border-gold-premium/20 flex flex-col sm:flex-row items-start sm:items-center gap-3.5 shadow-inner">
+                <div className="p-2.5 rounded-xl bg-gold-premium/10 border border-gold-premium/20 text-gold-premium shrink-0">
+                  <Info className="w-5 h-5" />
+                </div>
+                <div className="flex-1">
+                  <span className="text-[10px] uppercase font-bold text-gold-premium tracking-wider block mb-0.5">
+                    Sample Preview Notice
+                  </span>
+                  <p className="text-xs text-zinc-300 leading-relaxed font-light">
+                    Showing <b className="text-white font-semibold">10 of 332 completed trades</b>. This table displays only a small sample of our historical trades for demonstration purposes. The complete trading history contains all executed positions and is available inside the <span className="text-gold-premium font-medium">full client dashboard</span>.
+                  </p>
+                </div>
+              </div>
+
+              {/* Centered Interactive Action Button */}
+              <button
+                onClick={() => setShowCompleteHistoryModal(true)}
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-semibold bg-gradient-to-r from-gold-premium/10 via-gold-premium/20 to-gold-premium/10 hover:from-gold-premium/20 hover:via-gold-premium/30 hover:to-gold-premium/20 border border-gold-premium/30 hover:border-gold-premium/60 text-gold-premium hover:text-white transition-all duration-300 shadow-md hover:shadow-gold-premium/10 active:scale-[0.98] cursor-pointer group"
+              >
+                <Lock className="w-3.5 h-3.5 text-gold-premium group-hover:text-white transition-colors" />
+                <span>View Complete Trade History</span>
+                <ChevronRight className="w-4 h-4 text-gold-premium group-hover:text-white group-hover:translate-x-0.5 transition-all" />
+              </button>
+            </div>
           </div>
 
           {/* Corporate Office Location Section (Dubai, UAE) */}
@@ -514,6 +547,71 @@ export const DashboardPage: React.FC = () => {
           </p>
         </div>
       </section>
+
+      {/* Complete Trade History Access Modal */}
+      {showCompleteHistoryModal && (
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 animate-fade-in">
+          <div className="absolute inset-0 cursor-pointer" onClick={() => setShowCompleteHistoryModal(false)} />
+          <div className="relative max-w-lg w-full bg-zinc-950 border border-gold-premium/30 rounded-3xl p-6 sm:p-8 shadow-2xl z-10 flex flex-col gap-5">
+            <div className="flex items-start justify-between">
+              <div className="flex items-center gap-3">
+                <div className="p-3 rounded-2xl bg-gold-premium/10 border border-gold-premium/20 text-gold-premium">
+                  <ShieldCheck className="w-6 h-6" />
+                </div>
+                <div>
+                  <span className="text-[10px] uppercase tracking-widest font-bold text-gold-premium block">
+                    Institutional Access Required
+                  </span>
+                  <h3 className="font-display font-bold text-lg text-white">
+                    Complete Trade History
+                  </h3>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowCompleteHistoryModal(false)}
+                className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white transition-colors cursor-pointer"
+                aria-label="Close modal"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            <div className="p-4 rounded-2xl bg-black/50 border border-zinc-900 space-y-3">
+              <div className="flex justify-between items-center text-xs text-zinc-400 border-b border-zinc-900 pb-2">
+                <span>Total Executed Positions</span>
+                <span className="font-mono text-white font-bold">332 Trades</span>
+              </div>
+              <div className="flex justify-between items-center text-xs text-zinc-400 border-b border-zinc-900 pb-2">
+                <span>Win Rate Across Full History</span>
+                <span className="font-mono text-green-400 font-bold">62.7% (208 Wins)</span>
+              </div>
+              <div className="flex justify-between items-center text-xs text-zinc-400">
+                <span>Access Permission</span>
+                <span className="text-gold-premium font-semibold">Client Portal Active Account</span>
+              </div>
+            </div>
+
+            <p className="text-xs text-zinc-400 leading-relaxed font-light">
+              The complete database of 332 verified trade tickets, including entry/exit timestamps, ticket hashes, lot sizes, and broker execution logs, is accessible inside the dedicated Aurex Capital Private Client Portal.
+            </p>
+
+            <div className="flex items-center gap-3 pt-2">
+              <button
+                onClick={() => setShowCompleteHistoryModal(false)}
+                className="flex-1 py-2.5 px-4 rounded-xl text-xs font-semibold bg-zinc-900 hover:bg-zinc-800 text-zinc-300 transition-colors border border-zinc-800 cursor-pointer"
+              >
+                Close Preview
+              </button>
+              <a
+                href="/contact"
+                className="flex-1 py-2.5 px-4 rounded-xl text-xs font-semibold bg-gradient-to-r from-gold-dark via-gold to-gold-premium text-black hover:brightness-110 transition-all text-center cursor-pointer font-bold"
+              >
+                Request Access
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
     </PageTransition>
   );
 };
