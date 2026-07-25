@@ -97,19 +97,17 @@ export const handleContactSubmission = async (
       return;
     }
 
-    // Step 4: Create Fast & Reliable Direct Gmail SMTP Transporter
-    console.log('[Contact Form] 4. Initializing direct Gmail SMTP transporter (smtp.gmail.com:465 SSL)...');
+    // Step 4: Create Cloud-Compatible Nodemailer Transporter for Gmail
+    console.log('[Contact Form] 4. Initializing cloud-compatible Gmail SMTP transporter...');
     const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 465,
-      secure: true, // SSL
+      service: 'gmail',
       auth: {
         user: user.trim(),
         pass: pass.trim(),
       },
-      connectionTimeout: 10000, // 10s max connection timeout
-      greetingTimeout: 10000,   // 10s max greeting timeout
-      socketTimeout: 15000,     // 15s max socket inactivity timeout
+      tls: {
+        rejectUnauthorized: false,
+      },
     });
 
     // Step 5: Build Email Payload
@@ -170,7 +168,7 @@ export const handleContactSubmission = async (
     };
 
     // Step 6: Send Email Directly
-    console.log(`[Contact Form] 6. Transmitting email directly to Gmail inbox [${recipient.trim()}]...`);
+    console.log(`[Contact Form] 6. Transmitting email to Gmail inbox [${recipient.trim()}]...`);
     const info = await transporter.sendMail(mailOptions);
 
     if (!info || !info.messageId) {
