@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import nodemailer from 'nodemailer';
+import dns from 'dns';
 import { config } from '../config';
 
 export interface ContactRequestPayload {
@@ -177,7 +178,7 @@ export const handleContactSubmission = async (
       return;
     }
 
-    // STRATEGY 3: Nodemailer SMTP (Port 465 SSL -> Port 587 STARTTLS Fallback)
+    // STRATEGY 3: Nodemailer SMTP (Port 465 SSL -> Port 587 STARTTLS Fallback with Strict IPv4 resolution)
     const user = config.emailUser;
     const pass = config.emailPass;
 
@@ -201,9 +202,14 @@ export const handleContactSubmission = async (
     let sendResult: any = null;
     let lastSmtpError: any = null;
 
-    // Attempt 1: Port 465 SSL/TLS Direct (Fastest & avoids STARTTLS handshake timeouts)
+    // Strict IPv4 DNS Lookup function
+    const ipv4Lookup = (hostname: string, _options: any, callback: any) => {
+      dns.lookup(hostname, { family: 4 }, callback);
+    };
+
+    // Attempt 1: Port 465 SSL/TLS Direct with Strict IPv4
     try {
-      console.log('[Contact Form] Attempt 1: Transmitting via Gmail SMTP Port 465 (SSL/TLS)...');
+      console.log('[Contact Form] Attempt 1: Transmitting via Gmail SMTP Port 465 (SSL/TLS - IPv4)...');
       const transporter465 = nodemailer.createTransport({
         service: 'gmail',
         host: config.smtpHost || 'smtp.gmail.com',
@@ -214,6 +220,7 @@ export const handleContactSubmission = async (
           pass: pass.trim(),
         },
         family: 4,
+        lookup: ipv4Lookup,
         connectionTimeout: 7000,
         socketTimeout: 10000,
         tls: {
@@ -225,9 +232,9 @@ export const handleContactSubmission = async (
     } catch (err1: any) {
       lastSmtpError = err1;
       console.warn('[Contact Form WARNING] SMTP Port 465 failed/timed out:', err1.message || err1);
-      console.log('[Contact Form] Attempt 2: Retrying via Gmail SMTP Port 587 (STARTTLS)...');
+      console.log('[Contact Form] Attempt 2: Retrying via Gmail SMTP Port 587 (STARTTLS - IPv4)...');
 
-      // Attempt 2: Port 587 STARTTLS Fallback
+      // Attempt 2: Port 587 STARTTLS Fallback with Strict IPv4
       try {
         const transporter587 = nodemailer.createTransport({
           host: config.smtpHost || 'smtp.gmail.com',
@@ -239,6 +246,7 @@ export const handleContactSubmission = async (
             pass: pass.trim(),
           },
           family: 4,
+          lookup: ipv4Lookup,
           connectionTimeout: 8000,
           socketTimeout: 10000,
           tls: {
@@ -307,8 +315,14 @@ export const handleContactSubmission = async (
   } catch (err: any) {
     console.error('[Contact Form ERROR] Critical failure during email execution:', err);
     let errorDetail = err.message || String(err);
-    if (errorDetail.includes('Connection timeout') || errorDetail.includes('ETIMEDOUT') || errorDetail.includes('ECONNREFUSED')) {
-      errorDetail = 'Render Cloud Blocks Outbound SMTP Ports 465/587! Please set RESEND_API_KEY in Render Environment Variables (Get a free key from resend.com in 1 min).';
+    if (
+      errorDetail.includes('Connection timeout') ||
+      errorDetail.includes('ETIMEDOUT') ||
+      errorDetail.includes('ECONNREFUSED') ||
+      errorDetail.includes('ENETUNREACH') ||
+      errorDetail.includes('2607:f8b0')
+    ) {
+      errorDetail = 'Render Cloud blocks outbound SMTP ports (465/587) & IPv6 socket connection! Please add RESEND_API_KEY in Render Environment Variables (Get a free key from resend.com in 1 min).';
     }
     res.status(500).json({
       status: 'error',
