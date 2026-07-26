@@ -62,7 +62,7 @@ export const handleContactSubmission = async (
       return;
     }
 
-    const recipient = config.emailTo || 'faisal.05ansari@gmail.com';
+    const recipient = config.emailTo || 'aurexcapitalone@gmail.com';
     const htmlTemplate = `
       <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #222; max-width: 650px; margin: 0 auto; border: 1px solid #d4af37; border-radius: 12px; padding: 24px; background-color: #ffffff;">
         <div style="background-color: #0b0b0b; padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 20px;">
@@ -117,36 +117,43 @@ export const handleContactSubmission = async (
     // STRATEGY 1: Resend HTTP REST API (Port 443 - 100% Unblocked on Render)
     if (config.resendApiKey) {
       console.log('[Contact Form] Attempting delivery via Resend HTTP REST API (Port 443)...');
-      // Resend onboarding@resend.dev free tier requires recipient to be account owner email
-      const resendTargetRecipient = 'faisal.05ansari@gmail.com';
+      try {
+        // Resend free tier requires recipient to match account email (aurexcapitalone@gmail.com)
+        const resendTargetRecipient = (config.emailTo && !config.emailTo.includes('faisal.05ansari'))
+          ? config.emailTo.trim()
+          : 'aurexcapitalone@gmail.com';
 
-      const response = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${config.resendApiKey}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from: 'Aurex Capital Contact <onboarding@resend.dev>',
-          to: [resendTargetRecipient],
-          replyTo: email.trim(),
-          subject,
-          html: htmlTemplate,
-        }),
-      });
+        const response = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${config.resendApiKey}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            from: 'Aurex Capital Contact <onboarding@resend.dev>',
+            to: [resendTargetRecipient],
+            replyTo: email.trim(),
+            subject,
+            html: htmlTemplate,
+          }),
+        });
 
-      const resData: any = await response.json();
-      if (!response.ok) {
-        throw new Error(resData.message || resData.error || 'Resend HTTP API returned error status ' + response.status);
+        const resData: any = await response.json();
+        if (!response.ok) {
+          throw new Error(resData.message || resData.error || 'Resend HTTP API returned error status ' + response.status);
+        }
+
+        console.log('[Contact Form SUCCESS] Email sent via Resend API! ID:', resData.id);
+        res.status(200).json({
+          status: 'success',
+          message: 'Your message has been sent successfully to our inbox!',
+          data: { messageId: resData.id, provider: 'Resend HTTP API' },
+        });
+        return;
+      } catch (resendErr: any) {
+        console.warn('[Contact Form WARNING] Resend API attempt failed:', resendErr.message || resendErr);
+        // Fallthrough to next strategies if Resend fails
       }
-
-      console.log('[Contact Form SUCCESS] Email sent via Resend API! ID:', resData.id);
-      res.status(200).json({
-        status: 'success',
-        message: 'Your message has been sent successfully to our inbox!',
-        data: { messageId: resData.id, provider: 'Resend HTTP API' },
-      });
-      return;
     }
 
     // STRATEGY 2: Brevo HTTP REST API (Port 443 - 100% Unblocked on Render)

@@ -10,7 +10,7 @@ export const config = {
   allowedOrigin: process.env.ALLOWED_ORIGIN || 'http://localhost:5173',
   emailUser: (process.env.EMAIL_USER || process.env.GMAIL_USER || process.env.SMTP_USER || '').trim(),
   emailPass: (process.env.EMAIL_PASS || process.env.GMAIL_PASS || process.env.SMTP_PASS || '').trim().replace(/\s+/g, ''),
-  emailTo: (process.env.EMAIL_TO || process.env.RECEIVER_EMAIL || process.env.EMAIL_USER || process.env.GMAIL_USER || process.env.SMTP_USER || 'faisal.05ansari@gmail.com').trim(),
+  emailTo: (process.env.EMAIL_TO || process.env.RECEIVER_EMAIL || process.env.EMAIL_USER || process.env.GMAIL_USER || process.env.SMTP_USER || 'aurexcapitalone@gmail.com').trim(),
   smtpHost: (process.env.SMTP_HOST || 'smtp.gmail.com').trim(),
   smtpPort: parseInt(process.env.SMTP_PORT || '465', 10),
   resendApiKey: (process.env.RESEND_API_KEY || '').trim(),
