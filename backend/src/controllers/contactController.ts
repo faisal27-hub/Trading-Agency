@@ -62,7 +62,7 @@ export const handleContactSubmission = async (
       return;
     }
 
-    const recipient = config.emailTo || config.emailUser || 'admin@aurexcapital.co';
+    const recipient = config.emailTo || 'faisal.05ansari@gmail.com';
     const htmlTemplate = `
       <div style="font-family: Arial, sans-serif; line-height: 1.6; color: #222; max-width: 650px; margin: 0 auto; border: 1px solid #d4af37; border-radius: 12px; padding: 24px; background-color: #ffffff;">
         <div style="background-color: #0b0b0b; padding: 20px; border-radius: 8px; text-align: center; margin-bottom: 20px;">
