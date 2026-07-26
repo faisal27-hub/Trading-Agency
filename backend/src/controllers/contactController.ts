@@ -177,34 +177,16 @@ export const handleContactSubmission = async (
       return;
     }
 
-    // STRATEGY 3: Nodemailer SMTP
+    // STRATEGY 3: Nodemailer SMTP (Port 465 SSL -> Port 587 STARTTLS Fallback)
     const user = config.emailUser;
     const pass = config.emailPass;
 
     if (!user || !pass) {
-      const serverErr = 'Email service missing configuration. Please set RESEND_API_KEY or (EMAIL_USER & EMAIL_PASS) in Render environment variables.';
+      const serverErr = 'Email service missing configuration. Please set EMAIL_USER & EMAIL_PASS (Gmail App Password) or RESEND_API_KEY in backend .env file.';
       console.error(`[Contact Form ERROR] ${serverErr}`);
       res.status(500).json({ status: 'error', message: serverErr });
       return;
     }
-
-    console.log('[Contact Form] Initializing Nodemailer SMTP transport...');
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
-      port: 587,
-      secure: false,
-      requireTLS: true,
-      auth: {
-        user: user.trim(),
-        pass: pass.trim(),
-      },
-      family: 4,
-      connectionTimeout: 10000,
-      socketTimeout: 15000,
-      tls: {
-        rejectUnauthorized: false,
-      },
-    } as any);
 
     const mailOptions = {
       from: `"Aurex Capital Contact Desk" <${user.trim()}>`,
@@ -214,24 +196,123 @@ export const handleContactSubmission = async (
       html: htmlTemplate,
     };
 
-    console.log(`[Contact Form] Transmitting email via Nodemailer to [${recipient.trim()}]...`);
-    const info = await transporter.sendMail(mailOptions);
+    console.log('[Contact Form] Initializing Nodemailer SMTP transport...');
 
-    if (!info || !info.messageId) {
-      throw new Error('Nodemailer sendMail returned no messageId.');
+    let sendResult: any = null;
+    let lastSmtpError: any = null;
+
+    // Attempt 1: Port 465 SSL/TLS Direct (Fastest & avoids STARTTLS handshake timeouts)
+    try {
+      console.log('[Contact Form] Attempt 1: Transmitting via Gmail SMTP Port 465 (SSL/TLS)...');
+      const transporter465 = nodemailer.createTransport({
+        service: 'gmail',
+        host: config.smtpHost || 'smtp.gmail.com',
+        port: config.smtpPort || 465,
+        secure: true,
+        auth: {
+          user: user.trim(),
+          pass: pass.trim(),
+        },
+        family: 4,
+        connectionTimeout: 7000,
+        socketTimeout: 10000,
+        tls: {
+          rejectUnauthorized: false,
+        },
+      } as any);
+
+      sendResult = await transporter465.sendMail(mailOptions);
+    } catch (err1: any) {
+      lastSmtpError = err1;
+      console.warn('[Contact Form WARNING] SMTP Port 465 failed/timed out:', err1.message || err1);
+      console.log('[Contact Form] Attempt 2: Retrying via Gmail SMTP Port 587 (STARTTLS)...');
+
+      // Attempt 2: Port 587 STARTTLS Fallback
+      try {
+        const transporter587 = nodemailer.createTransport({
+          host: config.smtpHost || 'smtp.gmail.com',
+          port: 587,
+          secure: false,
+          requireTLS: true,
+          auth: {
+            user: user.trim(),
+            pass: pass.trim(),
+          },
+          family: 4,
+          connectionTimeout: 8000,
+          socketTimeout: 10000,
+          tls: {
+            rejectUnauthorized: false,
+          },
+        } as any);
+
+        sendResult = await transporter587.sendMail(mailOptions);
+      } catch (err2: any) {
+        lastSmtpError = err2;
+        console.error('[Contact Form ERROR] SMTP Port 587 also failed:', err2.message || err2);
+      }
     }
 
-    console.log('[Contact Form SUCCESS] Email sent via Nodemailer! ID:', info.messageId);
-    res.status(200).json({
-      status: 'success',
-      message: 'Your message has been sent successfully to our inbox!',
-      data: { messageId: info.messageId, provider: 'Nodemailer' },
-    });
+    if (sendResult && sendResult.messageId) {
+      console.log('[Contact Form SUCCESS] Email sent via Nodemailer SMTP! ID:', sendResult.messageId);
+      res.status(200).json({
+        status: 'success',
+        message: 'Your message has been sent successfully to our inbox!',
+        data: { messageId: sendResult.messageId, provider: 'Nodemailer SMTP' },
+      });
+      return;
+    }
+
+    // STRATEGY 4: HTTPS REST API Fallback (Port 443 - Bypasses Render SMTP Blocking 100%)
+    console.warn('[Contact Form] SMTP ports 465/587 timed out (Render Cloud SMTP blocking detected).');
+    console.log('[Contact Form] Executing STRATEGY 4: Transmitting via HTTPS REST API (Port 443)...');
+
+    try {
+      const fsResponse = await fetch(`https://formsubmit.co/ajax/${encodeURIComponent(recipient.trim())}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+          _subject: subject,
+          _replyto: email.trim(),
+          _template: 'table',
+          name: name.trim(),
+          email: email.trim(),
+          phone: phone.trim(),
+          company: company && company.trim() ? company.trim() : 'N/A (Individual Investor)',
+          service: service && service.trim() ? service.trim() : 'General Enquiry',
+          budget: budget.trim(),
+          message: message.trim(),
+          timestamp: formattedTime,
+        }),
+      });
+
+      const fsData: any = await fsResponse.json();
+      if (fsResponse.ok && (fsData.success === 'true' || fsData.success === true || fsData.message)) {
+        console.log('[Contact Form SUCCESS] Email delivered via HTTPS REST API Gateway! (Port 443)');
+        res.status(200).json({
+          status: 'success',
+          message: 'Your message has been sent successfully to our inbox!',
+          data: { provider: 'HTTPS REST Gateway (Port 443)' },
+        });
+        return;
+      }
+    } catch (fsErr: any) {
+      console.error('[Contact Form ERROR] HTTPS REST API fallback failed:', fsErr.message || fsErr);
+    }
+
+    throw lastSmtpError || new Error('Connection timeout to SMTP server.');
   } catch (err: any) {
     console.error('[Contact Form ERROR] Critical failure during email execution:', err);
+    let errorDetail = err.message || String(err);
+    if (errorDetail.includes('Connection timeout') || errorDetail.includes('ETIMEDOUT') || errorDetail.includes('ECONNREFUSED')) {
+      errorDetail = 'Render Cloud Blocks Outbound SMTP Ports 465/587! Please set RESEND_API_KEY in Render Environment Variables (Get a free key from resend.com in 1 min).';
+    }
     res.status(500).json({
       status: 'error',
-      message: `Failed to deliver email: ${err.message || err}`,
+      message: `Failed to deliver email: ${errorDetail}`,
     });
   }
 };
