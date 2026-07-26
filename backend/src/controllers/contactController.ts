@@ -117,6 +117,9 @@ export const handleContactSubmission = async (
     // STRATEGY 1: Resend HTTP REST API (Port 443 - 100% Unblocked on Render)
     if (config.resendApiKey) {
       console.log('[Contact Form] Attempting delivery via Resend HTTP REST API (Port 443)...');
+      // Resend onboarding@resend.dev free tier requires recipient to be account owner email
+      const resendTargetRecipient = 'faisal.05ansari@gmail.com';
+
       const response = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
@@ -125,7 +128,7 @@ export const handleContactSubmission = async (
         },
         body: JSON.stringify({
           from: 'Aurex Capital Contact <onboarding@resend.dev>',
-          to: [recipient.trim()],
+          to: [resendTargetRecipient],
           replyTo: email.trim(),
           subject,
           html: htmlTemplate,
