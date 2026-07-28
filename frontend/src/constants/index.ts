@@ -3,6 +3,7 @@ import type { ServiceCard, TimelineStep, FAQItem } from '../types';
 export const SITE_METADATA = {
   name: 'Aurex Capital',
   tagline: 'Elite Forex Trading & Wealth Solutions',
+  siteUrl: 'https://www.aurexcaptial.com',
   email: 'aurexcapitalone@gmail.com',
   phone: '+91 70835 74760',
   whatsappNumber: '917083574760',

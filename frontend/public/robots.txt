@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://aurexcapital.co/sitemap.xml
+Sitemap: https://www.aurexcaptial.com/sitemap.xml

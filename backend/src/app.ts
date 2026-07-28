@@ -26,6 +26,8 @@ const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:3000',
   'http://localhost:5000',
+  'https://www.aurexcaptial.com',
+  'https://aurexcaptial.com',
   'https://aurexcapital.co',
   'https://www.aurexcapital.co',
 ].filter(Boolean);
