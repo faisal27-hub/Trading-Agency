@@ -22,6 +22,7 @@ export const Footer: React.FC = () => {
   const quickLinksColumn2 = [
     { label: 'About Us', path: '/about' },
     { label: 'Dashboard', path: '/dashboard' },
+    { label: 'Funding Policy', path: '/funding-policy' },
     { label: 'Contact Us', path: '/contact' },
   ];
 

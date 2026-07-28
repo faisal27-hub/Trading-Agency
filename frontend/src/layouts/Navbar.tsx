@@ -15,6 +15,7 @@ export const Navbar: React.FC = () => {
     { label: 'Services', path: '/services' },
     { label: 'Dashboard', path: '/dashboard' },
     { label: 'Certifications', path: '/certifications' },
+    { label: 'Funding & Service Policy', path: '/funding-policy' },
     { label: 'Contact', path: '/contact' },
   ];
 
@@ -52,7 +53,7 @@ export const Navbar: React.FC = () => {
             : 'bg-transparent py-5 sm:py-6'
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between lg:grid lg:grid-cols-[200px_1fr_160px] h-12 w-full">
+        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between lg:grid lg:grid-cols-[160px_1fr_80px] h-12 w-full">
           {/* Brand Logo (Left on all screens) */}
           <div className="flex justify-start items-center h-full">
             <Link to="/" className="flex items-center group h-full py-1">
@@ -65,7 +66,7 @@ export const Navbar: React.FC = () => {
           </div>
 
           {/* Desktop Nav Items (Center, hidden on mobile) */}
-          <div className="hidden lg:flex justify-center items-center gap-7 h-full">
+          <div className="hidden lg:flex justify-center items-center gap-3.5 xl:gap-6 h-full">
             {navItems.map((item) => (
               <NavLink
                 key={item.path}
