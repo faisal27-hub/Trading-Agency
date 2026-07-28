@@ -611,49 +611,11 @@ export const FundingPolicyPage: React.FC = () => {
             </div>
           </section>
 
-          {/* SECTION 8 — Reporting */}
+          {/* SECTION 8 — Secure Payments */}
           <section className="space-y-8">
             <div className="text-center max-w-3xl mx-auto">
               <span className="text-xs uppercase font-bold text-gold-premium tracking-widest block mb-2">
-                08. Transparency & Audit
-              </span>
-              <h2 className="font-display font-bold text-3xl sm:text-4xl text-white tracking-tight">
-                Reporting & Performance Updates
-              </h2>
-              <div className="w-12 h-0.5 bg-gold mx-auto mt-3" />
-            </div>
-
-            <div className="glassmorphism p-8 sm:p-10 rounded-3xl border border-gold-premium/20 relative overflow-hidden space-y-6">
-              <div className="flex items-center gap-4">
-                <div className="w-14 h-14 rounded-2xl bg-gold-premium/10 border border-gold-premium/25 flex items-center justify-center text-gold shrink-0">
-                  <BarChart3 className="w-7 h-7" />
-                </div>
-                <div>
-                  <h3 className="font-display font-bold text-xl sm:text-2xl text-white">Regular Performance Reports</h3>
-                  <p className="text-xs sm:text-sm text-zinc-400 font-light">Scheduled statements and performance audits</p>
-                </div>
-              </div>
-
-              <div className="h-[1px] w-full bg-zinc-900" />
-
-              <div className="space-y-4 text-sm sm:text-base text-zinc-300 font-light leading-relaxed">
-                <p className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-gold shrink-0 mt-0.5" />
-                  <span>Clients receive regular performance updates and reports according to the agreed reporting schedule.</span>
-                </p>
-                <p className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-gold shrink-0 mt-0.5" />
-                  <span>Reports may include account performance summaries and other relevant service updates where applicable.</span>
-                </p>
-              </div>
-            </div>
-          </section>
-
-          {/* SECTION 9 — Secure Payments */}
-          <section className="space-y-8">
-            <div className="text-center max-w-3xl mx-auto">
-              <span className="text-xs uppercase font-bold text-gold-premium tracking-widest block mb-2">
-                09. Capital Defense
+                08. Capital Defense
               </span>
               <h2 className="font-display font-bold text-3xl sm:text-4xl text-white tracking-tight">
                 Secure Payments
@@ -690,11 +652,11 @@ export const FundingPolicyPage: React.FC = () => {
             </div>
           </section>
 
-          {/* SECTION 10 — Need Assistance? */}
+          {/* SECTION 9 — Need Assistance? */}
           <section className="space-y-10">
             <div className="text-center max-w-3xl mx-auto">
               <span className="text-xs uppercase font-bold text-gold-premium tracking-widest block mb-2">
-                10. Priority Concierge
+                09. Priority Concierge
               </span>
               <h2 className="font-display font-bold text-3xl sm:text-4xl text-white tracking-tight">
                 Need Assistance?
