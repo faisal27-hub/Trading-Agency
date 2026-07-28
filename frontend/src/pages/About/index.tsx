@@ -70,7 +70,7 @@ export const AboutPage: React.FC = () => {
     },
     {
       question: 'Is Aurex Capital regulated?',
-      answer: 'Yes, we are registered compliance partners under GFMA registration number GFMA-2024-AC. We follow strict regulatory practices to protect our quantitative strategies and maintain transparent client coordination.',
+      answer: 'We follow strict regulatory standards and institutional compliance practices to protect our quantitative strategies and maintain transparent client coordination.',
       category: 'safety',
     },
     {
