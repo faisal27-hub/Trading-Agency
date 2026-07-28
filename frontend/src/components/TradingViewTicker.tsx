@@ -35,6 +35,12 @@ export const TradingViewTicker: React.FC = () => {
     });
     
     containerRef.current.appendChild(script);
+
+    return () => {
+      if (containerRef.current) {
+        containerRef.current.innerHTML = '';
+      }
+    };
   }, []);
 
   return (

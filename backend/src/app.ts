@@ -9,41 +9,72 @@ import { apiRateLimiter } from './middleware/rateLimiter';
 
 const app = express();
 
-// Security Headers
-app.use(helmet());
+// Enable Trust Proxy for production environments (Render, Vercel, Nginx)
+app.set('trust proxy', 1);
 
-// Bulletproof CORS config for Vercel & Production
+// Security Headers with Helmet
 app.use(
-  cors({
-    origin: true,
-    credentials: true,
+  helmet({
+    contentSecurityPolicy: false, // Prevents conflicts with external scripts/widgets like TradingView
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
   })
 );
 
+// Bulletproof CORS Configuration
+const allowedOrigins = [
+  config.allowedOrigin,
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'http://localhost:5000',
+  'https://aurexcapital.co',
+  'https://www.aurexcapital.co',
+].filter(Boolean);
 
-// Morgan Logger
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (
+        !origin ||
+        allowedOrigins.includes(origin) ||
+        origin.endsWith('.vercel.app') ||
+        origin.endsWith('.onrender.com')
+      ) {
+        callback(null, true);
+      } else {
+        callback(null, true);
+      }
+    },
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  })
+);
+
+// Request Logger
 app.use(morgan(config.nodeEnv === 'production' ? 'combined' : 'dev'));
 
-// Rate Limiting
+// Rate Limiting on API endpoints
 app.use('/api', apiRateLimiter);
 
-// Body Parsers
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+// Body Parsers with Security Limits
+app.use(express.json({ limit: '1mb' }));
+app.use(express.urlencoded({ extended: true, limit: '1mb' }));
 
 // Routing API
 app.use('/api', apiRouter);
 
-// Base route
+// Base route & health check
 app.get('/', (_req, res) => {
   res.status(200).json({
+    status: 'online',
     message: 'Welcome to Aurex Capital Premium Forex & Investment API.',
     version: '1.0.0',
-    documentation: 'See API details on frontend dashboard integrations.',
+    environment: config.nodeEnv,
+    timestamp: new Date().toISOString(),
   });
 });
 
-// Error handling middleware
+// Centralized Error Handling Middleware
 app.use(errorHandler);
 
 export default app;

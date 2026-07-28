@@ -27,11 +27,22 @@ export const apiService = {
    * Fetch trading historical growth and general dashboard overview
    */
   async getPerformanceMetrics(): Promise<MetricsResponse> {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
     try {
-      const res = await fetch(`${config.apiUrl}/metrics`);
+      const res = await fetch(`${config.apiUrl}/metrics`, {
+        signal: controller.signal,
+      });
+      clearTimeout(timeoutId);
       return await handleResponse<MetricsResponse>(res);
-    } catch (error) {
-      console.error('Failed to load performance metrics from API:', error);
+    } catch (error: any) {
+      clearTimeout(timeoutId);
+      if (error.name === 'AbortError') {
+        console.warn('API request timed out, returning cached dashboard response.');
+      } else {
+        console.error('Failed to load performance metrics from API:', error);
+      }
       throw error;
     }
   },

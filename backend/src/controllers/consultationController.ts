@@ -6,15 +6,20 @@ import { ConsultationRequest } from '../types';
 const DATA_DIR = path.resolve(__dirname, '../../data');
 const DATA_FILE = path.join(DATA_DIR, 'consultations.json');
 
-// Ensure data directory exists
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true });
-}
-
-// Ensure consultation file exists
-if (!fs.existsSync(DATA_FILE)) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify([], null, 2), 'utf-8');
-}
+// Ensure data directory and file exist asynchronously on startup
+const initStorage = async () => {
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      await fs.promises.mkdir(DATA_DIR, { recursive: true });
+    }
+    if (!fs.existsSync(DATA_FILE)) {
+      await fs.promises.writeFile(DATA_FILE, JSON.stringify([], null, 2), 'utf-8');
+    }
+  } catch (err) {
+    console.error('[Storage Init Warning] Failed to initialize consultations file:', err);
+  }
+};
+initStorage();
 
 export const bookConsultation = async (
   req: Request,
@@ -32,50 +37,73 @@ export const bookConsultation = async (
       message,
     } = req.body as ConsultationRequest;
 
-    // Simple validation
-    if (!fullName || !email || !whatsappNumber || !preferredDate || !preferredTime || !investmentBudget) {
-      res.status(400).json({
-        status: 'error',
-        message: 'All fields (Full Name, Email, WhatsApp, Date, Time, Budget) are required.',
-      });
+    // Validation
+    if (!fullName || !fullName.trim()) {
+      res.status(400).json({ status: 'error', message: 'Full Name is required.' });
       return;
     }
 
-    // Email validation
+    if (!email || !email.trim()) {
+      res.status(400).json({ status: 'error', message: 'Email address is required.' });
+      return;
+    }
+
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      res.status(400).json({
-        status: 'error',
-        message: 'Invalid email address format.',
-      });
+    if (!emailRegex.test(email.trim())) {
+      res.status(400).json({ status: 'error', message: 'Invalid email address format.' });
+      return;
+    }
+
+    if (!whatsappNumber || !whatsappNumber.trim()) {
+      res.status(400).json({ status: 'error', message: 'WhatsApp number is required.' });
+      return;
+    }
+
+    if (!preferredDate || !preferredTime) {
+      res.status(400).json({ status: 'error', message: 'Preferred Date and Time are required.' });
+      return;
+    }
+
+    if (!investmentBudget) {
+      res.status(400).json({ status: 'error', message: 'Investment budget selection is required.' });
       return;
     }
 
     const newBooking: ConsultationRequest = {
-      fullName,
-      email,
-      whatsappNumber,
+      fullName: fullName.trim(),
+      email: email.trim(),
+      whatsappNumber: whatsappNumber.trim(),
       preferredDate,
       preferredTime,
       investmentBudget,
-      message: message || '',
+      message: message ? message.trim() : '',
       createdAt: new Date().toISOString(),
     };
 
-    // Load existing, append and save
-    const fileContent = fs.readFileSync(DATA_FILE, 'utf-8');
-    const bookings = JSON.parse(fileContent) as ConsultationRequest[];
+    // Non-blocking async file read & append
+    let bookings: ConsultationRequest[] = [];
+    try {
+      if (fs.existsSync(DATA_FILE)) {
+        const fileContent = await fs.promises.readFile(DATA_FILE, 'utf-8');
+        bookings = JSON.parse(fileContent) as ConsultationRequest[];
+      }
+    } catch (parseErr) {
+      console.warn('[Consultation Warning] Could not parse existing bookings file, re-initializing:', parseErr);
+      bookings = [];
+    }
+
     bookings.push(newBooking);
+    await fs.promises.writeFile(DATA_FILE, JSON.stringify(bookings, null, 2), 'utf-8');
 
-    fs.writeFileSync(DATA_FILE, JSON.stringify(bookings, null, 2), 'utf-8');
+    console.log(`[Consultation Booked] Name: ${fullName.trim()}, Email: ${email.trim()}, WhatsApp: ${whatsappNumber.trim()}`);
 
-    console.log(`[Consultation Booked] Name: ${fullName}, Email: ${email}, WhatsApp: ${whatsappNumber}, Budget: ${investmentBudget}`);
+    const bookingId = Math.random().toString(36).substring(2, 11).toUpperCase();
 
     res.status(201).json({
       status: 'success',
       message: 'Consultation successfully scheduled! Our premium trading advisors will contact you via WhatsApp and email within 2 hours.',
       data: {
-        bookingId: Math.random().toString(36).substring(2, 11).toUpperCase(),
+        bookingId,
         preferredDate,
         preferredTime,
       },
